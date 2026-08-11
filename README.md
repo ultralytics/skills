@@ -1,104 +1,115 @@
 <a href="https://www.ultralytics.com/"><img src="https://raw.githubusercontent.com/ultralytics/assets/main/logo/Ultralytics_Logotype_Original.svg" width="320" alt="Ultralytics logo"></a>
 
-# 🛠 Ultralytics Python Project Template
+# 🧠 Ultralytics Agent Skills
 
-Welcome to the Ultralytics Python Project Template! This repository provides a standardized foundation for initiating Python projects at [Ultralytics](https://www.ultralytics.com/). It incorporates best practices in project structure, configuration, and essential tooling to streamline development. By using this template, Ultralytics developers can ensure consistency, maintain high quality standards, and accelerate the setup process for new Python-based software. Explore our [Ultralytics Solutions](https://www.ultralytics.com/solutions) to see how we apply these standards in real-world applications.
+Agent skills for the [`ultralytics`](https://github.com/ultralytics/ultralytics) Python package and `yolo` CLI. They teach AI coding agents (Claude Code, Codex, Cursor, and any agent that reads the [Agent Skills format](https://agentskills.io)) the full computer-vision lifecycle: datasets → training → tuning → inference/tracking → export.
 
-[![Template CI](https://github.com/ultralytics/template/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/template/actions/workflows/ci.yml)
-[![Ultralytics Actions](https://github.com/ultralytics/template/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/template/actions/workflows/format.yml)
-[![codecov](https://codecov.io/github/ultralytics/template/branch/main/graph/badge.svg)](https://app.codecov.io/github/ultralytics/template)
+[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml)
+[![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
 
 [![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics)
 [![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com/)
 [![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://reddit.com/r/ultralytics)
 
-## 🗂️ Repository Structure
+## 🧩 Skills
 
-This template is meticulously organized for intuitive navigation and a clear understanding of project components. Familiarize yourself with the [Python project structure best practices](https://realpython.com/python-application-layouts/) to make the most of this layout.
+| Skill | Use it for |
+| --- | --- |
+| [`yolo`](skills/yolo/SKILL.md) | Core grammar (`yolo TASK MODE arg=value`, Python mirror), lifecycle overview, CLI specifics, routing to the other skills |
+| [`yolo-models`](skills/yolo-models/SKILL.md) | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names |
+| [`yolo-datasets`](skills/yolo-datasets/SKILL.md) | data.yaml, label formats, converters, auto-labeling, splitting, validation |
+| [`yolo-training`](skills/yolo-training/SKILL.md) | train/val, arguments, recipes, reading runs, troubleshooting |
+| [`yolo-tuning`](skills/yolo-tuning/SKILL.md) | Systematic improvement playbook, `model.tune()` genetic search, Ray Tune |
+| [`yolo-inference`](skills/yolo-inference/SKILL.md) | predict, Results API, tracking, annotated video, prebuilt Solutions |
+| [`yolo-export`](skills/yolo-export/SKILL.md) | ONNX/TensorRT/CoreML/OpenVINO/LiteRT/NPU export, quantization, benchmarking |
 
-- `your_package_name/` (here `template/`) or `src/`: Contains the core source code of your Python package, organized into modules. The alternative `src` layout is detailed in [Python packaging guides](https://packaging.python.org/en/latest/tutorials/packaging-projects/#configuring-metadata).
-- `tests/`: Dedicated directory for unit tests and integration tests, crucial for implementing [continuous testing](https://docs.ultralytics.com/help/CI) practices. Consider using frameworks like [pytest](https://docs.pytest.org/en/stable/) for writing tests.
-- `docs/`: (Optional) Houses project documentation. Tools like [MkDocs](https://www.mkdocs.org/) can be used to generate comprehensive documentation from this directory.
-- `pyproject.toml`: The standard configuration file for Python projects, detailing dependencies, build system requirements, formatting rules, and packaging information as specified by [PEP 518](https://peps.python.org/pep-0518/) and subsequent PEPs.
-- `.gitignore`: Configured to exclude unnecessary files (like `*.pyc` or virtual environment directories) from [Git](https://git-scm.com/) tracking.
-- `LICENSE`: Specifies the open-source license (defaulting to AGPL-3.0) under which the project is released.
-- `.github/workflows/`: Contains [GitHub Actions](https://docs.github.com/en/actions) workflows for automating Continuous Integration and Continuous Deployment (CI/CD) processes. Learn more about [CI/CD concepts](https://www.redhat.com/en/topics/devops/what-is-ci-cd).
-- `.pre-commit-config.yaml`: (Optional) Configuration for [pre-commit hooks](https://pre-commit.com/) to automatically check and enforce code quality standards before commits.
-- `Dockerfile`: (Optional) Defines instructions for building a [Docker](https://www.docker.com/) container image, enabling [containerization](https://www.ultralytics.com/glossary/containerization) of the project environment for consistent deployment.
-- `environment.yml`: (Optional, for Conda users) Manages dependencies for [Conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).
+Each skill is a `SKILL.md` (procedures, decision tables, gotchas) plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Content is grounded against `ultralytics` v8.4.117.
 
-```plaintext
-your-project/
-│
-├── your_package_name/          # Or src/ for src-layout
-│   ├── __init__.py
-│   ├── module1.py
-│   └── ...
-│
-├── tests/                      # Test suite (pytest + unittest examples)
-│   ├── test_with_pytest.py
-│   └── test_with_unittest.py
-│
-├── docs/                       # Documentation files (optional)
-│   └── ...
-│
-├── .github/                    # GitHub Actions workflows
-│   └── workflows/
-│       ├── ci.yml
-│       ├── format.yml
-│       └── publish.yml
-│
-├── .gitignore                  # Git ignore rules
-├── .pre-commit-config.yaml     # Pre-commit hook config (optional)
-├── Dockerfile                  # Docker configuration (optional)
-├── environment.yml             # Conda environment config (optional)
-├── LICENSE                     # Project license file
-├── pyproject.toml              # Project configuration and dependencies
-└── README.md                   # This file
+## 📦 Install
+
+The skills document the [`ultralytics`](https://pypi.org/project/ultralytics/) package — install or upgrade it in the environment your agent works in:
+
+```bash
+pip install -U ultralytics
 ```
 
-### 📦 Source Code Directory (`your_package_name/` or `src/`)
+### Claude Code
 
-The `your_package_name/` or `src/` directory is the heart of your project, containing the Python code that constitutes your package. Adopting a structured layout promotes clean imports and simplifies testing and packaging.
+```bash
+claude plugin marketplace add ultralytics/skills
+claude plugin install yolo
+```
 
-### 🧪 Testing Directory (`tests/`)
+<details>
+<summary>Develop from a local clone</summary>
 
-The `tests/` directory is crucial for ensuring code reliability and robustness. It should contain comprehensive unit and integration tests covering various aspects of your package. Effective testing is a cornerstone of quality software development.
+```bash
+git clone https://github.com/ultralytics/skills
+claude plugin marketplace add ./skills
+claude plugin install yolo
+```
 
-### 📚 Documentation Directory (`docs/`)
+</details>
 
-For projects requiring detailed documentation beyond the README, the `docs/` directory is the designated space. Utilizing tools like [Sphinx](https://www.sphinx-doc.org/en/master/) allows for the generation of professional, high-quality documentation from reStructuredText or Markdown files. Check out the [Ultralytics Docs](https://docs.ultralytics.com/) for an example.
+<details>
+<summary>Try it without installing anything</summary>
 
-## ✨ Starting a New Project
+Launch a session with the plugin loaded from the repo directory, leaving your installed plugins untouched:
 
-Kickstart your new Python project using this template with these steps:
+```bash
+git clone https://github.com/ultralytics/skills && cd skills
+claude --plugin-dir .
+```
 
-1.  **Create Your Repository**: Use this template on GitHub by clicking the "Use this template" button to generate a new repository for your project. Learn more about [creating a repository from a template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
-2.  **Customize**: Tailor the template files (`pyproject.toml`, `README.md`, `.github/workflows/*.yml`, etc.) to match your specific project's name, goals, and requirements.
-3.  **Develop**: Begin adding your source code into the `your_package_name/` (or `src/`) directory and write corresponding tests in the `tests/` directory.
-4.  **Document**: Update this `README.md` thoroughly and, if needed, populate the `docs/` directory with more extensive documentation.
-5.  **Integrate**: Leverage the pre-configured GitHub Actions for automated testing, linting, and other [CI/CD](https://www.ultralytics.com/glossary/continuous-integration-ci) processes to maintain code quality.
+</details>
 
-## 🔧 Utilizing the Template
+### Codex
 
-For Ultralytics team members and external contributors:
+```bash
+codex plugin marketplace add ultralytics/skills
+```
 
-- Clone the newly created repository based on this template to start working on the project locally.
-- Ensure the `README.md` is updated to accurately reflect the project's purpose, usage, and specifics.
-- Remove or modify optional components (like `Dockerfile`, `environment.yml`) based on the project's deployment and dependency management strategy.
+Restart Codex, open the plugin browser with `codex /plugins`, pick the Ultralytics source, and install the YOLO plugin.
 
-With this template, Ultralytics aims to foster a culture of excellence and uniformity in Python software development, ensuring every project starts on a solid foundation aligned with industry standards and organizational best practices. For insights into managing ML projects, explore our [MLOps guide](https://www.ultralytics.com/glossary/machine-learning-operations-mlops).
+<details>
+<summary>Develop from a local clone</summary>
+
+```bash
+git clone https://github.com/ultralytics/skills && cd skills
+codex plugin marketplace add .
+```
+
+Restart Codex after edits. To pull new versions of the GitHub source instead: `codex plugin marketplace upgrade ultralytics`.
+
+</details>
+
+### Other agents (Cursor, Gemini CLI, ...)
+
+```bash
+npx skills add ultralytics/skills
+```
+
+<details>
+<summary>Single skills, global install, manual copy</summary>
+
+```bash
+npx skills add ultralytics/skills --skill yolo-training  # one skill only
+npx skills add ultralytics/skills -g                     # global (~/.claude/skills/) instead of ./.claude/skills/
+```
+
+Or simply copy (or symlink) the folders under `skills/` into your agent's skills directory.
+
+</details>
+
+## 🛠️ Design notes
+
+- Skills are divided by lifecycle stage / user intent, not by model family.
+- Frontmatter is portable: `name` + `description` only.
+- Every skill defers to the installed version at runtime: `yolo checks` (version), `yolo cfg` (valid arguments), and error messages beat any table in these files.
 
 ## 💡 Contribute
 
-Ultralytics thrives on community collaboration, and we deeply value your contributions! Whether it's reporting bugs, suggesting features, or submitting code changes, your involvement is crucial.
-
-- **Reporting Issues**: Encounter a bug? Please report it on [GitHub Issues](https://github.com/ultralytics/template/issues).
-- **Feature Requests**: Have an idea for improvement? Share it via [GitHub Issues](https://github.com/ultralytics/template/issues).
-- **Pull Requests**: Want to contribute code? Please read our [Contributing Guide](https://docs.ultralytics.com/help/contributing) first, then submit a Pull Request.
-- **Feedback**: Share your thoughts and experiences by participating in our official [Survey](https://www.ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey).
-
-A heartfelt thank you 🙏 goes out to all our contributors! Your efforts help make Ultralytics tools better for everyone.
+Ultralytics thrives on community collaboration, and we deeply value your contributions! Please see our [Contributing Guide](https://docs.ultralytics.com/help/contributing/) for details on how to get involved. We also invite you to share your feedback through our [Survey](https://www.ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey). A huge 🙏 thank you to all our contributors!
 
 [![Ultralytics open-source contributors](https://raw.githubusercontent.com/ultralytics/assets/main/im/image-contributors.png)](https://github.com/ultralytics/ultralytics/graphs/contributors)
 
@@ -111,7 +122,7 @@ Ultralytics offers two licensing options to accommodate diverse needs:
 
 ## 📮 Contact
 
-For bug reports or feature suggestions related to this template, please use [GitHub Issues](https://github.com/ultralytics/template/issues). For other Ultralytics projects, please use the issue tracker for the relevant repository. For general questions, discussions, and community support, join our [Discord](https://discord.com/invite/ultralytics) server!
+For bug reports or feature suggestions related to these skills, please use [GitHub Issues](https://github.com/ultralytics/skills/issues). For general questions, discussions, and community support, join our [Discord](https://discord.com/invite/ultralytics) server!
 
 <br>
 <div align="center">
