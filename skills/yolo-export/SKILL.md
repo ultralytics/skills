@@ -100,7 +100,7 @@ deployment hardware, not your dev box.
 | TensorRT build OOM/slow                         | lower `workspace`, `batch=1`, `dynamic=False`                                                                                                   |
 | Export much less accurate                       | imgsz mismatch; INT8 calibration data too small/unrepresentative (fix `data=`, or fall back to `quantize=16`); wrong custom pre/post-processing |
 | Engine fails on another machine                 | TensorRT engines are device+version specific — rebuild on target                                                                                |
-| CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                         |
+| CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                        |
 | Deprecation warnings for `half`/`int8`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `tflite→litert`) — switch to the new names                                               |
 
 ## Related pages
