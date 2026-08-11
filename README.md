@@ -13,15 +13,15 @@ Agent skills for the [`ultralytics`](https://github.com/ultralytics/ultralytics)
 
 ## 🧩 Skills
 
-| Skill | Use it for |
-| --- | --- |
-| [`yolo`](skills/yolo/SKILL.md) | Core grammar (`yolo TASK MODE arg=value`, Python mirror), lifecycle overview, CLI specifics, routing to the other skills |
-| [`yolo-models`](skills/yolo-models/SKILL.md) | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names |
-| [`yolo-datasets`](skills/yolo-datasets/SKILL.md) | data.yaml, label formats, converters, auto-labeling, splitting, validation |
-| [`yolo-training`](skills/yolo-training/SKILL.md) | train/val, arguments, recipes, reading runs, troubleshooting |
-| [`yolo-tuning`](skills/yolo-tuning/SKILL.md) | Systematic improvement playbook, `model.tune()` genetic search, Ray Tune |
-| [`yolo-inference`](skills/yolo-inference/SKILL.md) | predict, Results API, tracking, annotated video, prebuilt Solutions |
-| [`yolo-export`](skills/yolo-export/SKILL.md) | ONNX/TensorRT/CoreML/OpenVINO/LiteRT/NPU export, quantization, benchmarking |
+| Skill                                              | Use it for                                                                                                               |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| [`yolo`](skills/yolo/SKILL.md)                     | Core grammar (`yolo TASK MODE arg=value`, Python mirror), lifecycle overview, CLI specifics, routing to the other skills |
+| [`yolo-models`](skills/yolo-models/SKILL.md)       | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names                     |
+| [`yolo-datasets`](skills/yolo-datasets/SKILL.md)   | data.yaml, label formats, converters, auto-labeling, splitting, validation                                               |
+| [`yolo-training`](skills/yolo-training/SKILL.md)   | train/val, arguments, recipes, reading runs, troubleshooting                                                             |
+| [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Systematic improvement playbook, `model.tune()` genetic search, Ray Tune                                                 |
+| [`yolo-inference`](skills/yolo-inference/SKILL.md) | predict, Results API, tracking, annotated video, prebuilt Solutions                                                      |
+| [`yolo-export`](skills/yolo-export/SKILL.md)       | ONNX/TensorRT/CoreML/OpenVINO/LiteRT/NPU export, quantization, benchmarking                                              |
 
 Each skill is a `SKILL.md` (procedures, decision tables, gotchas) plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Content is grounded against `ultralytics` v8.4.117.
 
@@ -93,8 +93,8 @@ npx skills add ultralytics/skills
 <summary>Single skills, global install, manual copy</summary>
 
 ```bash
-npx skills add ultralytics/skills --skill yolo-training  # one skill only
-npx skills add ultralytics/skills -g                     # global (~/.claude/skills/) instead of ./.claude/skills/
+npx skills add ultralytics/skills --skill yolo-training # one skill only
+npx skills add ultralytics/skills -g                    # global (~/.claude/skills/) instead of ./.claude/skills/
 ```
 
 Or simply copy (or symlink) the folders under `skills/` into your agent's skills directory.

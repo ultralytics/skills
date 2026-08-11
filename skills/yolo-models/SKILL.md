@@ -19,28 +19,29 @@ first use.
 
 `yolo26` + `n/s/m/l/x` + task suffix → `yolo26s-seg.pt`
 
-| Size | COCO mAP50-95 | Params | T4 TensorRT | Pick for |
-|---|---|---|---|---|
-| n | 40.9 | 2.4M | ~1.7 ms | edge/mobile, CPU realtime, first prototype |
-| s | 48.6 | 9.5M | ~2.5 ms | balanced default for most projects |
-| m | 53.1 | 20.4M | ~4.7 ms | GPU server, accuracy matters |
-| l | 55.0 | 24.8M | ~6.2 ms | accuracy-critical, ample GPU |
-| x | 57.5 | 55.7M | ~11.8 ms | max accuracy, offline/batch |
+| Size | COCO mAP50-95 | Params | T4 TensorRT | Pick for                                   |
+| ---- | ------------- | ------ | ----------- | ------------------------------------------ |
+| n    | 40.9          | 2.4M   | ~1.7 ms     | edge/mobile, CPU realtime, first prototype |
+| s    | 48.6          | 9.5M   | ~2.5 ms     | balanced default for most projects         |
+| m    | 53.1          | 20.4M  | ~4.7 ms     | GPU server, accuracy matters               |
+| l    | 55.0          | 24.8M  | ~6.2 ms     | accuracy-critical, ample GPU               |
+| x    | 57.5          | 55.7M  | ~11.8 ms    | max accuracy, offline/batch                |
 
 Strategy: prototype on `n` to validate the pipeline cheaply, then scale up until accuracy
 stops paying for the latency. A bigger model never fixes bad labels.
 
-| Suffix | Task | Output |
-|---|---|---|
-| *(none)* | detect | boxes |
-| `-seg` | instance segmentation | polygons + boxes |
-| `-sem` | semantic segmentation (YOLO26+) | per-pixel class mask |
-| `-depth` | monocular depth (YOLO26+) | depth map |
-| `-cls` | classification | class probabilities |
-| `-pose` | pose/keypoints | keypoints + boxes |
-| `-obb` | oriented boxes | rotated boxes |
+| Suffix   | Task                            | Output               |
+| -------- | ------------------------------- | -------------------- |
+| _(none)_ | detect                          | boxes                |
+| `-seg`   | instance segmentation           | polygons + boxes     |
+| `-sem`   | semantic segmentation (YOLO26+) | per-pixel class mask |
+| `-depth` | monocular depth (YOLO26+)       | depth map            |
+| `-cls`   | classification                  | class probabilities  |
+| `-pose`  | pose/keypoints                  | keypoints + boxes    |
+| `-obb`   | oriented boxes                  | rotated boxes        |
 
 Notes on the newer tasks:
+
 - **semantic** (`-sem`): dataset uses PNG masks via `masks_dir` (default `masks/`) or
   polygon labels; metric is mIoU.
 - **depth** (`-depth`): labels are float32 `.npy` depth maps; metric is delta1. Exposes a
@@ -49,18 +50,18 @@ Notes on the newer tasks:
 
 ## Family cheat sheet
 
-| Family | Class | When |
-|---|---|---|
-| YOLO26 / YOLO11 / YOLO12 / YOLOv8–v10 | `YOLO("yolo26n.pt")` | standard closed-set tasks; default choice |
-| YOLO-World | `YOLOWorld("yolov8s-world.pt")` | zero-shot detection of arbitrary text classes; `model.set_classes(["person", "helmet"])` |
-| YOLOE | `YOLOE("yoloe-26s-seg.pt")` | open-vocabulary detect+segment via text or visual prompts; `set_classes(names, embeddings)`, visual prompts via `predict(..., visual_prompts={"bboxes": ..., "cls": ...})`; `-pf` variants are prompt-free |
-| SAM / SAM2 / SAM3 / MobileSAM | `SAM("sam_b.pt")` | promptable segmentation: `predict(source, bboxes=... / points=... / labels=...)`; SAM2/3 add video and semantic variants |
-| FastSAM | `FastSAM("FastSAM-s.pt")` | CNN-based segment-anything, much faster than SAM |
-| RT-DETR | `RTDETR("rtdetr-l.pt")` | transformer detector, strong accuracy on GPU |
-| YOLO-NAS | `NAS("yolo_nas_s.pt")` | inference/val only, no training |
+| Family                                | Class                           | When                                                                                                                                                                                                       |
+| ------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| YOLO26 / YOLO11 / YOLO12 / YOLOv8–v10 | `YOLO("yolo26n.pt")`            | standard closed-set tasks; default choice                                                                                                                                                                  |
+| YOLO-World                            | `YOLOWorld("yolov8s-world.pt")` | zero-shot detection of arbitrary text classes; `model.set_classes(["person", "helmet"])`                                                                                                                   |
+| YOLOE                                 | `YOLOE("yoloe-26s-seg.pt")`     | open-vocabulary detect+segment via text or visual prompts; `set_classes(names, embeddings)`, visual prompts via `predict(..., visual_prompts={"bboxes": ..., "cls": ...})`; `-pf` variants are prompt-free |
+| SAM / SAM2 / SAM3 / MobileSAM         | `SAM("sam_b.pt")`               | promptable segmentation: `predict(source, bboxes=... / points=... / labels=...)`; SAM2/3 add video and semantic variants                                                                                   |
+| FastSAM                               | `FastSAM("FastSAM-s.pt")`       | CNN-based segment-anything, much faster than SAM                                                                                                                                                           |
+| RT-DETR                               | `RTDETR("rtdetr-l.pt")`         | transformer detector, strong accuracy on GPU                                                                                                                                                               |
+| YOLO-NAS                              | `NAS("yolo_nas_s.pt")`          | inference/val only, no training                                                                                                                                                                            |
 
 All classes share the same `Model` API (`train/val/predict/track/export/...`) —
-everything in the other yolo-* skills applies to them, with the exceptions noted above.
+everything in the other yolo-\* skills applies to them, with the exceptions noted above.
 
 Open-vocabulary decision: need arbitrary classes at inference with no training →
 YOLO-World (detect) or YOLOE (detect+segment, also visual prompts). Need pixel-precise
@@ -91,7 +92,7 @@ Only go here for research/unusual constraints; for normal work fine-tune the sto
 Model availability moves fast. The installed version's authoritative list:
 
 ```python
-from ultralytics.utils.downloads import GITHUB_ASSETS_NAMES  # all downloadable weights
+
 ```
 
 If a weight name 404s or a class import fails, check `yolo checks` (version) and prefer

@@ -14,8 +14,9 @@ description: >
 
 ```python
 from ultralytics import YOLO
-model = YOLO("yolo26n.pt")             # or your runs/detect/train/weights/best.pt
-results = model("image.jpg")            # list[Results], one per image
+
+model = YOLO("yolo26n.pt")  # or your runs/detect/train/weights/best.pt
+results = model("image.jpg")  # list[Results], one per image
 results[0].show()
 ```
 
@@ -39,18 +40,18 @@ BGR), torch tensor, or a list of these. `vid_stride=N` processes every Nth frame
 
 ## Arguments that matter
 
-| Arg | Default | Notes |
-|---|---|---|
-| `conf` | 0.25 | lower → more recall + more false positives |
-| `iou` | 0.7 | NMS threshold; lower to remove duplicate boxes |
-| `imgsz` | 640 | match training imgsz for best accuracy |
-| `classes` | None | keep only these ids, e.g. `classes=[0]` |
-| `max_det` | 300 | raise for dense scenes |
-| `quantize` | None | `16` = FP16 on GPU ≈ 2× faster (replaces deprecated `half`) |
-| `batch` | 1 | >1 speeds up folders/videos with `stream=True` |
-| `retina_masks` | False | full-resolution masks (slower, crisper) |
-| `augment` | False | test-time augmentation: +accuracy, ~3× slower |
-| `verbose` | True | False in loops to silence per-frame logs |
+| Arg            | Default | Notes                                                       |
+| -------------- | ------- | ----------------------------------------------------------- |
+| `conf`         | 0.25    | lower → more recall + more false positives                  |
+| `iou`          | 0.7     | NMS threshold; lower to remove duplicate boxes              |
+| `imgsz`        | 640     | match training imgsz for best accuracy                      |
+| `classes`      | None    | keep only these ids, e.g. `classes=[0]`                     |
+| `max_det`      | 300     | raise for dense scenes                                      |
+| `quantize`     | None    | `16` = FP16 on GPU ≈ 2× faster (replaces deprecated `half`) |
+| `batch`        | 1       | >1 speeds up folders/videos with `stream=True`              |
+| `retina_masks` | False   | full-resolution masks (slower, crisper)                     |
+| `augment`      | False   | test-time augmentation: +accuracy, ~3× slower               |
+| `verbose`      | True    | False in loops to silence per-frame logs                    |
 
 Saving/drawing: `save`, `save_txt`, `save_conf`, `save_crop`, `show`, `line_width` →
 `runs/<task>/predict*/`.
@@ -82,10 +83,10 @@ counts = Counter(r.names[int(c)] for c in r.boxes.cls)   # count per class
 
 ```python
 for r in model.track("video.mp4", stream=True):
-    ids = r.boxes.id                      # tensor of track ids, or None
+    ids = r.boxes.id  # tensor of track ids, or None
 
 # Frame-by-frame loop with your own capture: persist=True is REQUIRED
-r = model.track(frame, persist=True)[0]   # else the tracker resets every frame
+r = model.track(frame, persist=True)[0]  # else the tracker resets every frame
 ```
 
 - Six trackers, selected with `tracker=`: **`tracktrack.yaml` (default)**,
@@ -100,35 +101,36 @@ r = model.track(frame, persist=True)[0]   # else the tracker resets every frame
 
 ```python
 import cv2
+
 cap = cv2.VideoCapture("in.mp4")
-w, h, fps = (int(cap.get(p)) for p in
-             (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
+w, h, fps = (int(cap.get(p)) for p in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
 out = cv2.VideoWriter("out.mp4", cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
 for r in model.track("in.mp4", stream=True):
-    out.write(r.plot())                   # .plot() returns annotated BGR frame
-cap.release(); out.release()
+    out.write(r.plot())  # .plot() returns annotated BGR frame
+cap.release()
+out.release()
 ```
 
 ## Performance checklist (in payoff order)
 
 1. GPU + `quantize=16`. 2. Export to TensorRT/OpenVINO/CoreML — 2–5× (see
-yolo-export; exports load straight back into `YOLO()`). 3. Smaller model or imgsz.
-4. `batch>1` for offline folders; `vid_stride` when every frame isn't needed.
-5. `verbose=False`; skip `.plot()` when only coordinates are needed. 6. One `YOLO()`
-instance per thread — never share across threads.
+   yolo-export; exports load straight back into `YOLO()`). 3. Smaller model or imgsz.
+2. `batch>1` for offline folders; `vid_stride` when every frame isn't needed.
+3. `verbose=False`; skip `.plot()` when only coordinates are needed. 6. One `YOLO()`
+   instance per thread — never share across threads.
 
 ## Troubleshooting
 
-| Symptom | Cause / fix |
-|---|---|
-| No detections on visible objects | `conf` too high; wrong weights; imgsz far from training size |
-| Boxes offset | you pre-resized manually — pass the raw image, preprocessing is internal |
-| Wrong colors in saved crops | Results arrays are BGR; `cv2.cvtColor(..., COLOR_BGR2RGB)` for PIL/matplotlib |
-| RAM climbs on video | missing `stream=True` |
-| `boxes.id is None` crash | guard for None; `persist=True` in manual loops |
-| Duplicate boxes | lower `iou`; `agnostic_nms=True` for cross-class dupes |
-| Caps at 300 objects | raise `max_det` |
-| Slow first inference | warmup — benchmark from the second call |
+| Symptom                          | Cause / fix                                                                   |
+| -------------------------------- | ----------------------------------------------------------------------------- |
+| No detections on visible objects | `conf` too high; wrong weights; imgsz far from training size                  |
+| Boxes offset                     | you pre-resized manually — pass the raw image, preprocessing is internal      |
+| Wrong colors in saved crops      | Results arrays are BGR; `cv2.cvtColor(..., COLOR_BGR2RGB)` for PIL/matplotlib |
+| RAM climbs on video              | missing `stream=True`                                                         |
+| `boxes.id is None` crash         | guard for None; `persist=True` in manual loops                                |
+| Duplicate boxes                  | lower `iou`; `agnostic_nms=True` for cross-class dupes                        |
+| Caps at 300 objects              | raise `max_det`                                                               |
+| Slow first inference             | warmup — benchmark from the second call                                       |
 
 ## Related pages
 

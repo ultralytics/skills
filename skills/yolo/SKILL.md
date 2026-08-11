@@ -19,6 +19,7 @@ yolo detect train data=data.yaml model=yolo26n.pt epochs=100 imgsz=640
 
 ```python
 from ultralytics import YOLO
+
 model = YOLO("yolo26n.pt")
 model.train(data="data.yaml", epochs=100, imgsz=640)
 ```
@@ -31,11 +32,11 @@ model.train(data="data.yaml", epochs=100, imgsz=640)
 ## Whole lifecycle in five commands
 
 ```bash
-yolo detect train data=data.yaml model=yolo26n.pt epochs=100   # → runs/detect/train/weights/best.pt
-yolo val model=best.pt data=data.yaml                           # mAP, per-class metrics
-yolo predict model=best.pt source=video.mp4 save=True           # any source: image/dir/URL/RTSP/webcam
-yolo track model=best.pt source=video.mp4                       # + persistent object IDs
-yolo export model=best.pt format=onnx                           # exported model loads back into YOLO()
+yolo detect train data=data.yaml model=yolo26n.pt epochs=100 # → runs/detect/train/weights/best.pt
+yolo val model=best.pt data=data.yaml                        # mAP, per-class metrics
+yolo predict model=best.pt source=video.mp4 save=True        # any source: image/dir/URL/RTSP/webcam
+yolo track model=best.pt source=video.mp4                    # + persistent object IDs
+yolo export model=best.pt format=onnx                        # exported model loads back into YOLO()
 ```
 
 ## Route before coding
@@ -44,28 +45,28 @@ Read the skill for the stage you're working on BEFORE writing code — each cont
 formats, argument tables with defaults, recipes, and symptom→fix tables. A request
 spanning stages ("train and deploy") → read each relevant skill.
 
-| Working on | Skill |
-|---|---|
-| choosing a model family/size/task, YOLO26 vs YOLO11, YOLO-World/YOLOE, SAM, RT-DETR | `yolo-models` |
-| data.yaml, labels, annotation conversion, auto-labeling, dataset analysis/errors, splits | `yolo-datasets` |
-| training, fine-tuning, hyperparameters, augmentation, OOM / NaN / low mAP, reading runs | `yolo-training` |
-| hyperparameter tuning, Ray Tune, systematic model improvement, "autotraining" | `yolo-tuning` |
-| predict on images/video/streams, Results API, tracking IDs, counting/heatmaps/Solutions | `yolo-inference` |
-| ONNX / TensorRT / CoreML / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking | `yolo-export` |
+| Working on                                                                               | Skill            |
+| ---------------------------------------------------------------------------------------- | ---------------- |
+| choosing a model family/size/task, YOLO26 vs YOLO11, YOLO-World/YOLOE, SAM, RT-DETR      | `yolo-models`    |
+| data.yaml, labels, annotation conversion, auto-labeling, dataset analysis/errors, splits | `yolo-datasets`  |
+| training, fine-tuning, hyperparameters, augmentation, OOM / NaN / low mAP, reading runs  | `yolo-training`  |
+| hyperparameter tuning, Ray Tune, systematic model improvement, "autotraining"            | `yolo-tuning`    |
+| predict on images/video/streams, Results API, tracking IDs, counting/heatmaps/Solutions  | `yolo-inference` |
+| ONNX / TensorRT / CoreML / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking   | `yolo-export`    |
 
 ## CLI specifics
 
 Special commands (no TASK/MODE):
 
 ```bash
-yolo help                 # full syntax reference
-yolo checks               # env report: version, torch, CUDA, disk — run when anything is weird
+yolo help   # full syntax reference
+yolo checks # env report: version, torch, CUDA, disk — run when anything is weird
 yolo version
-yolo settings             # view; `yolo settings key=value` to set; `yolo settings reset`
-                          # keys incl. datasets_dir, runs_dir, wandb, mlflow, tensorboard, ...
-yolo cfg                  # print every default argument (the ground truth for arg names)
-yolo copy-cfg             # copy default.yaml → default_copy.yaml to customize, use with cfg=
-yolo solutions help       # prebuilt apps: count, heatmap, speed, ... (see yolo-inference)
+yolo settings # view; `yolo settings key=value` to set; `yolo settings reset`
+# keys incl. datasets_dir, runs_dir, wandb, mlflow, tensorboard, ...
+yolo cfg            # print every default argument (the ground truth for arg names)
+yolo copy-cfg       # copy default.yaml → default_copy.yaml to customize, use with cfg=
+yolo solutions help # prebuilt apps: count, heatmap, speed, ... (see yolo-inference)
 ```
 
 Parsing rules that matter:

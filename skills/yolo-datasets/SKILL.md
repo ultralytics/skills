@@ -33,18 +33,18 @@ dataset/
 ## data.yaml anatomy
 
 ```yaml
-path: /abs/dataset/root        # relative paths resolve against `yolo settings` datasets_dir — prefer absolute
-train: images/train            # dir, .txt file of image paths, or list of dirs
+path: /abs/dataset/root # relative paths resolve against `yolo settings` datasets_dir — prefer absolute
+train: images/train # dir, .txt file of image paths, or list of dirs
 val: images/val
-test: images/test              # optional
-names:                         # 0-based, contiguous indices
+test: images/test # optional
+names: # 0-based, contiguous indices
   0: person
   1: helmet
 # pose only:
-kpt_shape: [17, 3]             # [num_keypoints, dims]; dims 2 (x,y) or 3 (x,y,visibility)
-flip_idx: [0, 2, 1, ...]       # L/R keypoint swap map — without it, flip augs are auto-disabled
+kpt_shape: [17, 3] # [num_keypoints, dims]; dims 2 (x,y) or 3 (x,y,visibility)
+flip_idx: [0, 2, 1, ...] # L/R keypoint swap map — without it, flip augs are auto-disabled
 # semantic only (optional — polygon labels/ also work):
-masks_dir: masks               # per-pixel PNG mask images
+masks_dir: masks # per-pixel PNG mask images
 # depth only: paired depth/{train,val}/*.npy float32 depth maps, nc: 1
 ```
 
@@ -58,7 +58,8 @@ masks_dir: masks               # per-pixel PNG mask images
 
 ```python
 from ultralytics.data.converter import convert_coco
-convert_coco(labels_dir="coco/annotations/", use_segments=True)   # COCO → detect/segment
+
+convert_coco(labels_dir="coco/annotations/", use_segments=True)  # COCO → detect/segment
 convert_coco(labels_dir="coco/annotations/", use_keypoints=True)  # COCO → pose
 ```
 
@@ -71,6 +72,7 @@ Auto-label a raw image folder (detector proposes boxes, SAM refines masks):
 
 ```python
 from ultralytics.data.annotator import auto_annotate
+
 auto_annotate(data="path/to/images", det_model="yolo26x.pt", sam_model="sam_b.pt")
 ```
 
@@ -81,6 +83,7 @@ format (normalize coords, center-based boxes).
 
 ```python
 from ultralytics.data.split import autosplit
+
 autosplit(path="dataset/images", weights=(0.9, 0.1, 0.0))  # writes autosplit_*.txt lists
 ```
 
@@ -92,17 +95,22 @@ into val and inflate mAP. For classify: `split_classify_dataset(source_dir, 0.8)
 
 1. **Structural check** — loads, resolves paths, counts images/labels, auto-downloads
    known datasets:
+
    ```python
-   from ultralytics.data.utils import check_det_dataset, check_cls_dataset
-   check_det_dataset("data.yaml")     # detect/segment/pose/obb/semantic/depth
+   from ultralytics.data.utils import check_det_dataset
+
+   check_det_dataset("data.yaml")  # detect/segment/pose/obb/semantic/depth
    ```
+
 2. **Visual check of one image** — labels drawn on the image; wrong normalization or
    swapped x/y is instantly visible:
+
    ```python
    from ultralytics.data.utils import visualize_image_annotations
-   visualize_image_annotations("images/train/img001.jpg", "labels/train/img001.txt",
-                               label_map={0: "person", 1: "helmet"})
+
+   visualize_image_annotations("images/train/img001.jpg", "labels/train/img001.txt", label_map={0: "person", 1: "helmet"})
    ```
+
 3. **1-epoch smoke test**, then eyeball the mosaic:
    ```bash
    yolo detect train data=data.yaml model=yolo26n.pt epochs=1 fraction=0.1

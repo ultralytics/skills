@@ -36,6 +36,7 @@ in the confusion matrix → nothing else matters until fixed.
 
 ```python
 from ultralytics import YOLO
+
 model = YOLO("yolo26n.pt")
 model.tune(data="data.yaml", epochs=30, iterations=300, plots=False, save=False, val=False)
 ```
@@ -51,8 +52,7 @@ train/val/predict/export/track/benchmark).
   `flipud`, `fliplr`, `bgr`, `mosaic`, `mixup`, `cutmix`, `copy_paste`), `close_mosaic`.
 - Custom space (subset + ranges as `(min, max)`):
   ```python
-  model.tune(data="data.yaml", epochs=30, iterations=100,
-             space={"lr0": (1e-5, 1e-1), "mosaic": (0.5, 1.0)})
+  model.tune(data="data.yaml", epochs=30, iterations=100, space={"lr0": (1e-5, 1e-1), "mosaic": (0.5, 1.0)})
   ```
 - Results: `runs/<task>/tune/` — `best_hyperparameters.yaml`, `tune_results.ndjson`,
   fitness plots. Load the yaml and retrain fully with it.
@@ -63,8 +63,7 @@ train/val/predict/export/track/benchmark).
 
 ```python
 model = YOLO("yolo26n.pt")
-result_grid = model.tune(use_ray=True, data="data.yaml", iterations=20,
-                         epochs=30, gpu_per_trial=1)
+result_grid = model.tune(use_ray=True, data="data.yaml", iterations=20, epochs=30, gpu_per_trial=1)
 ```
 
 - Requires `pip install "ray[tune]"`. Default scheduler is ASHA (early-kills bad

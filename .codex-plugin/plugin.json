@@ -28,10 +28,7 @@
     "longDescription": "Skills covering the full Ultralytics computer-vision lifecycle: dataset preparation and validation, model selection (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM, RT-DETR), training and fine-tuning, hyperparameter tuning, inference and tracking, prebuilt Solutions, and export to ONNX/TensorRT/CoreML/OpenVINO and NPU formats.",
     "developerName": "Ultralytics",
     "category": "Coding",
-    "capabilities": [
-      "Interactive",
-      "Write"
-    ],
+    "capabilities": ["Interactive", "Write"],
     "websiteURL": "https://www.ultralytics.com/",
     "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
     "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",

@@ -14,7 +14,8 @@ description: >
 
 ```python
 from ultralytics import YOLO
-model = YOLO("yolo26n.pt")   # ALWAYS start from pretrained weights
+
+model = YOLO("yolo26n.pt")  # ALWAYS start from pretrained weights
 results = model.train(data="data.yaml", epochs=100, imgsz=640, batch=16, device=0)
 ```
 
@@ -28,24 +29,24 @@ rows for classes whose names match).
 
 ## Arguments worth setting (defaults are good — touch few)
 
-| Arg | Default | Notes |
-|---|---|---|
-| `epochs` | 100 | 100–300 for fine-tuning; rely on early stopping, not guesses |
-| `patience` | 100 | epochs without val improvement before early stop; ~20–50 for quick iterations |
-| `imgsz` | 640 | raise (960/1280) for small objects — memory cost is quadratic |
-| `batch` | 16 | `-1` auto-fits ~60% VRAM; float like `0.8` = VRAM fraction; else integer |
-| `device` | None | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU |
-| `cache` | False | `True` (RAM) or `"disk"` for I/O-bound training |
-| `workers` | 8 | lower if RAM/shared-memory errors |
-| `freeze` | None | freeze first N layers (`freeze=10` ≈ backbone) for small datasets |
-| `optimizer` | auto | leave on auto (YOLO26 adds MuSGD) |
-| `lr0` / `lrf` | 0.01 / 0.01 | halve `lr0` on loss spikes/NaN |
-| `fraction` | 1.0 | subset training — `fraction=0.1` for smoke tests |
-| `resume` | False | continue an interrupted run (see recipes) |
-| `project`/`name` | None | output dir `runs/<task>/<name>` |
-| `seed` | 0 | reproducible with `deterministic=True` (default) |
-| `compile` | False | torch.compile; also `"max-autotune-no-cudagraphs"` etc. |
-| `time` | None | max training hours — overrides epochs |
+| Arg              | Default     | Notes                                                                         |
+| ---------------- | ----------- | ----------------------------------------------------------------------------- |
+| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                  |
+| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations |
+| `imgsz`          | 640         | raise (960/1280) for small objects — memory cost is quadratic                 |
+| `batch`          | 16          | `-1` auto-fits ~60% VRAM; float like `0.8` = VRAM fraction; else integer      |
+| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                      |
+| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                               |
+| `workers`        | 8           | lower if RAM/shared-memory errors                                             |
+| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets             |
+| `optimizer`      | auto        | leave on auto (YOLO26 adds MuSGD)                                             |
+| `lr0` / `lrf`    | 0.01 / 0.01 | halve `lr0` on loss spikes/NaN                                                |
+| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                              |
+| `resume`         | False       | continue an interrupted run (see recipes)                                     |
+| `project`/`name` | None        | output dir `runs/<task>/<name>`                                               |
+| `seed`           | 0           | reproducible with `deterministic=True` (default)                              |
+| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                       |
+| `time`           | None        | max training hours — overrides epochs                                         |
 
 Full argument, augmentation, and loss-weight tables: `training-args.md` (this folder) —
 read before changing anything not listed above. Ground truth: `yolo cfg`.
@@ -72,7 +73,7 @@ read before changing anything not listed above. Ground truth: `yolo cfg`.
 ## Validation
 
 ```bash
-yolo val model=runs/detect/train/weights/best.pt data=data.yaml   # split=val by default
+yolo val model=runs/detect/train/weights/best.pt data=data.yaml # split=val by default
 ```
 
 Per-task headline metrics: detect/obb `mAP50-95(B)`, segment `(M)`, pose `(P)`,
@@ -98,15 +99,15 @@ COCO-format eval.
 
 ## Troubleshooting
 
-| Symptom | Fix, in order |
-|---|---|
-| CUDA out of memory | lower `batch` (or `batch=-1`), lower `imgsz`, smaller model; kill zombie python processes holding VRAM |
-| NaN / exploding loss | lower `lr0` (0.001); check labels; `amp=False` on GPUs that misbehave with mixed precision |
-| mAP near 0 | dataset problem 95% of the time — see yolo-datasets, check `train_batch*.jpg` |
-| mAP plateaus low | more/better data first; then imgsz ↑, bigger model, more epochs; see yolo-tuning playbook |
-| Stopped earlier than expected | that's `patience` — raise it or accept `best.pt` |
-| Dataloader slow / GPU idle | `cache=True`/`"disk"`, raise `workers`, data on SSD |
-| Val metrics zero mid-run | classes missing from the val split |
+| Symptom                       | Fix, in order                                                                                          |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ |
+| CUDA out of memory            | lower `batch` (or `batch=-1`), lower `imgsz`, smaller model; kill zombie python processes holding VRAM |
+| NaN / exploding loss          | lower `lr0` (0.001); check labels; `amp=False` on GPUs that misbehave with mixed precision             |
+| mAP near 0                    | dataset problem 95% of the time — see yolo-datasets, check `train_batch*.jpg`                          |
+| mAP plateaus low              | more/better data first; then imgsz ↑, bigger model, more epochs; see yolo-tuning playbook              |
+| Stopped earlier than expected | that's `patience` — raise it or accept `best.pt`                                                       |
+| Dataloader slow / GPU idle    | `cache=True`/`"disk"`, raise `workers`, data on SSD                                                    |
+| Val metrics zero mid-run      | classes missing from the val split                                                                     |
 
 Anti-patterns: `pretrained=False` "to train properly" (needs ~100× more data);
 benchmarking model sizes on 50 images; copying 30-argument commands (start from

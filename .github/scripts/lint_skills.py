@@ -25,13 +25,13 @@ for d in skill_dirs:
         errors.append(f"{d.name}: missing SKILL.md")
         continue
     text = sk.read_text(encoding="utf-8")
-    m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+    m = re.match(r"^---\n(.*?)\n---\n", text, re.DOTALL)
     if not m:
         errors.append(f"{d.name}: no YAML frontmatter")
         continue
     fm = m.group(1)
-    keys = re.findall(r"^([A-Za-z-]+):", fm, re.M)
-    name_match = re.search(r"^name: (\S+)", fm, re.M)
+    keys = re.findall(r"^([A-Za-z-]+):", fm, re.MULTILINE)
+    name_match = re.search(r"^name: (\S+)", fm, re.MULTILINE)
     name = name_match.group(1) if name_match else ""
     desc = re.sub(r"\s+", " ", fm.split("description:", 1)[-1].replace(">", "")).strip()
     lines = text.count("\n")
