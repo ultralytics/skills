@@ -59,19 +59,19 @@ Full 20-format matrix with per-format supported args: `format-matrix.md` (this f
 
 ## Key arguments
 
-| Arg         | Default | Notes                                                                                                                                                                                                                   |
-| ----------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `imgsz`     | model   | inherited from the loaded model; set explicitly to the deployment shape                                                                                                                                                  |
-| `quantize`  | None    | precision request: `16`/`fp16`, `8`/`int8`/`w8a8`, `w8a16`, `w8a32`, or `32`/`fp32`; support, speed, size, and accuracy are backend-dependent — see `format-matrix.md` and benchmark the target                      |
-| `data`      | None    | representative calibration data when required; use >300 images generally and 500+ for TensorRT. Omission selects a small task default, so pass deployment-representative data explicitly                                                           |
-| `dynamic`   | False   | variable input shape/batch where supported; check `format-matrix.md` and benchmark the target                                                                                                                            |
-| `batch`     | 1       | max batch baked into the export                                                                                                                                                                                         |
-| `simplify`  | True    | simplify ONNX graph                                                                                                                                                                                                     |
-| `opset`     | newest  | pin lower if the consumer runtime complains                                                                                                                                                                             |
-| `nms`       | False   | bake NMS into an NMS pipeline; default end-to-end YOLO26 already emits final detections                                                                                                                                 |
-| `workspace` | None    | TensorRT builder GiB — lower if the build OOMs                                                                                                                                                                          |
-| `device`    | None    | `device=0` required for TensorRT; also speeds INT8 calibration                                                                                                                                                          |
-| `fraction`  | 1.0     | fraction of calibration data used                                                                                                                                                                                       |
+| Arg         | Default | Notes                                                                                                                                                                                           |
+| ----------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `imgsz`     | model   | inherited from the loaded model; set explicitly to the deployment shape                                                                                                                         |
+| `quantize`  | None    | precision request: `16`/`fp16`, `8`/`int8`/`w8a8`, `w8a16`, `w8a32`, or `32`/`fp32`; support, speed, size, and accuracy are backend-dependent — see `format-matrix.md` and benchmark the target |
+| `data`      | None    | representative calibration data when required; use >300 images generally and 500+ for TensorRT. Omission selects a small task default, so pass deployment-representative data explicitly        |
+| `dynamic`   | False   | variable input shape/batch where supported; check `format-matrix.md` and benchmark the target                                                                                                   |
+| `batch`     | 1       | max batch baked into the export                                                                                                                                                                 |
+| `simplify`  | True    | simplify ONNX graph                                                                                                                                                                             |
+| `opset`     | newest  | pin lower if the consumer runtime complains                                                                                                                                                     |
+| `nms`       | False   | bake NMS into an NMS pipeline; default end-to-end YOLO26 already emits final detections                                                                                                         |
+| `workspace` | None    | TensorRT builder GiB — lower if the build OOMs                                                                                                                                                  |
+| `device`    | None    | `device=0` required for TensorRT; also speeds INT8 calibration                                                                                                                                  |
+| `fraction`  | 1.0     | fraction of calibration data used                                                                                                                                                               |
 
 ## Verify parity after export (always)
 
@@ -108,15 +108,15 @@ each supported precision and benchmark on deployment hardware, not your dev box.
 
 ## Troubleshooting
 
-| Symptom                                         | Fix                                                                                                                                             |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Export crashes on missing package               | most backends auto-install on first export; rerun. TensorRT must match your CUDA — install per NVIDIA docs                                      |
-| `Unsupported ONNX opset` downstream             | export with lower `opset=`, or upgrade the runtime                                                                                              |
-| TensorRT build OOM/slow                         | lower `workspace`, `batch=1`, `dynamic=False`                                                                                                   |
-| Export much less accurate                       | imgsz mismatch; too little/unrepresentative calibration data; wrong custom pre/post-processing; use a supported higher precision or backend   |
-| Engine fails on another machine                 | TensorRT engines are device+version specific — rebuild on target                                                                                |
-| CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                        |
-| Deprecation warnings for `half`/`int8`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `tflite→litert`) — switch to the new names                                               |
+| Symptom                                         | Fix                                                                                                                                         |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Export crashes on missing package               | most backends auto-install on first export; rerun. TensorRT must match your CUDA — install per NVIDIA docs                                  |
+| `Unsupported ONNX opset` downstream             | export with lower `opset=`, or upgrade the runtime                                                                                          |
+| TensorRT build OOM/slow                         | lower `workspace`, `batch=1`, `dynamic=False`                                                                                               |
+| Export much less accurate                       | imgsz mismatch; too little/unrepresentative calibration data; wrong custom pre/post-processing; use a supported higher precision or backend |
+| Engine fails on another machine                 | TensorRT engines are device+version specific — rebuild on target                                                                            |
+| CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                    |
+| Deprecation warnings for `half`/`int8`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `tflite→litert`) — switch to the new names                                           |
 
 ## Related pages
 

@@ -87,7 +87,7 @@ defaults; task trainers, checkpoints, and explicit arguments determine effective
 - **Small detect-style dataset (<~1k images)**: pretrained + `freeze=10`, `n`/`s` model,
   default augmentation, watch val curves.
 - **Depth fine-tuning**: start from `-depth.pt` and use `optimizer=AdamW lr0=1e-4
-  warmup_bias_lr=1e-4`.
+warmup_bias_lr=1e-4`.
 - **Small objects**: try `imgsz=1280` (more compute/VRAM; reduce batch if needed), or
   tile large images at dataset level.
 - **Experiment hygiene**: self-describing run names
