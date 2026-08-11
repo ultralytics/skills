@@ -68,7 +68,7 @@ Full 20-format matrix with per-format supported args: `format-matrix.md` (this f
 | `batch`     | 1       | max batch baked into the export                                                                                                                                                                 |
 | `simplify`  | True    | simplify ONNX graph                                                                                                                                                                             |
 | `opset`     | newest  | pin lower if the consumer runtime complains                                                                                                                                                     |
-| `nms`       | False   | bake NMS into an NMS pipeline; default end-to-end YOLO26 already emits final detections                                                                                                         |
+| `nms`       | False   | bake NMS into a raw-output pipeline; some YOLO26 backends/precisions disable end-to-end — check export warnings                                                                                  |
 | `workspace` | None    | TensorRT builder GiB — lower if the build OOMs                                                                                                                                                  |
 | `device`    | None    | `device=0` required for TensorRT; also speeds INT8 calibration                                                                                                                                  |
 | `fraction`  | 1.0     | fraction of calibration data used                                                                                                                                                               |
@@ -98,9 +98,9 @@ each supported precision and benchmark on deployment hardware, not your dev box.
 
 - In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize,
   BGR→RGB, /255) and output decoding.
-- Output layout differs: YOLO26 is end-to-end (final `[x1,y1,x2,y2,conf,cls]` rows);
-  YOLO11/v8 raw heads emit `[4+nc, anchors]` needing decode + NMS — check the output
-  tensor shape first. This is the main reason to prefer YOLO26 for edge deployment.
+- Output layout differs: YOLO26 emits final `[x1,y1,x2,y2,conf,cls]` rows only when the
+  export preserves end-to-end output; otherwise raw output needs backend-appropriate
+  decoding/NMS. Check export warnings and the output tensor shape first.
 - Class names travel in export metadata where supported; otherwise ship the `names`
   map alongside the model.
 - Serving: `ultralytics.utils.triton.TritonRemoteModel` for Triton;
