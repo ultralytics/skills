@@ -14,7 +14,7 @@ MANIFESTS = [
     ".agents/plugins/marketplace.json",
 ]
 ULTRALYTICS_URL = re.compile(r"https?://(?:[A-Za-z0-9-]+\.)*ultralytics\.com[^\s<>\"'`)\]]*")
-APEX_URL = re.compile(r"https?://ultralytics\.com(?=[/:?#\s<>\"')\]]|$)")
+APEX_URL = re.compile(r"https?://ultralytics\.com(?=[/:?#\s<>\"'`)\].,;:]|$)")
 
 errors = []
 skill_dirs = sorted(d for d in (ROOT / "skills").iterdir() if d.is_dir())
