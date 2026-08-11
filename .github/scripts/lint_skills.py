@@ -37,9 +37,7 @@ for d in skill_dirs:
     desc = re.sub(r"\s+", " ", fm.split("description:", 1)[-1].replace(">", "")).strip()
     lines = text.count("\n")
     if len(keys) != 2 or set(keys) != {"name", "description"}:
-        errors.append(
-            f"{d.name}: frontmatter keys must be exactly name+description, got {keys}"
-        )
+        errors.append(f"{d.name}: frontmatter keys must be exactly name+description, got {keys}")
     if name != d.name:
         errors.append(f"{d.name}: name '{name}' != directory name")
     if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", name or "") or len(name) > 64:
@@ -56,21 +54,13 @@ for d in skill_dirs:
     metadata_count += 1
     metadata_text = metadata.read_text(encoding="utf-8")
     values = {
-        key: match.group(1)
-        if (match := re.search(rf'^  {key}: "(.+)"$', metadata_text, re.MULTILINE))
-        else ""
+        key: match.group(1) if (match := re.search(rf'^  {key}: "(.+)"$', metadata_text, re.MULTILINE)) else ""
         for key in ("display_name", "short_description", "default_prompt")
     }
-    if not re.search(r"^interface:\n", metadata_text, re.MULTILINE) or not all(
-        values.values()
-    ):
-        errors.append(
-            f"{d.name}: openai.yaml requires quoted display_name, short_description, and default_prompt"
-        )
+    if not re.search(r"^interface:\n", metadata_text, re.MULTILINE) or not all(values.values()):
+        errors.append(f"{d.name}: openai.yaml requires quoted display_name, short_description, and default_prompt")
     if values["short_description"] and not 25 <= len(values["short_description"]) <= 64:
-        errors.append(
-            f"{d.name}: openai.yaml short_description must be 25-64 characters"
-        )
+        errors.append(f"{d.name}: openai.yaml short_description must be 25-64 characters")
     if values["default_prompt"] and f"${d.name}" not in values["default_prompt"]:
         errors.append(f"{d.name}: openai.yaml default_prompt must mention ${d.name}")
 
@@ -84,9 +74,7 @@ claude = manifests.get(".claude-plugin/plugin.json", {})
 codex = manifests.get(".codex-plugin/plugin.json", {})
 for key in ("name", "version", "skills"):
     if claude.get(key) != codex.get(key):
-        errors.append(
-            f"plugin manifests disagree on {key}: {claude.get(key)!r} != {codex.get(key)!r}"
-        )
+        errors.append(f"plugin manifests disagree on {key}: {claude.get(key)!r} != {codex.get(key)!r}")
 if codex.get("skills") != "./skills/":
     errors.append("plugin manifests must point skills to './skills/'")
 
@@ -100,6 +88,4 @@ if len(codex_plugins) != 1 or codex_plugins[0].get("name") != codex.get("name"):
 if errors:
     print("\n".join(f"ERROR: {e}" for e in errors))
     sys.exit(1)
-print(
-    f"OK: {len(skill_dirs)} skills, {metadata_count} OpenAI metadata files, and {len(MANIFESTS)} manifests validated"
-)
+print(f"OK: {len(skill_dirs)} skills, {metadata_count} OpenAI metadata files, and {len(MANIFESTS)} manifests validated")
