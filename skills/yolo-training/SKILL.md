@@ -35,7 +35,7 @@ yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug \
 With `ultralytics>=8.4.104`, the `ul://` URI downloads the Platform dataset and the
 `username/project-slug` target streams metrics back to that Platform project.
 
-## Quickstart
+## Quickstart (detection)
 
 ```python
 from ultralytics import YOLO
@@ -52,20 +52,20 @@ Class-count changes are automatic — a 3-class data.yaml on an 80-class pretrai
 just works (head re-initializes, backbone transfers; `cls_remap=True` even re-maps head
 rows for classes whose names match).
 
-## Arguments worth setting (defaults are good — touch few)
+## Base arguments worth setting (task trainers can override them)
 
 | Arg              | Default     | Notes                                                                               |
 | ---------------- | ----------- | ----------------------------------------------------------------------------------- |
 | `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                        |
 | `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations       |
-| `imgsz`          | 640         | raise (960/1280) for small objects — memory cost is quadratic                       |
+| `imgsz`          | task/model  | global fallback 640; classify uses 224 when unset; explicit values win              |
 | `batch`          | 16          | `-1` auto-fits ~60% VRAM; float like `0.8` = VRAM fraction; else integer            |
 | `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                            |
 | `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                                     |
 | `workers`        | 8           | lower if RAM/shared-memory errors                                                   |
 | `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                   |
-| `optimizer`      | auto        | leave on auto (YOLO26 adds MuSGD)                                                   |
-| `lr0` / `lrf`    | 0.01 / 0.01 | halve `lr0` on loss spikes/NaN                                                      |
+| `optimizer`      | auto        | leave on auto (YOLO26 adds MuSGD); depth fine-tuning overrides it below             |
+| `lr0` / `lrf`    | 0.01 / 0.01 | base values; depth fine-tuning uses a lower `lr0` below                             |
 | `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                    |
 | `resume`         | False       | continue an interrupted run (see recipes)                                           |
 | `project`/`name` | None        | local output naming; authenticated `username/project-slug` also streams to Platform |
@@ -74,7 +74,8 @@ rows for classes whose names match).
 | `time`           | None        | max training hours — overrides epochs                                               |
 
 Full argument, augmentation, and loss-weight tables: `training-args.md` (this folder) —
-read before changing anything not listed above. Ground truth: `yolo cfg`.
+read before changing anything not listed above. `yolo cfg` shows the base schema and
+defaults; task trainers, checkpoints, and explicit arguments determine effective values.
 
 ## Recipes
 
@@ -83,10 +84,12 @@ read before changing anything not listed above. Ground truth: `yolo cfg`.
   training from `best.pt` (resume can't extend a finished run).
 - **Multi-GPU**: `device=[0,1]`. Run as a script — DDP spawns processes and breaks in
   notebooks (and on Windows, guard with `if __name__ == "__main__":`).
-- **Small dataset (<~1k images)**: pretrained + `freeze=10`, `n`/`s` model, default
-  augmentation, watch val curves.
-- **Small objects**: raise `imgsz`; objects must be >~8 px at train resolution; tile
-  huge images at dataset level if not.
+- **Small detect-style dataset (<~1k images)**: pretrained + `freeze=10`, `n`/`s` model,
+  default augmentation, watch val curves.
+- **Depth fine-tuning**: start from `-depth.pt` and use `optimizer=AdamW lr0=1e-4
+  warmup_bias_lr=1e-4`.
+- **Small objects**: try `imgsz=1280` (more compute/VRAM; reduce batch if needed), or
+  tile large images at dataset level.
 - **Experiment hygiene**: self-describing run names
   (`name=0811_yolo26s_helmets_e100`), one variable per run; each run's full config is
   saved in `runs/<task>/<name>/args.yaml` — diff those to compare runs.
@@ -102,9 +105,9 @@ yolo val model=runs/detect/train/weights/best.pt data=data.yaml # split=val by d
 ```
 
 Per-task headline metrics: detect/obb `mAP50-95(B)`, segment `(M)`, pose `(P)`,
-semantic `mIoU`, depth `delta1`, classify `accuracy_top1`. Val defaults `conf=0.001`
-(`0.01` for OBB), `iou=0.7`; `split=test` to evaluate the test set; `save_json=True` for
-COCO-format eval.
+semantic `mIoU`, depth `delta1`, classify `accuracy_top1`. Val base defaults are
+`conf=0.001` (`0.01` for OBB) and `iou=0.7`; `iou` is inactive for default end-to-end
+YOLO26. Use `split=test` for the test set and `save_json=True` for COCO-format eval.
 
 ## Reading a finished run (`runs/<task>/<name>/`)
 
@@ -127,7 +130,7 @@ COCO-format eval.
 | Symptom                       | Fix, in order                                                                                          |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------ |
 | CUDA out of memory            | lower `batch` (or `batch=-1`), lower `imgsz`, smaller model; kill zombie python processes holding VRAM |
-| NaN / exploding loss          | lower `lr0` (0.001); check labels; `amp=False` on GPUs that misbehave with mixed precision             |
+| NaN / exploding loss          | set `optimizer=AdamW lr0=0.001` (`auto` ignores `lr0`); check labels; try `amp=False`                  |
 | mAP near 0                    | dataset problem 95% of the time — see yolo-datasets, check `train_batch*.jpg`                          |
 | mAP plateaus low              | more/better data first; then imgsz ↑, bigger model, more epochs; see yolo-tuning playbook              |
 | Stopped earlier than expected | that's `patience` — raise it or accept `best.pt`                                                       |

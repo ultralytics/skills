@@ -101,7 +101,8 @@ Parsing rules that matter:
 - Args are `key=value`, no `--` flags. A leading `--` and trailing commas are stripped
   with a warning; spaces around `=` are merged.
 - A bare boolean arg sets it True: `yolo predict ... show` ≡ `show=True`.
-- `cfg=custom.yaml` replaces ALL defaults with your file (make one via `yolo copy-cfg`).
+- `cfg=custom.yaml` resets CLI overrides to the file: arguments before it are discarded,
+  later arguments win, and missing keys still use built-in defaults (start with `yolo copy-cfg`).
 - Missing args are auto-filled with warnings (sample source, task-default data/model,
   `format=torchscript`).
 - Model stem selects the architecture: `rtdetr-*` → RT-DETR, `sam_*`/`sam2*` → SAM,
@@ -110,9 +111,9 @@ Parsing rules that matter:
 
 ## Global directives
 
-1. **Validate the dataset before training** — run the checks in `yolo-datasets`, then a
-   1-epoch smoke test and eyeball `runs/<task>/train/train_batch0.jpg`: boxes must sit on
-   objects. Bad labels are the #1 cause of "training worked, mAP is 0".
+1. **Validate the dataset before training** — run the task-appropriate checks in
+   `yolo-datasets`, then a 1-epoch smoke test and inspect
+   `runs/<task>/train/train_batch0.jpg`: annotations or targets must match each image.
 2. **Always fine-tune from pretrained `.pt`** — never `pretrained=False`, never a YAML
    architecture from scratch, unless the user is explicitly doing research.
 3. **`stream=True` for videos/streams** in Python predict/track — the default list mode

@@ -1,8 +1,9 @@
-# Downloadable weight names (v8.4.117)
+# Model asset names (v8.4.117)
 
-Use these exact `.pt` names — do not guess or interpolate them. Most auto-download from
-`ultralytics/assets`; the installed version's authoritative list for those assets is
-`ultralytics.utils.downloads.GITHUB_ASSETS_NAMES`. SAM 3 is the noted gated exception.
+`ultralytics.utils.downloads.GITHUB_ASSETS_NAMES` is the package-known fast-path set, not
+an exhaustive release catalog. The downloader also queries configured live release assets
+for other names. Use the exact names and patterns below and official model/task docs; do not
+guess or interpolate them. SAM 3 is the noted gated exception.
 
 ## YOLO detectors and task variants
 
@@ -21,6 +22,13 @@ Sizes: `n s m l x` unless noted. Pattern: `{family}{size}{suffix}.pt`.
 | `yolov10`                                | sizes `n s m b l x`, detect                                            |
 
 Examples: `yolo26s-seg.pt`, `yolo26n-depth.pt`, `yolo11m-pose.pt`, `yolov8x-oiv7.pt`.
+
+## Specialized official assets outside the fast-path set
+
+| Use                    | Names                             | Acquisition                       |
+| ---------------------- | --------------------------------- | --------------------------------- |
+| ADE20K semantic models | `yolo26{n,s,m,l,x}-sem-ade20k.pt` | auto-download from release assets |
+| Tracking ReID encoders | `yolo26{n,s,m,l,x}-reid.onnx`     | auto-download when tracker loads  |
 
 ## Open-vocabulary and promptable
 

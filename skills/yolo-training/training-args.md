@@ -1,7 +1,8 @@
-# Full training argument reference (default.yaml, v8.4.117)
+# Base training argument reference (default.yaml, v8.4.117)
 
-Ground truth for the installed version: `yolo cfg` (prints every default). Names are
-identical in CLI and Python.
+`yolo cfg` prints the installed base schema and defaults. Effective values can also come
+from a task trainer, loaded checkpoint, or explicit argument; inspect the run's
+`args.yaml`. Names are identical in CLI and Python.
 
 ## Train settings
 
@@ -13,7 +14,7 @@ identical in CLI and Python.
 | `time`                          | None            | max hours; overrides epochs                                                        |
 | `patience`                      | 100             | early-stop epochs without val improvement                                          |
 | `batch`                         | 16              | int; `-1` AutoBatch; float 0–1 = VRAM fraction                                     |
-| `imgsz`                         | 640             | train/val image size                                                               |
+| `imgsz`                         | 640             | global default; classify uses 224 when unset; checkpoints retain their saved value |
 | `save` / `save_period`          | True / -1       | checkpointing; save_period=N saves every N epochs                                  |
 | `cache`                         | False           | `True` (RAM) / `"disk"` image caching                                              |
 | `device`                        | None            | `0`, `[0,1]`, `cpu`, `mps`, `npu:0`, `xpu:0`, `-1` auto-idle                       |
@@ -73,3 +74,6 @@ identical in CLI and Python.
 When to deviate: aerial/top-down (incl. OBB) → `degrees=180 flipud=0.5`;
 orientation-meaningful content → keep `degrees=0`; never disable augmentation to make
 training loss look better — that's overfitting on purpose.
+
+Depth training automatically disables `mosaic`, `mixup`, `cutmix`, and `copy_paste`;
+passing them has no effect because multi-image composition would invalidate depth maps.
