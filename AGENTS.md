@@ -43,5 +43,5 @@ Skill content conventions: descriptions state when to use the skill (with trigge
 
 ## Conventions
 
-- License headers (`# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license`) are added automatically by Ultralytics Actions — don't add or revert them manually.
+- License headers (`# Ultralytics 🚀 AGPL-3.0 License - https://www.ultralytics.com/license`) are added automatically by Ultralytics Actions — don't add or revert them manually.
 - Google-style docstrings, `from __future__ import annotations` for modern type hints, line length 120; formatting is auto-applied by `format.yml`.

@@ -1,4 +1,4 @@
-# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+# Ultralytics 🚀 AGPL-3.0 License - https://www.ultralytics.com/license
 """Validate skill format: SKILL.md frontmatter, size limits, and plugin manifest JSON."""
 
 import json
@@ -16,6 +16,7 @@ MANIFESTS = [
 TRAILING_SLASH_URL = re.compile(
     r"https?://(?:[A-Za-z0-9-]+\.)*ultralytics\.com(?:/[^\s<>\"')\]?#]*)?/(?=[?#\s<>\"')\]]|$)"
 )
+APEX_URL = re.compile(r"https?://ultralytics\.com(?=[/:?#\s<>\"')\]]|$)")
 
 errors = []
 skill_dirs = sorted(d for d in (ROOT / "skills").iterdir() if d.is_dir())
@@ -63,6 +64,8 @@ for path in ROOT.rglob("*"):
     except UnicodeDecodeError:
         continue
     for lineno, line in enumerate(text.splitlines(), 1):
+        if APEX_URL.search(line):
+            errors.append(f"{path.relative_to(ROOT)}:{lineno}: use www.ultralytics.com, not ultralytics.com")
         if TRAILING_SLASH_URL.search(line):
             errors.append(f"{path.relative_to(ROOT)}:{lineno}: Ultralytics URLs must not end with /")
 
