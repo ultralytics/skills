@@ -1,0 +1,6 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
+interface:
+  display_name: "YOLO Export"
+  short_description: "Export YOLO models for production deployment"
+  default_prompt: "Use $yolo-export to choose, create, and verify the right deployment artifact."

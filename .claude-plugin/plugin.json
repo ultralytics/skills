@@ -1,8 +1,8 @@
 {
   "name": "yolo",
   "displayName": "Ultralytics YOLO",
-  "version": "0.1.0",
-  "description": "Agent skills for Ultralytics YOLO — the ultralytics Python package and yolo CLI: model selection, datasets, training, hyperparameter tuning, inference/tracking, Solutions, and export/deployment.",
+  "version": "0.2.0",
+  "description": "Agent skills for Ultralytics YOLO and Platform: model selection, dataset annotation, training, tuning, inference, export, and deployment through the web UI, Python package, and yolo CLI.",
   "author": {
     "name": "Ultralytics",
     "email": "hello@ultralytics.com",
@@ -19,6 +19,9 @@
     "segmentation",
     "pose",
     "training",
+    "annotation",
+    "cloud-training",
+    "platform",
     "onnx",
     "tensorrt"
   ],

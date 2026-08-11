@@ -1,14 +1,27 @@
 ---
 name: yolo-export
 description: >
-  Use when exporting or deploying Ultralytics YOLO models — yolo export /
-  model.export() to ONNX, TensorRT engine, CoreML, OpenVINO, LiteRT/TFLite, NCNN,
-  ExecuTorch or NPU formats (RKNN, QNN, Hailo, Ascend, IMX, Axelera, DeepX), FP16/INT8
-  quantization, benchmarking formats, and consuming exports outside Python. For plain
-  Python/CLI inference with .pt weights, see yolo-inference.
+  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the
+  Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML,
+  OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera,
+  DeepX), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference
+  with .pt weights or Platform endpoints, see yolo-inference.
 ---
 
 # Export, quantization & deployment
+
+## Fastest route: export in Platform
+
+Open a completed model's **Export** tab, select one of the 20 formats, configure its
+arguments, and click **Start Export**. Platform runs CPU exports directly and asks for a
+target GPU where the format requires one (notably TensorRT); download the artifact when
+the job completes. Match TensorRT's selected GPU family and software environment to the
+deployment target, just as with a local engine build.
+
+Use Platform when you do not want to install each exporter toolchain locally. Use the
+Python/CLI path below for custom calibration, repeatable automation, local hardware
+builds, or immediate parity validation. See
+[Platform model export](https://docs.ultralytics.com/platform/train/models/#export-model).
 
 ## Quickstart
 

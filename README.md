@@ -1,8 +1,10 @@
 <a href="https://www.ultralytics.com"><img src="https://raw.githubusercontent.com/ultralytics/assets/main/logo/Ultralytics_Logotype_Original.svg" width="320" alt="Ultralytics logo"></a>
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 # 🧠 Ultralytics Agent Skills
 
-Agent skills for the [`ultralytics`](https://github.com/ultralytics/ultralytics) Python package and `yolo` CLI. They teach AI coding agents (Claude Code, Codex, Cursor, and any agent that reads the [Agent Skills format](https://agentskills.io)) the full computer-vision lifecycle: datasets → training → tuning → inference/tracking → export.
+Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [`ultralytics`](https://github.com/ultralytics/ultralytics) Python package, and the `yolo` CLI. They teach AI coding agents (Claude Code, Codex, Cursor, and any agent that reads the [Agent Skills format](https://agentskills.io)) the full computer-vision lifecycle: data/annotation → training → tuning → inference/tracking → export/deployment.
 
 [![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml)
 [![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
@@ -13,31 +15,37 @@ Agent skills for the [`ultralytics`](https://github.com/ultralytics/ultralytics)
 
 ## 🧩 Skills
 
-| Skill                                              | Use it for                                                                                                               |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| [`yolo`](skills/yolo/SKILL.md)                     | Core grammar (`yolo TASK MODE arg=value`, Python mirror), lifecycle overview, CLI specifics, routing to the other skills |
-| [`yolo-models`](skills/yolo-models/SKILL.md)       | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names                     |
-| [`yolo-datasets`](skills/yolo-datasets/SKILL.md)   | data.yaml, label formats, converters, auto-labeling, splitting, validation                                               |
-| [`yolo-training`](skills/yolo-training/SKILL.md)   | train/val, arguments, recipes, reading runs, troubleshooting                                                             |
-| [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Systematic improvement playbook, `model.tune()` genetic search, Ray Tune                                                 |
-| [`yolo-inference`](skills/yolo-inference/SKILL.md) | predict, Results API, tracking, annotated video, prebuilt Solutions                                                      |
-| [`yolo-export`](skills/yolo-export/SKILL.md)       | ONNX/TensorRT/CoreML/OpenVINO/LiteRT/NPU export, quantization, benchmarking                                              |
+| Skill                                              | Use it for                                                                                           |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [`yolo`](skills/yolo/SKILL.md)                     | Platform and local lifecycle overview, core CLI/Python grammar, routing to the other skills          |
+| [`yolo-models`](skills/yolo-models/SKILL.md)       | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names |
+| [`yolo-datasets`](skills/yolo-datasets/SKILL.md)   | Platform upload/annotation, data.yaml, formats, converters, splitting, validation                    |
+| [`yolo-training`](skills/yolo-training/SKILL.md)   | Platform cloud/remote training, local train/val, arguments, results, troubleshooting                 |
+| [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Platform experiment comparison, improvement playbook, `model.tune()`, Ray Tune                       |
+| [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                          |
+| [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/OpenVINO/LiteRT/NPU export, quantization, benchmarking           |
 
-Each skill is a `SKILL.md` (procedures, decision tables, gotchas) plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Content is grounded against `ultralytics` v8.4.117.
+Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.117; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform/).
 
 ## 📦 Install
 
-The skills document the [`ultralytics`](https://pypi.org/project/ultralytics/) package — install or upgrade it in the environment your agent works in:
+Install the `ultralytics` package, including all [requirements](https://github.com/ultralytics/ultralytics/blob/main/pyproject.toml), in a [**Python>=3.8**](https://www.python.org/) environment with [**PyTorch>=1.8**](https://pytorch.org/get-started/locally/).
+
+[![PyPI - Version](https://img.shields.io/pypi/v/ultralytics?logo=pypi&logoColor=white)](https://pypi.org/project/ultralytics/) [![Ultralytics Downloads](https://static.pepy.tech/badge/ultralytics)](https://clickpy.clickhouse.com/dashboard/ultralytics) [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ultralytics?logo=python&logoColor=gold)](https://pypi.org/project/ultralytics/)
 
 ```bash
-pip install -U ultralytics
+pip install ultralytics
 ```
+
+For alternative installation methods, including [Conda](https://anaconda.org/conda-forge/ultralytics), [Docker](https://hub.docker.com/r/ultralytics/ultralytics), and building from source via Git, please consult the [Quickstart Guide](https://docs.ultralytics.com/quickstart).
+
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/ultralytics?logo=condaforge)](https://anaconda.org/conda-forge/ultralytics) [![Docker Image Version](https://img.shields.io/docker/v/ultralytics/ultralytics?sort=semver&logo=docker)](https://hub.docker.com/r/ultralytics/ultralytics) [![Ultralytics Docker Pulls](https://img.shields.io/docker/pulls/ultralytics/ultralytics?logo=docker)](https://hub.docker.com/r/ultralytics/ultralytics)
 
 ### Claude Code
 
 ```bash
 claude plugin marketplace add ultralytics/skills
-claude plugin install yolo
+claude plugin install yolo@ultralytics
 ```
 
 <details>
@@ -46,7 +54,7 @@ claude plugin install yolo
 ```bash
 git clone https://github.com/ultralytics/skills
 claude plugin marketplace add ./skills
-claude plugin install yolo
+claude plugin install yolo@ultralytics
 ```
 
 </details>
@@ -108,6 +116,7 @@ Or simply copy (or symlink) the folders under `skills/` into your agent's skills
 
 - Skills are divided by lifecycle stage / user intent, not by model family.
 - Frontmatter is portable: `name` + `description` only.
+- Each lifecycle skill covers both the Platform UI and local Python/CLI path where applicable.
 - Every skill defers to the installed version at runtime: `yolo checks` (version), `yolo cfg` (valid arguments), and error messages beat any table in these files.
 
 ## 💡 Contribute

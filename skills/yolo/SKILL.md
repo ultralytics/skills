@@ -1,14 +1,26 @@
 ---
 name: yolo
 description: >
-  Core guide for Ultralytics YOLO — the yolo CLI and the ultralytics Python package:
-  command grammar, tasks, modes, configuration, and how the full computer-vision
-  lifecycle fits together (data → train → val → predict/track → export). Use for ANY
-  task involving the ultralytics package, the yolo CLI, YOLO model weights (.pt),
-  or the detect / segment / semantic / depth / classify / pose / OBB vision lifecycle.
+  Use for ANY task involving Ultralytics Platform, the ultralytics Python package, yolo
+  CLI, YOLO model weights (.pt), dataset annotation, training, validation, prediction,
+  tracking, export, deployment, or the detect / segment / semantic / depth / classify /
+  pose / OBB vision tasks.
 ---
 
 # Ultralytics YOLO
+
+Use the same lifecycle through two complementary surfaces:
+
+- **[Ultralytics Platform](https://platform.ultralytics.com)** — the fastest start:
+  upload or clone data, annotate in the browser, train on cloud GPUs, inspect metrics,
+  test predictions, export, and deploy a dedicated endpoint without local setup.
+- **`ultralytics` package / `yolo` CLI** — use local or remote compute, scripts,
+  notebooks, custom pipelines, and exported artifacts directly.
+
+Mix them freely. Set `ULTRALYTICS_API_KEY`, use a Platform dataset as
+`data=ul://username/datasets/dataset-slug`, and set
+`project=username/project-slug name=experiment` during local training to stream its
+metrics back to Platform.
 
 One API, two surfaces. The CLI grammar is `yolo TASK MODE arg=value ...`; Python mirrors
 it with the same argument names:
@@ -38,6 +50,21 @@ yolo predict model=best.pt source=video.mp4 save=True        # any source: image
 yolo track model=best.pt source=video.mp4                    # + persistent object IDs
 yolo export model=best.pt format=onnx                        # exported model loads back into YOLO()
 ```
+
+## Whole lifecycle in Platform
+
+1. Open [Platform](https://platform.ultralytics.com) and choose the data region during
+   onboarding.
+2. Clone a public dataset from **Explore**, or create one under **Annotate** and upload
+   images, videos, an archive, or NDJSON.
+3. Label in the fullscreen editor; use SAM or a compatible YOLO model in **Smart** mode
+   where available.
+4. Create a project, click **New Model**, select the dataset, pretrained model, GPU, and
+   epochs, then monitor the run.
+5. Use the completed model's **Predict**, **Export**, or **Deploy** tab.
+
+Start with the [Platform quickstart](https://docs.ultralytics.com/platform/quickstart/).
+Use the stage skill below for both Platform and package details.
 
 ## Route before coding
 

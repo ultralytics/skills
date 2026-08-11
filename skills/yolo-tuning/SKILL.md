@@ -1,10 +1,10 @@
 ---
 name: yolo-tuning
 description: >
-  Use when improving a trained Ultralytics YOLO model's accuracy or running
-  hyperparameter search / autotraining — the systematic improvement playbook,
-  model.tune() genetic evolution, Ray Tune integration, search spaces, and deciding
-  whether tuning is even the right move. For running a single training and its
+  Use when improving or comparing Ultralytics YOLO models in Platform or code, or
+  running hyperparameter search/autotraining — Platform experiment comparison, the
+  systematic improvement playbook, model.tune() genetic evolution, Ray Tune, search
+  spaces, and deciding whether tuning is worthwhile. For one training run and its
   arguments, see yolo-training.
 ---
 
@@ -31,6 +31,17 @@ order, re-validating after each step:
 Decision signals: overfitting (val drops while train improves) → more data/aug or
 smaller model, NOT tuning. Underfitting → bigger model/longer, NOT tuning. Label noise
 in the confusion matrix → nothing else matters until fixed.
+
+## Compare experiments in Platform
+
+Keep candidates in one [Platform project](https://docs.ultralytics.com/platform/train/projects/).
+Train from the **New Model** dialog, or stream local runs by setting
+`project=username/project-slug` and a unique `name`. Select models together in the
+project charts, or use **Table > Diff** to compare training arguments and final metrics.
+
+Platform is the experiment owner and visualization layer; the built-in genetic tuner and
+Ray Tune below remain Python workflows. Use a completed Platform model as the next base
+checkpoint, or download its `.pt` file, after the comparison identifies a winner.
 
 ## Built-in genetic tuner
 

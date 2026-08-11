@@ -1,0 +1,6 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
+interface:
+  display_name: "YOLO Datasets"
+  short_description: "Prepare, annotate, and validate YOLO datasets"
+  default_prompt: "Use $yolo-datasets to prepare and validate my dataset in Platform or local YOLO."
