@@ -23,7 +23,7 @@ After opening a PR:
 1. Wait for the automated PR review and auto-format commit from Ultralytics Actions (`format.yml`), then pull and address every finding.
 2. Review the full diff in-session against the Core Principles, performance, and the review gate above, then batch the fixes into one commit and push. After each round of bot or human commits, pull and resume the same reviewer on `<last-reviewed-sha>..HEAD` plus anything that delta could have invalidated. Repeat until the local head matches the live head.
 3. Hand off or merge only on a clean final pass: one cold full-diff review returning LGTM with no findings, on a head that is still live at merge time.
-4. Never fight other commits: Ultralytics Actions pushes auto-format and header commits, and multiple users may work on the same PR. `git pull --rebase` before pushing; never reset or revert commits you did not author.
+4. Never fight other commits: Ultralytics Actions may push commits, and multiple users may work on the same PR. `git pull --rebase` before pushing; never reset or revert commits you did not author.
 5. After the PR merges, clean up: remove local worktrees and branches for it, then `git checkout main && git pull`.
 
 ## Commands
@@ -40,8 +40,3 @@ CI runs the lint script on every push and PR; it must pass before merge.
 This repo is a pack of agent skills (per the [Agent Skills format](https://agentskills.io)) for the `ultralytics` Python package and `yolo` CLI — markdown only, no Python package. `skills/` holds one directory per skill: a `SKILL.md` (frontmatter `name` + `description` only; body ≤500 lines of procedures, decision tables, and gotchas) plus optional flat companion `.md` files for version-volatile catalogs (weight names, argument tables, export format matrix). `skills/yolo/SKILL.md` is the router: core CLI/Python grammar plus a table directing agents to the six stage skills (models, datasets, training, tuning, inference, export). Plugin packaging lives in `.claude-plugin/` (plugin + marketplace manifests), `.codex-plugin/`, and `.agents/plugins/`, all pointing at the same `skills/` tree. `format.yml` runs Ultralytics Actions on PRs (Ruff, Prettier, codespell, link checks, AI labels/summaries) and commits fixes back to the PR branch.
 
 Skill content conventions: descriptions state when to use the skill (with trigger keywords), never summarize its workflow; facts are grounded against a pinned `ultralytics` version (currently v8.4.117) and every skill ends by deferring to the installed version (`yolo checks`, `yolo cfg`, error messages) over its own tables. When a new ultralytics release changes defaults, update the companion catalog files rather than rewriting SKILL.md bodies.
-
-## Conventions
-
-- License headers (`# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license`) are added automatically by Ultralytics Actions — don't add or revert them manually.
-- Google-style docstrings, `from __future__ import annotations` for modern type hints, line length 120; formatting is auto-applied by `format.yml`.

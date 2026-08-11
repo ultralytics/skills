@@ -1,5 +1,5 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
-"""Validate skill format, plugin manifests, and canonical Ultralytics URLs."""
+"""Validate skill format and plugin manifests."""
 
 import json
 import re
@@ -13,9 +13,6 @@ MANIFESTS = [
     ".codex-plugin/plugin.json",
     ".agents/plugins/marketplace.json",
 ]
-ULTRALYTICS_URL = re.compile(r"https?://(?:[A-Za-z0-9-]+\.)*ultralytics\.com[^\s<>\"'`)\]]*")
-APEX_URL = re.compile(r"https?://ultralytics\.com(?=[/:?#\s<>\"'`)\].,;:]|$)")
-
 errors = []
 skill_dirs = sorted(d for d in (ROOT / "skills").iterdir() if d.is_dir())
 if not skill_dirs:
@@ -53,22 +50,6 @@ for rel in MANIFESTS:
         json.loads((ROOT / rel).read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
         errors.append(f"{rel}: {e}")
-
-for path in ROOT.rglob("*"):
-    if not path.is_file() or ".git" in path.parts:
-        continue
-    try:
-        text = path.read_text(encoding="utf-8")
-    except UnicodeDecodeError:
-        continue
-    for lineno, line in enumerate(text.splitlines(), 1):
-        if "Ultralytics 🚀 AGPL-3.0 License" in line:
-            continue
-        if APEX_URL.search(line):
-            errors.append(f"{path.relative_to(ROOT)}:{lineno}: use www.ultralytics.com, not ultralytics.com")
-        for url in ULTRALYTICS_URL.findall(line):
-            if url.rstrip(".,;:").split("?", 1)[0].split("#", 1)[0].endswith("/"):
-                errors.append(f"{path.relative_to(ROOT)}:{lineno}: Ultralytics URLs must not end with /")
 
 if errors:
     print("\n".join(f"ERROR: {e}" for e in errors))

@@ -1,35 +1,42 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 name: ❓ Question
-description: Ask an Ultralytics software question
-# title: " "
+description: Ask about installing or using the Ultralytics YOLO agent skills
 labels: [question]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for asking an Ultralytics ❓ Question!
+        This form is for questions about these agent skills. For help training or using YOLO, visit the [Ultralytics Community](https://community.ultralytics.com).
 
   - type: checkboxes
     attributes:
       label: Search before asking
-      description: >
-        Please search the Ultralytics [Docs](https://docs.ultralytics.com), [issues](https://github.com/ultralytics/PROJECT_NAME/issues) and [discussions](https://github.com/orgs/ultralytics/discussions) to see if a similar question already exists.
       options:
-        - label: >
-            I have searched the Ultralytics [issues](https://github.com/ultralytics/PROJECT_NAME/issues) and [discussions](https://github.com/orgs/ultralytics/discussions) and found no similar questions.
+        - label: I searched the [README](https://github.com/ultralytics/skills#readme) and [existing issues](https://github.com/ultralytics/skills/issues) first.
           required: true
 
-  - type: textarea
+  - type: dropdown
     attributes:
-      label: Question
-      description: What is your question? Please provide as much information as possible. Include detailed code examples to reproduce the problem and describe the context in which the issue occurs. Format your text and code using [Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) for clarity and readability. Following these guidelines will help us assist you more effectively.
-      placeholder: |
-        💡 ProTip! Include as much information as possible (logs, tracebacks, screenshots etc.) to receive the most helpful response.
+      label: Agent
+      description: Which coding agent are you using?
+      options:
+        - Claude Code
+        - Codex
+        - Cursor
+        - Gemini CLI
+        - Other
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Additional
-      description: Anything else you would like to share?
+      label: Question
+      description: What would you like to know about installing or using the skills?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Include relevant versions, commands, or error messages.
