@@ -37,7 +37,6 @@
       "Why is my YOLO training mAP so low?",
       "Export my best.pt to TensorRT and verify accuracy"
     ],
-    "brandColor": "#042AFF",
-    "screenshots": []
+    "brandColor": "#042AFF"
   }
 }

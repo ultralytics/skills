@@ -113,11 +113,13 @@ out.release()
 
 ## Performance checklist (in payoff order)
 
-1. GPU + `quantize=16`. 2. Export to TensorRT/OpenVINO/CoreML — 2–5× (see
-   yolo-export; exports load straight back into `YOLO()`). 3. Smaller model or imgsz.
-2. `batch>1` for offline folders; `vid_stride` when every frame isn't needed.
-3. `verbose=False`; skip `.plot()` when only coordinates are needed. 6. One `YOLO()`
-   instance per thread — never share across threads.
+1. GPU + `quantize=16`.
+2. Export to TensorRT/OpenVINO/CoreML — 2–5× (see yolo-export; exports load straight
+   back into `YOLO()`).
+3. Use a smaller model or `imgsz`.
+4. Set `batch>1` for offline folders; use `vid_stride` when every frame isn't needed.
+5. Set `verbose=False`; skip `.plot()` when only coordinates are needed.
+6. Use one `YOLO()` instance per thread — never share across threads.
 
 ## Troubleshooting
 

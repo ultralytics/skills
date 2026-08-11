@@ -91,8 +91,8 @@ Only go here for research/unusual constraints; for normal work fine-tune the sto
 
 Model availability moves fast. The installed version's authoritative list:
 
-```python
-
+```bash
+python -c "from ultralytics.utils.downloads import GITHUB_ASSETS_NAMES; print(*sorted(GITHUB_ASSETS_NAMES), sep='\\n')"
 ```
 
 If a weight name 404s or a class import fails, check `yolo checks` (version) and prefer

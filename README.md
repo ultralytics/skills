@@ -67,9 +67,10 @@ claude --plugin-dir .
 
 ```bash
 codex plugin marketplace add ultralytics/skills
+codex plugin add yolo@ultralytics
 ```
 
-Restart Codex, open the plugin browser with `codex /plugins`, pick the Ultralytics source, and install the YOLO plugin.
+Restart Codex to use the installed skills.
 
 <details>
 <summary>Develop from a local clone</summary>
@@ -77,9 +78,11 @@ Restart Codex, open the plugin browser with `codex /plugins`, pick the Ultralyti
 ```bash
 git clone https://github.com/ultralytics/skills && cd skills
 codex plugin marketplace add .
+codex plugin add yolo@ultralytics
 ```
 
-Restart Codex after edits. To pull new versions of the GitHub source instead: `codex plugin marketplace upgrade ultralytics`.
+Restart Codex after edits. To pull new versions of the GitHub source, run
+`codex plugin marketplace upgrade ultralytics`, then `codex plugin add yolo@ultralytics`.
 
 </details>
 
