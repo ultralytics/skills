@@ -1,0 +1,20 @@
+{
+  "name": "ultralytics",
+  "description": "Ultralytics YOLO agent skills for the full computer-vision lifecycle.",
+  "owner": {
+    "name": "Ultralytics",
+    "url": "https://ultralytics.com/"
+  },
+  "plugins": [
+    {
+      "name": "yolo",
+      "description": "Agent skills for Ultralytics YOLO — datasets, training, tuning, inference, tracking, Solutions, and export.",
+      "author": {
+        "name": "Ultralytics"
+      },
+      "category": "development",
+      "source": "./",
+      "homepage": "https://github.com/ultralytics/skills"
+    }
+  ]
+}
