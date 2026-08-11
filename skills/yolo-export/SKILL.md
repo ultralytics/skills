@@ -87,7 +87,7 @@ required, using representative calibration data. Also compare one prediction wit
 ## Benchmark all formats empirically
 
 ```bash
-yolo benchmark model=best.pt data=data.yaml imgsz=640                           # all formats at default precision
+yolo benchmark model=best.pt data=data.yaml imgsz=640                                    # all formats at default precision
 yolo benchmark model=best.pt data=data.yaml format=engine quantize=16 device=0 imgsz=640 # targeted FP16
 ```
 
