@@ -1,5 +1,5 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
-"""Validate skill format and plugin manifests."""
+"""Validate skill format, OpenAI metadata, and plugin manifests."""
 
 import json
 import re
@@ -14,6 +14,8 @@ MANIFESTS = [
     ".agents/plugins/marketplace.json",
 ]
 errors = []
+manifests = {}
+metadata_count = 0
 skill_dirs = sorted(d for d in (ROOT / "skills").iterdir() if d.is_dir())
 if not skill_dirs:
     errors.append("no skill directories found under skills/")
@@ -34,8 +36,10 @@ for d in skill_dirs:
     name = name_match.group(1) if name_match else ""
     desc = re.sub(r"\s+", " ", fm.split("description:", 1)[-1].replace(">", "")).strip()
     lines = text.count("\n")
-    if set(keys) != {"name", "description"}:
-        errors.append(f"{d.name}: frontmatter keys must be exactly name+description, got {keys}")
+    if len(keys) != 2 or set(keys) != {"name", "description"}:
+        errors.append(
+            f"{d.name}: frontmatter keys must be exactly name+description, got {keys}"
+        )
     if name != d.name:
         errors.append(f"{d.name}: name '{name}' != directory name")
     if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", name or "") or len(name) > 64:
@@ -45,13 +49,55 @@ for d in skill_dirs:
     if lines > 500:
         errors.append(f"{d.name}: SKILL.md is {lines} lines (max 500)")
 
+    metadata = d / "agents" / "openai.yaml"
+    if not metadata.is_file():
+        errors.append(f"{d.name}: missing agents/openai.yaml")
+        continue
+    metadata_count += 1
+    metadata_text = metadata.read_text(encoding="utf-8")
+    values = {
+        key: match.group(1)
+        if (match := re.search(rf'^  {key}: "(.+)"$', metadata_text, re.MULTILINE))
+        else ""
+        for key in ("display_name", "short_description", "default_prompt")
+    }
+    if not metadata_text.startswith("interface:\n") or not all(values.values()):
+        errors.append(
+            f"{d.name}: openai.yaml requires quoted display_name, short_description, and default_prompt"
+        )
+    if values["short_description"] and not 25 <= len(values["short_description"]) <= 64:
+        errors.append(
+            f"{d.name}: openai.yaml short_description must be 25-64 characters"
+        )
+    if values["default_prompt"] and f"${d.name}" not in values["default_prompt"]:
+        errors.append(f"{d.name}: openai.yaml default_prompt must mention ${d.name}")
+
 for rel in MANIFESTS:
     try:
-        json.loads((ROOT / rel).read_text(encoding="utf-8"))
+        manifests[rel] = json.loads((ROOT / rel).read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
         errors.append(f"{rel}: {e}")
+
+claude = manifests.get(".claude-plugin/plugin.json", {})
+codex = manifests.get(".codex-plugin/plugin.json", {})
+for key in ("name", "version", "skills"):
+    if claude.get(key) != codex.get(key):
+        errors.append(
+            f"plugin manifests disagree on {key}: {claude.get(key)!r} != {codex.get(key)!r}"
+        )
+if codex.get("skills") != "./skills/":
+    errors.append("plugin manifests must point skills to './skills/'")
+
+claude_plugins = manifests.get(".claude-plugin/marketplace.json", {}).get("plugins", [])
+codex_plugins = manifests.get(".agents/plugins/marketplace.json", {}).get("plugins", [])
+if len(claude_plugins) != 1 or claude_plugins[0].get("name") != codex.get("name"):
+    errors.append("Claude marketplace must expose the packaged plugin")
+if len(codex_plugins) != 1 or codex_plugins[0].get("name") != codex.get("name"):
+    errors.append("Codex marketplace must expose the packaged plugin")
 
 if errors:
     print("\n".join(f"ERROR: {e}" for e in errors))
     sys.exit(1)
-print(f"OK: {len(skill_dirs)} skills and {len(MANIFESTS)} manifests validated")
+print(
+    f"OK: {len(skill_dirs)} skills, {metadata_count} OpenAI metadata files, and {len(MANIFESTS)} manifests validated"
+)

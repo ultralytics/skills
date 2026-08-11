@@ -1,16 +1,43 @@
 ---
 name: yolo-datasets
 description: >
-  Use when building, converting, analyzing, or debugging datasets for Ultralytics YOLO —
-  writing data.yaml, YOLO label .txt formats, converting from COCO/DOTA/masks,
-  auto-labeling raw images, train/val splitting, dataset validation, or errors like
-  "no labels found", "dataset not found", or mAP near 0 after training. Covers detect,
-  segment, semantic, depth, classify, pose, and OBB dataset formats.
+  Use when uploading, annotating, building, converting, analyzing, or debugging datasets
+  in Ultralytics Platform or local YOLO — Platform dataset management and Smart
+  Annotation, data.yaml, YOLO label .txt formats, COCO/DOTA/mask conversion,
+  auto-labeling, splits, validation, and errors like "no labels found" or mAP near 0.
+  Covers detect, segment, semantic, depth, classify, pose, and OBB data.
 ---
 
 # Ultralytics YOLO datasets
 
 The #1 cause of silent training failure is a malformed dataset — validate before training.
+
+## Fastest route: prepare data in Platform
+
+1. Open [Platform](https://platform.ultralytics.com), create a dataset under
+   **Annotate**, and choose its task.
+2. Upload images, videos, ZIP/TAR archives, or NDJSON. Existing YOLO labels and COCO JSON
+   can be imported; cloud-storage integrations can keep supported data in place.
+3. Open an image in the fullscreen editor. Use manual tools for detect, segment,
+   semantic, classify, pose, or OBB. For detect, segment, semantic, and OBB, switch to
+   **Smart** mode to label with SAM or predictions from a compatible official/custom YOLO
+   model.
+4. Review the **Classes**, **Charts**, and **Errors** tabs, fix the split, and create a
+   numbered dataset version before important runs.
+
+Platform datasets currently cover six tasks; depth dataset support is still pending.
+Smart Annotation is unavailable for connected cloud datasets. See
+[Platform Data](https://docs.ultralytics.com/platform/data/) and the
+[Annotation Editor](https://docs.ultralytics.com/platform/data/annotation/).
+
+To train on the same dataset from local code, create an API key under **Settings > API
+Keys**, set `ULTRALYTICS_API_KEY`, and use its URI directly:
+
+```bash
+yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug epochs=100
+```
+
+Export NDJSON when you need a portable snapshot instead of live Platform access.
 
 ## The `images` → `labels` mirror rule
 

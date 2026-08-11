@@ -1,0 +1,4 @@
+interface:
+  display_name: "YOLO Tuning"
+  short_description: "Improve YOLO accuracy and tune hyperparameters"
+  default_prompt: "Use $yolo-tuning to diagnose and improve my model with evidence-backed experiments."

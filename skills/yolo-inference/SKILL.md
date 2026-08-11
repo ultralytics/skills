@@ -1,14 +1,42 @@
 ---
 name: yolo-inference
 description: >
-  Use when running Ultralytics YOLO models on images, video, webcams, or streams —
-  model.predict() / yolo predict, extracting boxes/masks/keypoints from the Results
-  API, object tracking with persistent IDs (model.track), writing annotated video, and
-  prebuilt Solutions (object counting, heatmaps, speed estimation, queues, parking).
-  For making inference faster via ONNX/TensorRT/quantization, see yolo-export.
+  Use when testing, running, or deploying Ultralytics YOLO inference in Platform or code
+  on images, video, webcams, or streams — Platform Predict and dedicated endpoints,
+  model.predict()/yolo predict, Results API boxes/masks/keypoints, persistent tracking,
+  annotated video, and Solutions such as counting, heatmaps, speed, queues, and parking.
+  For optimized runtime exports, see yolo-export.
 ---
 
 # Inference, Results API & tracking
+
+## Fastest route: test and deploy in Platform
+
+Every Platform model has a **Predict** tab: upload an image, choose an example, or capture
+a webcam frame; inference runs automatically and shows the task overlay, summary, raw
+JSON, and timing. Adjust `conf`, `iou`, and `imgsz` with the same meanings used below.
+
+For production, open **Deploy**, choose a nearby region, and wait for the dedicated
+endpoint to become **Ready**. Its card provides health, metrics, logs, browser prediction,
+and ready-to-use Python/JavaScript/cURL examples. Call `/predict` with a bearer API key:
+
+```python
+import requests
+
+with open("image.jpg", "rb") as image_file:
+    response = requests.post(
+        "https://YOUR_DEPLOYMENT_URL.run.app/predict",
+        headers={"Authorization": "Bearer YOUR_API_KEY"},
+        files={"file": image_file},
+        data={"conf": 0.25, "iou": 0.7, "imgsz": 640},
+    )
+response.raise_for_status()
+print(response.json())
+```
+
+Dedicated endpoints use scale-to-zero, so expect a cold start after idle periods. See
+[Platform Inference](https://docs.ultralytics.com/platform/deploy/inference/) and
+[Dedicated Endpoints](https://docs.ultralytics.com/platform/deploy/endpoints/).
 
 ## Quickstart
 

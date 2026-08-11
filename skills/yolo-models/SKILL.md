@@ -1,11 +1,11 @@
 ---
 name: yolo-models
 description: >
-  Use when choosing or comparing Ultralytics models — picking a model family
-  (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM/SAM2/FastSAM, RT-DETR, YOLO-NAS), a size
-  (n/s/m/l/x), or a task variant (-seg, -sem, -cls, -pose, -obb, -depth), doing
-  open-vocabulary or promptable detection/segmentation, or customizing architecture
-  YAMLs. Covers exact weight names, selection decision guidance, and family trade-offs.
+  Use when choosing or comparing Ultralytics models in Platform or code — picking a
+  model family (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM/SAM2/FastSAM, RT-DETR,
+  YOLO-NAS), size (n/s/m/l/x), task variant (-seg, -sem, -cls, -pose, -obb, -depth),
+  pretrained checkpoint, or custom architecture. Covers Platform Explore/model flows,
+  exact weight names, selection guidance, and family trade-offs.
 ---
 
 # Choosing an Ultralytics model
@@ -14,6 +14,19 @@ description: >
 (fastest CPU inference, simplest deployment). Use YOLO11/YOLOv8 only to match an existing
 codebase or a deployment target that doesn't support YOLO26 yet. Weights auto-download on
 first use.
+
+## Choose in Platform
+
+For the quickest no-code start, open [Platform Explore](https://platform.ultralytics.com/explore),
+select **Projects**, clone the official `@ultralytics` project for the model family, then
+train one of its pretrained models on your dataset. The **New Model** dialog filters base
+models to the selected dataset task and offers official models plus your own completed
+checkpoints for further fine-tuning.
+
+Use a Platform model page to inspect metrics, test it in **Predict**, export it, deploy it,
+clone it into another project, or download its `.pt` weights for the Python/CLI workflows
+below. See [Platform Models](https://docs.ultralytics.com/platform/train/models/) and
+[Explore](https://docs.ultralytics.com/platform/explore/).
 
 ## Model = family + size + task suffix
 

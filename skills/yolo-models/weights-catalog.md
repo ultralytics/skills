@@ -1,8 +1,8 @@
 # Downloadable weight names (v8.4.117)
 
-Exact `.pt` names that auto-download from `ultralytics/assets`. Use these exact strings —
-do not guess or interpolate names; a wrong name raises a download error. The installed
-version's authoritative list is `ultralytics.utils.downloads.GITHUB_ASSETS_NAMES`.
+Use these exact `.pt` names — do not guess or interpolate them. Most auto-download from
+`ultralytics/assets`; the installed version's authoritative list for those assets is
+`ultralytics.utils.downloads.GITHUB_ASSETS_NAMES`. SAM 3 is the noted gated exception.
 
 ## YOLO detectors and task variants
 
@@ -32,9 +32,14 @@ Examples: `yolo26s-seg.pt`, `yolo26n-depth.pt`, `yolo11m-pose.pt`, `yolov8x-oiv7
 | YOLOE (26-based) | `yoloe-26{n,s,m,l,x}-seg.pt`, `yoloe-26{n,s,m,l,x}-seg-pf.pt` |
 | SAM              | `sam_b.pt`, `sam_l.pt`, `mobile_sam.pt`                       |
 | SAM 2 / 2.1      | `sam2_{t,s,b,l}.pt`, `sam2.1_{t,s,b,l}.pt`                    |
+| SAM 3            | `sam3.pt` (request access and download from Hugging Face)     |
 | FastSAM          | `FastSAM-s.pt`, `FastSAM-x.pt` (capitalization matters)       |
 
 `-pf` = prompt-free YOLOE (built-in large vocabulary, no prompts needed).
+
+SAM 3 does not auto-download. Request access at
+`https://huggingface.co/facebook/sam3`, download `sam3.pt` after approval, and pass its
+local path to `SAM()`.
 
 ## Other detectors
 

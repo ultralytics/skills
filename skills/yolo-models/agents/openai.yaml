@@ -1,0 +1,4 @@
+interface:
+  display_name: "YOLO Models"
+  short_description: "Choose and compare Ultralytics YOLO models"
+  default_prompt: "Use $yolo-models to choose the right Ultralytics model and workflow for my task."

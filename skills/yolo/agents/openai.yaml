@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ultralytics YOLO"
+  short_description: "Use YOLO locally or through Ultralytics Platform"
+  default_prompt: "Use $yolo to choose and complete the simplest Ultralytics Platform or local YOLO workflow."

@@ -1,7 +1,7 @@
 {
   "name": "yolo",
-  "version": "0.1.0",
-  "description": "Agent skills for Ultralytics YOLO — the ultralytics Python package and yolo CLI: model selection, datasets, training, hyperparameter tuning, inference/tracking, Solutions, and export/deployment.",
+  "version": "0.2.0",
+  "description": "Agent skills for Ultralytics YOLO and Platform: model selection, dataset annotation, training, tuning, inference, export, and deployment through the web UI, Python package, and yolo CLI.",
   "author": {
     "name": "Ultralytics",
     "email": "hello@ultralytics.com",
@@ -18,14 +18,17 @@
     "segmentation",
     "pose",
     "training",
+    "annotation",
+    "cloud-training",
+    "platform",
     "onnx",
     "tensorrt"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Ultralytics YOLO",
-    "shortDescription": "Train, tune, run, and deploy YOLO models",
-    "longDescription": "Skills covering the full Ultralytics computer-vision lifecycle: dataset preparation and validation, model selection (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM, RT-DETR), training and fine-tuning, hyperparameter tuning, inference and tracking, prebuilt Solutions, and export to ONNX/TensorRT/CoreML/OpenVINO and NPU formats.",
+    "shortDescription": "Build and deploy YOLO with code or Platform",
+    "longDescription": "Skills covering the full Ultralytics computer-vision lifecycle through Platform and local code: dataset upload, annotation, and validation; model selection; cloud or local training; tuning; inference and tracking; dedicated endpoints; Solutions; and export to ONNX, TensorRT, CoreML, OpenVINO, and NPU formats.",
     "developerName": "Ultralytics",
     "category": "Coding",
     "capabilities": ["Interactive", "Write"],
@@ -33,9 +36,10 @@
     "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
     "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",
     "defaultPrompt": [
+      "Build my first YOLO model in Ultralytics Platform",
+      "Annotate my dataset and train a YOLO model",
       "Train a YOLO model on my custom dataset",
-      "Why is my YOLO training mAP so low?",
-      "Export my best.pt to TensorRT and verify accuracy"
+      "Deploy my YOLO model to a production endpoint"
     ],
     "brandColor": "#042AFF"
   }

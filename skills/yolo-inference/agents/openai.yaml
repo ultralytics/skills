@@ -1,0 +1,4 @@
+interface:
+  display_name: "YOLO Inference"
+  short_description: "Run, track, and deploy YOLO model inference"
+  default_prompt: "Use $yolo-inference to run or deploy inference through Platform or local YOLO."

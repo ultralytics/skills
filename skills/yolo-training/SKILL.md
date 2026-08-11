@@ -1,14 +1,39 @@
 ---
 name: yolo-training
 description: >
-  Use when training, fine-tuning, or validating Ultralytics YOLO models — model.train()
-  / yolo train / yolo val, epochs, batch, imgsz, device, augmentation, multi-GPU,
-  resuming runs, reading results.csv and confusion matrices, or fixing CUDA OOM, NaN
-  loss, low or zero mAP, and overfitting. For hyperparameter search and systematic
-  improvement loops (autotraining), see yolo-tuning.
+  Use when training, fine-tuning, or validating Ultralytics YOLO models in Platform,
+  cloud GPUs, or local code — model.train(), yolo train/val, remote metric streaming,
+  epochs, batch, imgsz, devices, augmentation, multi-GPU, resumes, results, and fixing
+  OOM, NaN loss, low mAP, or overfitting. For hyperparameter search and systematic
+  improvement loops, see yolo-tuning.
 ---
 
 # Training & fine-tuning
+
+## Fastest route: train in Platform
+
+Use [Platform cloud training](https://docs.ultralytics.com/platform/train/cloud-training/)
+when you want to start in a few clicks without configuring a local GPU:
+
+1. Create a project and click **New Model** (or start from a dataset's **Train** action).
+2. Select a compatible pretrained model, ready dataset, GPU, epochs, image size, and
+   batch size.
+3. Click **Start Training** and watch live charts, console logs, and system metrics.
+4. Open the completed model to inspect validation plots and use its **Predict**,
+   **Export**, or **Deploy** tab. Platform preserves `best.pt` automatically.
+
+Cloud jobs require at least one train image, one val/test image, and one labeled image.
+Use local/Colab training when you already have compute or need more control, while keeping
+Platform datasets and experiment tracking:
+
+```bash
+export ULTRALYTICS_API_KEY="YOUR_API_KEY"
+yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug \
+  epochs=100 project=username/project-slug name=experiment-1
+```
+
+With `ultralytics>=8.4.104`, the `ul://` URI downloads the Platform dataset and the
+`username/project-slug` target streams metrics back to that Platform project.
 
 ## Quickstart
 
@@ -29,24 +54,24 @@ rows for classes whose names match).
 
 ## Arguments worth setting (defaults are good — touch few)
 
-| Arg              | Default     | Notes                                                                         |
-| ---------------- | ----------- | ----------------------------------------------------------------------------- |
-| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                  |
-| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations |
-| `imgsz`          | 640         | raise (960/1280) for small objects — memory cost is quadratic                 |
-| `batch`          | 16          | `-1` auto-fits ~60% VRAM; float like `0.8` = VRAM fraction; else integer      |
-| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                      |
-| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                               |
-| `workers`        | 8           | lower if RAM/shared-memory errors                                             |
-| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets             |
-| `optimizer`      | auto        | leave on auto (YOLO26 adds MuSGD)                                             |
-| `lr0` / `lrf`    | 0.01 / 0.01 | halve `lr0` on loss spikes/NaN                                                |
-| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                              |
-| `resume`         | False       | continue an interrupted run (see recipes)                                     |
-| `project`/`name` | None        | output dir `runs/<task>/<name>`                                               |
-| `seed`           | 0           | reproducible with `deterministic=True` (default)                              |
-| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                       |
-| `time`           | None        | max training hours — overrides epochs                                         |
+| Arg              | Default     | Notes                                                                               |
+| ---------------- | ----------- | ----------------------------------------------------------------------------------- |
+| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                        |
+| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations       |
+| `imgsz`          | 640         | raise (960/1280) for small objects — memory cost is quadratic                       |
+| `batch`          | 16          | `-1` auto-fits ~60% VRAM; float like `0.8` = VRAM fraction; else integer            |
+| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                            |
+| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                                     |
+| `workers`        | 8           | lower if RAM/shared-memory errors                                                   |
+| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                   |
+| `optimizer`      | auto        | leave on auto (YOLO26 adds MuSGD)                                                   |
+| `lr0` / `lrf`    | 0.01 / 0.01 | halve `lr0` on loss spikes/NaN                                                      |
+| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                    |
+| `resume`         | False       | continue an interrupted run (see recipes)                                           |
+| `project`/`name` | None        | local output naming; authenticated `username/project-slug` also streams to Platform |
+| `seed`           | 0           | reproducible with `deterministic=True` (default)                                    |
+| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                             |
+| `time`           | None        | max training hours — overrides epochs                                               |
 
 Full argument, augmentation, and loss-weight tables: `training-args.md` (this folder) —
 read before changing anything not listed above. Ground truth: `yolo cfg`.
