@@ -1,0 +1,46 @@
+{
+  "name": "yolo",
+  "version": "0.1.0",
+  "description": "Agent skills for Ultralytics YOLO — the ultralytics Python package and yolo CLI: model selection, datasets, training, hyperparameter tuning, inference/tracking, Solutions, and export/deployment.",
+  "author": {
+    "name": "Ultralytics",
+    "email": "hello@ultralytics.com",
+    "url": "https://www.ultralytics.com/"
+  },
+  "homepage": "https://www.ultralytics.com/",
+  "repository": "https://github.com/ultralytics/skills",
+  "license": "AGPL-3.0",
+  "keywords": [
+    "ultralytics",
+    "yolo",
+    "computer-vision",
+    "object-detection",
+    "segmentation",
+    "pose",
+    "training",
+    "onnx",
+    "tensorrt"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ultralytics YOLO",
+    "shortDescription": "Train, tune, run, and deploy YOLO models",
+    "longDescription": "Skills covering the full Ultralytics computer-vision lifecycle: dataset preparation and validation, model selection (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM, RT-DETR), training and fine-tuning, hyperparameter tuning, inference and tracking, prebuilt Solutions, and export to ONNX/TensorRT/CoreML/OpenVINO and NPU formats.",
+    "developerName": "Ultralytics",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://www.ultralytics.com/",
+    "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
+    "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",
+    "defaultPrompt": [
+      "Train a YOLO model on my custom dataset",
+      "Why is my YOLO training mAP so low?",
+      "Export my best.pt to TensorRT and verify accuracy"
+    ],
+    "brandColor": "#042AFF",
+    "screenshots": []
+  }
+}
