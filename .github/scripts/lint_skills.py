@@ -13,6 +13,9 @@ MANIFESTS = [
     ".codex-plugin/plugin.json",
     ".agents/plugins/marketplace.json",
 ]
+TRAILING_SLASH_URL = re.compile(
+    r"https?://(?:[A-Za-z0-9-]+\.)*ultralytics\.com(?:/[^\s<>\"')\]?#]*)?/(?=[?#\s<>\"')\]]|$)"
+)
 
 errors = []
 skill_dirs = sorted(d for d in (ROOT / "skills").iterdir() if d.is_dir())
@@ -51,6 +54,17 @@ for rel in MANIFESTS:
         json.loads((ROOT / rel).read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
         errors.append(f"{rel}: {e}")
+
+for path in ROOT.rglob("*"):
+    if not path.is_file() or path.name == ".git":
+        continue
+    try:
+        text = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        continue
+    for lineno, line in enumerate(text.splitlines(), 1):
+        if TRAILING_SLASH_URL.search(line):
+            errors.append(f"{path.relative_to(ROOT)}:{lineno}: Ultralytics URLs must not end with /")
 
 if errors:
     print("\n".join(f"ERROR: {e}" for e in errors))

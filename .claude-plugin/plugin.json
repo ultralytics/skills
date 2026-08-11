@@ -6,9 +6,9 @@
   "author": {
     "name": "Ultralytics",
     "email": "hello@ultralytics.com",
-    "url": "https://www.ultralytics.com/"
+    "url": "https://www.ultralytics.com"
   },
-  "homepage": "https://www.ultralytics.com/",
+  "homepage": "https://www.ultralytics.com",
   "repository": "https://github.com/ultralytics/skills",
   "license": "AGPL-3.0",
   "keywords": [
