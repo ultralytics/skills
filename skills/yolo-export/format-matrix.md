@@ -39,8 +39,8 @@ Notes:
   `openvino`, `engine`, `coreml`, `mnn`, `ncnn`, `rknn` (chip-dependent), `ascend`.
   INT8: `onnx`, `openvino`, `engine`, `coreml`, `saved_model`, `edgetpu`, `mnn`, `imx`,
   `rknn`, `axelera`, `deepx`, `hailo`, `litert`. `w8a16`: `coreml`, `imx`, `qnn`,
-  `litert`; `w8a32`: `litert` only. Unsupported requests may fail or be coerced to a
-  device-required precision; inspect export warnings and verify the effective precision.
+  `litert`; `w8a32`: `litert` only. Explicit unsupported precision requests fail;
+  with `quantize` unset, some device formats select their required precision automatically.
 - Calibration requirements vary by backend and scheme. Pass representative `data` when
   required; LiteRT `w8a32` needs no calibration.
 - Some formats install their toolchains in isolated environments on first use (imx,

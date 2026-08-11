@@ -88,7 +88,7 @@ required, using representative calibration data. Also compare one prediction wit
 
 ```bash
 yolo benchmark model=best.pt data=data.yaml imgsz=640                           # all formats at default precision
-yolo benchmark model=best.pt data=data.yaml format=engine quantize=16 imgsz=640 # targeted FP16
+yolo benchmark model=best.pt data=data.yaml format=engine quantize=16 device=0 imgsz=640 # targeted FP16
 ```
 
 Produces the task metric + latency per exportable format **on this machine**. Repeat for
@@ -98,9 +98,10 @@ each supported precision and benchmark on deployment hardware, not your dev box.
 
 - In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize,
   BGR→RGB, /255) and output decoding.
-- Output layout differs: YOLO26 emits final `[x1,y1,x2,y2,conf,cls]` rows only when the
-  export preserves end-to-end output; otherwise raw output needs backend-appropriate
-  decoding/NMS. Check export warnings and the output tensor shape first.
+- Detect output layout differs: end-to-end YOLO26 emits final
+  `[x1,y1,x2,y2,conf,cls]` rows. If export disables end-to-end, YOLO26—like
+  YOLO11/v8—emits raw `[4+nc, anchors]` heads; where supported, `nms=True` wraps them.
+  Segment, pose, and OBB add task-specific outputs. Check export warnings and shapes.
 - Class names travel in export metadata where supported; otherwise ship the `names`
   map alongside the model.
 - Serving: `ultralytics.utils.triton.TritonRemoteModel` for Triton;

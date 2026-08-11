@@ -68,19 +68,19 @@ BGR), torch tensor, or a list of these. `vid_stride=N` processes every Nth frame
 
 ## Arguments that matter
 
-| Arg            | Default | Notes                                                                                     |
-| -------------- | ------- | ----------------------------------------------------------------------------------------- |
-| `conf`         | 0.25    | lower → more recall + more false positives                                                |
-| `iou`          | 0.7     | NMS threshold; ignored by default YOLO26/YOLOv10 end-to-end inference                     |
-| `end2end`      | None    | set `False` on YOLO26/YOLOv10 to enable NMS and `iou`-based suppression                   |
-| `imgsz`        | 640     | match training imgsz for best accuracy                                                    |
-| `classes`      | None    | keep only these ids, e.g. `classes=[0]`                                                   |
-| `max_det`      | 300     | raise for dense scenes                                                                    |
-| `quantize`     | None    | `16` requests FP16 on supported GPUs; benchmark against FP32 (replaces deprecated `half`) |
-| `batch`        | 1       | >1 speeds up folders/videos with `stream=True`                                            |
-| `retina_masks` | False   | full-resolution masks (slower, crisper)                                                   |
-| `augment`      | False   | test-time augmentation: +accuracy, ~3× slower                                             |
-| `verbose`      | True    | False in loops to silence per-frame logs                                                  |
+| Arg            | Default | Notes                                                                                                                           |
+| -------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `conf`         | 0.25    | lower → more recall + more false positives                                                                                      |
+| `iou`          | 0.7     | NMS threshold; ignored by default YOLO26/YOLOv10 end-to-end inference                                                           |
+| `end2end`      | None    | native `.pt`: set `False` before first prediction to enable NMS/`iou`; reload if already fused. Set during export for artifacts |
+| `imgsz`        | 640     | match training imgsz for best accuracy                                                                                          |
+| `classes`      | None    | keep only these ids, e.g. `classes=[0]`                                                                                         |
+| `max_det`      | 300     | raise for dense scenes                                                                                                          |
+| `quantize`     | None    | `16` requests FP16 on supported GPUs; benchmark against FP32 (replaces deprecated `half`)                                       |
+| `batch`        | 1       | >1 speeds up folders/videos with `stream=True`                                                                                  |
+| `retina_masks` | False   | full-resolution masks (slower, crisper)                                                                                         |
+| `augment`      | False   | test-time augmentation: +accuracy, ~3× slower                                                                                   |
+| `verbose`      | True    | False in loops to silence per-frame logs                                                                                        |
 
 Saving/drawing: `save`, `save_txt`, `save_conf`, `save_crop`, `show`, `line_width` →
 `runs/<task>/predict*/`.
@@ -152,16 +152,16 @@ out.release()
 
 ## Troubleshooting
 
-| Symptom                          | Cause / fix                                                                                                  |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| No detections on visible objects | `conf` too high; wrong weights; imgsz far from training size                                                 |
-| Boxes offset                     | you pre-resized manually — pass the raw image, preprocessing is internal                                     |
-| Wrong colors in saved crops      | Results arrays are BGR; `cv2.cvtColor(..., COLOR_BGR2RGB)` for PIL/matplotlib                                |
-| RAM climbs on video              | missing `stream=True`                                                                                        |
-| `boxes.id is None` crash         | guard for None; `persist=True` in manual loops                                                               |
-| Duplicate boxes                  | set `end2end=False` for YOLO26/YOLOv10, then lower `iou`; add `agnostic_nms=True` for cross-class duplicates |
-| Caps at 300 objects              | raise `max_det`                                                                                              |
-| Slow first inference             | warmup — benchmark from the second call                                                                      |
+| Symptom                          | Cause / fix                                                                                                                                                 |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No detections on visible objects | `conf` too high; wrong weights; imgsz far from training size                                                                                                |
+| Boxes offset                     | you pre-resized manually — pass the raw image, preprocessing is internal                                                                                    |
+| Wrong colors in saved crops      | Results arrays are BGR; `cv2.cvtColor(..., COLOR_BGR2RGB)` for PIL/matplotlib                                                                               |
+| RAM climbs on video              | missing `stream=True`                                                                                                                                       |
+| `boxes.id is None` crash         | guard for None; `persist=True` in manual loops                                                                                                              |
+| Duplicate boxes                  | native `.pt`: reload, then use `end2end=False` and lower `iou`; exports: re-export with `end2end=False`; add `agnostic_nms=True` for cross-class duplicates |
+| Caps at 300 objects              | raise `max_det`                                                                                                                                             |
+| Slow first inference             | warmup — benchmark from the second call                                                                                                                     |
 
 ## Related pages
 
