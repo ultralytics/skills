@@ -29,22 +29,17 @@ After opening a PR:
 ## Commands
 
 ```bash
-uv pip install -e ".[dev]" # install for development
-
-pytest tests -v                                               # run tests (pytest)
-pytest tests/test_with_pytest.py::test_add_numbers -v         # run one test
-python -m unittest discover tests -v                          # run tests (unittest)
-pytest tests -v --cov=./ --cov-report=xml:pytest-coverage.xml # coverage (CI command)
-example-cli-command                                           # run the example CLI entry point
-
-ruff format . && ruff check --fix . # format/lint (uv pip install ruff; config in pyproject.toml)
+python .github/scripts/lint_skills.py # validate skill frontmatter, size limits, and manifest JSON (CI command)
+claude plugin validate .              # optional: validate plugin/marketplace packaging (Claude Code CLI)
 ```
 
-CI matrix: Python 3.9/3.13/3.14 × ubuntu/macos/windows. CI runs the tests four ways — pytest and unittest, each with and without coverage — plus the CLI entry point, so tests must pass under both runners.
+CI runs the lint script on every push and PR; it must pass before merge.
 
 ## Architecture
 
-This is the Ultralytics template for new Python packages — a minimal, fully wired example meant to be copied and adapted. `template/` is the package: `__init__.py` holds `__version__` (read by setuptools dynamic versioning in `pyproject.toml`), and `module1.py` holds the example `add_numbers()`/`main()` backing the `example-cli-command` entry point in `[project.scripts]`. `tests/` demonstrates the same tests in both pytest style (`test_with_pytest.py`) and unittest style (`test_with_unittest.py`). `format.yml` runs Ultralytics Actions on PRs (Ruff, Prettier, codespell, link checks, AI labels/summaries) and commits fixes back to the PR branch. `publish.yml` tags, releases, and (optionally) publishes to PyPI when `__version__` is bumped on `main`; its `check` job intentionally omits the `github.actor` maintainer gate that product repos keep for security, because a fork supplies its own.
+This repo is a pack of agent skills (per the [Agent Skills format](https://agentskills.io)) for the `ultralytics` Python package and `yolo` CLI — markdown only, no Python package. `skills/` holds one directory per skill: a `SKILL.md` (frontmatter `name` + `description` only; body ≤500 lines of procedures, decision tables, and gotchas) plus optional flat companion `.md` files for version-volatile catalogs (weight names, argument tables, export format matrix). `skills/yolo/SKILL.md` is the router: core CLI/Python grammar plus a table directing agents to the six stage skills (models, datasets, training, tuning, inference, export). Plugin packaging lives in `.claude-plugin/` (plugin + marketplace manifests), `.codex-plugin/`, and `.agents/plugins/`, all pointing at the same `skills/` tree. `format.yml` runs Ultralytics Actions on PRs (Ruff, Prettier, codespell, link checks, AI labels/summaries) and commits fixes back to the PR branch.
+
+Skill content conventions: descriptions state when to use the skill (with trigger keywords), never summarize its workflow; facts are grounded against a pinned `ultralytics` version (currently v8.4.117) and every skill ends by deferring to the installed version (`yolo checks`, `yolo cfg`, error messages) over its own tables. When a new ultralytics release changes defaults, update the companion catalog files rather than rewriting SKILL.md bodies.
 
 ## Conventions
 
