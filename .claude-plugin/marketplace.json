@@ -3,7 +3,7 @@
   "description": "Ultralytics YOLO agent skills for the full computer-vision lifecycle.",
   "owner": {
     "name": "Ultralytics",
-    "url": "https://ultralytics.com/"
+    "url": "https://www.ultralytics.com"
   },
   "plugins": [
     {
