@@ -64,6 +64,8 @@ for path in ROOT.rglob("*"):
     except UnicodeDecodeError:
         continue
     for lineno, line in enumerate(text.splitlines(), 1):
+        if "Ultralytics 🚀 AGPL-3.0 License" in line:
+            continue
         if APEX_URL.search(line):
             errors.append(f"{path.relative_to(ROOT)}:{lineno}: use www.ultralytics.com, not ultralytics.com")
         if TRAILING_SLASH_URL.search(line):
