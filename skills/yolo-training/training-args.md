@@ -1,4 +1,4 @@
-# Full training argument reference (default.yaml, v8.4.117)
+# Full training argument reference (default.yaml, v8.4.119)
 
 Ground truth for the installed version: `yolo cfg` (prints every default). Names are
 identical in CLI and Python.

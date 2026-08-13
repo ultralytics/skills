@@ -1,4 +1,4 @@
-# Downloadable weight names (v8.4.117)
+# Downloadable weight names (v8.4.119)
 
 Use these exact `.pt` names — do not guess or interpolate them. Most auto-download from
 `ultralytics/assets`; the installed version's authoritative list for those assets is
