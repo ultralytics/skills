@@ -25,7 +25,7 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 | [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                          |
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/OpenVINO/LiteRT/NPU export, quantization, benchmarking           |
 
-Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.117; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform/).
+Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.119; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform/).
 
 ## 📦 Install
 

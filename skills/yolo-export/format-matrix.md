@@ -1,4 +1,4 @@
-# Export format matrix (v8.4.117)
+# Export format matrix (v8.4.119)
 
 From `ultralytics.engine.exporter.export_formats()` — the installed version's ground
 truth: `from ultralytics.engine.exporter import export_formats; print(export_formats())`.

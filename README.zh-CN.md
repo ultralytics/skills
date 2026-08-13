@@ -25,7 +25,7 @@
 | [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/端点、本地推理、Results API、跟踪和 Solutions                              |
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/本地 ONNX/TensorRT/CoreML/OpenVINO/LiteRT/NPU 导出、量化和基准测试                 |
 
-每个 Skill 都包含一个 `SKILL.md`（操作步骤、决策表和注意事项）以及 Codex/ChatGPT 展示元数据；必要时还会包含配套参考文件，用于保存随版本变化的目录信息（权重名称、参数表、导出格式矩阵）。软件包信息基于 `ultralytics` v8.4.117；Platform 流程基于当前的 [Platform 文档](https://docs.ultralytics.com/platform/)。
+每个 Skill 都包含一个 `SKILL.md`（操作步骤、决策表和注意事项）以及 Codex/ChatGPT 展示元数据；必要时还会包含配套参考文件，用于保存随版本变化的目录信息（权重名称、参数表、导出格式矩阵）。软件包信息基于 `ultralytics` v8.4.119；Platform 流程基于当前的 [Platform 文档](https://docs.ultralytics.com/platform/)。
 
 ## 📦 安装
 
