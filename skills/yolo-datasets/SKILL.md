@@ -118,10 +118,11 @@ Point `train:`/`val:` at the generated `.txt` files. Keep frames from the same
 video/scene in ONE split — per-image random splits of video frames leak near-duplicates
 into val and inflate mAP. For classify: `split_classify_dataset(source_dir, 0.8)`.
 
-## Validate before training (do this, in order)
+## Validate before training (use the task-relevant steps in order)
 
-1. **Structural check** — loads, resolves paths, counts images/labels, auto-downloads
-   known datasets:
+1. **YAML/path check (non-classification)** — validates required fields, resolves
+   configured paths, checks the requested split (default `val`), and may auto-download a
+   known dataset. It does not count or parse individual images and targets:
 
    ```python
    from ultralytics.data.utils import check_det_dataset
@@ -129,24 +130,31 @@ into val and inflate mAP. For classify: `split_classify_dataset(source_dir, 0.8)
    check_det_dataset("data.yaml")  # detect/segment/pose/obb/semantic/depth
    ```
 
-2. **Visual check of one image** — labels drawn on the image; wrong normalization or
-   swapped x/y is instantly visible:
+2. **Detection-only visual spot check** — this helper accepts five-column
+   `class cx cy w h` rows; wrong normalization or swapped axes become visible:
 
    ```python
    from ultralytics.data.utils import visualize_image_annotations
 
-   visualize_image_annotations("images/train/img001.jpg", "labels/train/img001.txt", label_map={0: "person", 1: "helmet"})
+   visualize_image_annotations(
+       "images/train/img001.jpg",
+       "labels/train/img001.txt",
+       label_map={0: "person", 1: "helmet"},
+   )
    ```
 
-3. **1-epoch smoke test**, then eyeball the mosaic:
+   Do not use this helper for segment, pose, OBB, semantic, depth, or classify targets;
+   use their task-aware trainer plots instead.
+
+3. **Task-loader smoke test** — run one epoch with matching task/model/data; this builds
+   the real dataset and produces task-aware training plots (detection example):
    ```bash
    yolo detect train data=data.yaml model=yolo26n.pt epochs=1 fraction=0.1
-   # inspect runs/detect/train/train_batch0.jpg — boxes/masks must sit on objects
+   # inspect runs/detect/train/train_batch0.jpg — boxes must sit on objects
    ```
-4. **Distribution sanity** (quick script over label files): instances per class
-   (heavy imbalance → collect more or weigh expectations), boxes < ~8 px at train
-   `imgsz` (undetectable — raise imgsz or tile), % background images, duplicate
-   stems across splits (leakage).
+4. **Distribution sanity** — check task-appropriate class/target balance and split
+   leakage. For box tasks, also inspect very small boxes at train `imgsz` and the
+   background-image share.
 
 Known-good tiny datasets for pipeline smoke tests (auto-download): `coco8.yaml`,
 `coco8-seg.yaml`, `coco8-pose.yaml`, `dota8.yaml`, `cityscapes8.yaml`, `depth8.yaml`,

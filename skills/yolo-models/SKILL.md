@@ -4,16 +4,17 @@ description: >
   Use when choosing or comparing Ultralytics models in Platform or code — picking a
   model family (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM/SAM2/FastSAM, RT-DETR,
   YOLO-NAS), size (n/s/m/l/x), task variant (-seg, -sem, -cls, -pose, -obb, -depth),
-  pretrained checkpoint, or custom architecture. Covers Platform Explore/model flows,
-  exact weight names, selection guidance, and family trade-offs.
+  pretrained checkpoint, open-vocabulary or promptable detection/segmentation, or custom
+  architecture. Covers Platform Explore/model flows, weight names and availability,
+  selection guidance, and family trade-offs.
 ---
 
 # Choosing an Ultralytics model
 
 **Default recommendation: YOLO26, pretrained.** Latest generation, NMS-free end-to-end
 (fastest CPU inference, simplest deployment). Use YOLO11/YOLOv8 only to match an existing
-codebase or a deployment target that doesn't support YOLO26 yet. Weights auto-download on
-first use.
+codebase or a deployment target that doesn't support YOLO26 yet. Most official weights
+auto-download on first use; `sam3.pt` requires manual access and download.
 
 ## Choose in Platform
 
@@ -97,16 +98,17 @@ Only go here for research/unusual constraints; for normal work fine-tune the sto
 
 ## Related pages
 
-- `weights-catalog.md` (this folder) — read when you need the exact downloadable `.pt`
-  name for any family/size/task combination. Do not guess weight names.
+- `weights-catalog.md` (this folder) — read for package-known weight patterns and
+  specialized official assets. Do not guess weight names.
 
 ## Verify against the installed version
 
-Model availability moves fast. The installed version's authoritative list:
+Model availability moves fast. This prints the installed package's known fast-path set;
+read `weights-catalog.md` before treating an unlisted official asset as invalid:
 
 ```bash
 python -c "from ultralytics.utils.downloads import GITHUB_ASSETS_NAMES; print(*sorted(GITHUB_ASSETS_NAMES), sep='\\n')"
 ```
 
-If a weight name 404s or a class import fails, check `yolo checks` (version) and prefer
-what the error message offers over these tables.
+If a weight 404s or a class import fails, check `yolo checks` and trust the
+installed-version error.

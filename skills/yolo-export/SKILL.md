@@ -59,46 +59,51 @@ Full 20-format matrix with per-format supported args: `format-matrix.md` (this f
 
 ## Key arguments
 
-| Arg         | Default | Notes                                                                                                                                                                                                                   |
-| ----------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `imgsz`     | 640     | baked into most formats — match what you'll feed it                                                                                                                                                                     |
-| `quantize`  | None    | **the** precision arg (replaces deprecated `half`/`int8`): `16`/`fp16` FP16 (~2× smaller/faster, free lunch on GPU/NPU); `8`/`int8`/`w8a8` INT8 (~4× smaller, costs ~1–3 mAP, needs calibration); also `w8a16`, `w8a32` |
-| `data`      | None    | calibration dataset for INT8 — a few hundred varied val images; defaults to the task's calibration set (coco128 etc.) if omitted                                                                                        |
-| `dynamic`   | False   | variable input size/batch (ONNX/TensorRT) — costs some speed                                                                                                                                                            |
-| `batch`     | 1       | max batch baked into the export                                                                                                                                                                                         |
-| `simplify`  | True    | simplify ONNX graph                                                                                                                                                                                                     |
-| `opset`     | newest  | pin lower if the consumer runtime complains                                                                                                                                                                             |
-| `nms`       | False   | bake NMS into the graph — irrelevant for YOLO26 (NMS-free end-to-end); needed for YOLO11/v8 in non-Python runtimes                                                                                                      |
-| `workspace` | None    | TensorRT builder GiB — lower if the build OOMs                                                                                                                                                                          |
-| `device`    | None    | `device=0` required for TensorRT; also speeds INT8 calibration                                                                                                                                                          |
-| `fraction`  | 1.0     | fraction of calibration data used                                                                                                                                                                                       |
+| Arg         | Default | Notes                                                                                                                                                                                           |
+| ----------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `imgsz`     | model   | inherited from the loaded model; set explicitly to the deployment shape                                                                                                                         |
+| `quantize`  | None    | precision request: `16`/`fp16`, `8`/`int8`/`w8a8`, `w8a16`, `w8a32`, or `32`/`fp32`; support, speed, size, and accuracy are backend-dependent — see `format-matrix.md` and benchmark the target |
+| `data`      | None    | representative calibration data when required; use >300 images generally and 500+ for TensorRT. Omission selects a small task default, so pass deployment-representative data explicitly        |
+| `dynamic`   | False   | variable input shape/batch where supported; check `format-matrix.md` and benchmark the target                                                                                                   |
+| `batch`     | 1       | max batch baked into the export                                                                                                                                                                 |
+| `simplify`  | True    | simplify ONNX graph                                                                                                                                                                             |
+| `opset`     | newest  | pin lower if the consumer runtime complains                                                                                                                                                     |
+| `end2end`   | None    | preserve the model setting; set `False` on YOLO26/YOLOv10 when the target needs raw outputs or conventional NMS                                                                                 |
+| `nms`       | False   | bake NMS into a raw-output pipeline where supported; for YOLO26/YOLOv10 also set `end2end=False`                                                                                                |
+| `workspace` | None    | TensorRT builder GiB — lower if the build OOMs                                                                                                                                                  |
+| `device`    | None    | `device=0` required for TensorRT; also speeds INT8 calibration                                                                                                                                  |
+| `fraction`  | 1.0     | fraction of calibration data used                                                                                                                                                               |
 
 ## Verify parity after export (always)
 
 ```bash
 yolo val model=best.pt data=data.yaml   # baseline
-yolo val model=best.onnx data=data.yaml # FP16 within ~0.1–0.3 mAP; INT8 ~1–3
+yolo val model=best.onnx data=data.yaml # compare the same task metric with the baseline
 ```
 
-Large gaps mean a broken export (imgsz mismatch, missing NMS handling, bad calibration
-data) — not "expected quantization noise". Also eyeball one prediction against the .pt.
+Acceptable differences depend on the task, model, backend, precision, and calibration
+data. Investigate unexpected gaps by matching `imgsz` and pre/post-processing and, where
+required, using representative calibration data. Also compare one prediction with `.pt`.
 
 ## Benchmark all formats empirically
 
 ```bash
-yolo benchmark model=best.pt data=data.yaml imgsz=640 # add quantize=16 to test FP16
+yolo benchmark model=best.pt data=data.yaml imgsz=640                                    # all formats at default precision
+yolo benchmark model=best.pt data=data.yaml format=engine quantize=16 device=0 imgsz=640 # targeted FP16
 ```
 
-Produces mAP + latency per exportable format **on this machine** — benchmark on the
-deployment hardware, not your dev box.
+Produces the task metric + latency per exportable format **on this machine**. Repeat for
+each supported precision and benchmark on deployment hardware, not your dev box.
 
 ## Consuming exports outside Python
 
 - In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize,
   BGR→RGB, /255) and output decoding.
-- Output layout differs: YOLO26 is end-to-end (final `[x1,y1,x2,y2,conf,cls]` rows);
-  YOLO11/v8 raw heads emit `[4+nc, anchors]` needing decode + NMS — check the output
-  tensor shape first. This is the main reason to prefer YOLO26 for edge deployment.
+- Detect output layout differs: end-to-end YOLO26 emits final
+  `[x1,y1,x2,y2,conf,cls]` rows. If export disables end-to-end, YOLO26—like
+  YOLO11/v8—emits raw `[4+nc, anchors]` heads; where supported, `nms=True` wraps them.
+  Set `end2end=False nms=True` to request that path explicitly. Segment, pose, and OBB
+  add task-specific outputs. Check export warnings and shapes.
 - Class names travel in export metadata where supported; otherwise ship the `names`
   map alongside the model.
 - Serving: `ultralytics.utils.triton.TritonRemoteModel` for Triton;
@@ -106,15 +111,15 @@ deployment hardware, not your dev box.
 
 ## Troubleshooting
 
-| Symptom                                         | Fix                                                                                                                                             |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Export crashes on missing package               | most backends auto-install on first export; rerun. TensorRT must match your CUDA — install per NVIDIA docs                                      |
-| `Unsupported ONNX opset` downstream             | export with lower `opset=`, or upgrade the runtime                                                                                              |
-| TensorRT build OOM/slow                         | lower `workspace`, `batch=1`, `dynamic=False`                                                                                                   |
-| Export much less accurate                       | imgsz mismatch; INT8 calibration data too small/unrepresentative (fix `data=`, or fall back to `quantize=16`); wrong custom pre/post-processing |
-| Engine fails on another machine                 | TensorRT engines are device+version specific — rebuild on target                                                                                |
-| CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                        |
-| Deprecation warnings for `half`/`int8`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `tflite→litert`) — switch to the new names                                               |
+| Symptom                                         | Fix                                                                                                                                         |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Export crashes on missing package               | most backends auto-install on first export; rerun. TensorRT must match your CUDA — install per NVIDIA docs                                  |
+| `Unsupported ONNX opset` downstream             | export with lower `opset=`, or upgrade the runtime                                                                                          |
+| TensorRT build OOM/slow                         | lower `workspace`, `batch=1`, `dynamic=False`                                                                                               |
+| Export much less accurate                       | imgsz mismatch; too little/unrepresentative calibration data; wrong custom pre/post-processing; use a supported higher precision or backend |
+| Engine fails on another machine                 | TensorRT engines are device+version specific — rebuild on target                                                                            |
+| CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                    |
+| Deprecation warnings for `half`/`int8`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `tflite→litert`) — switch to the new names                                           |
 
 ## Related pages
 
