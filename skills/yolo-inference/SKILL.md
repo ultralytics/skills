@@ -35,8 +35,8 @@ print(response.json())
 ```
 
 Dedicated endpoints use scale-to-zero, so expect a cold start after idle periods. See
-[Platform Inference](https://docs.ultralytics.com/platform/deploy/inference/) and
-[Dedicated Endpoints](https://docs.ultralytics.com/platform/deploy/endpoints/).
+[Platform Inference](https://docs.ultralytics.com/platform/deploy/inference) and
+[Dedicated Endpoints](https://docs.ultralytics.com/platform/deploy/endpoints).
 
 ## Quickstart
 

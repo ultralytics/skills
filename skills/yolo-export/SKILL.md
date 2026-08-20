@@ -21,7 +21,7 @@ deployment target, just as with a local engine build.
 Use Platform when you do not want to install each exporter toolchain locally. Use the
 Python/CLI path below for custom calibration, repeatable automation, local hardware
 builds, or immediate parity validation. See
-[Platform model export](https://docs.ultralytics.com/platform/train/models/#export-model).
+[Platform model export](https://docs.ultralytics.com/platform/train/models#export-model).
 
 ## Quickstart
 

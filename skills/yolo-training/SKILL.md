@@ -12,7 +12,7 @@ description: >
 
 ## Fastest route: train in Platform
 
-Use [Platform cloud training](https://docs.ultralytics.com/platform/train/cloud-training/)
+Use [Platform cloud training](https://docs.ultralytics.com/platform/train/cloud-training)
 when you want to start in a few clicks without configuring a local GPU:
 
 1. Create a project and click **New Model** (or start from a dataset's **Train** action).

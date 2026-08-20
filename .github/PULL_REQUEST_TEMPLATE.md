@@ -1,5 +1,5 @@
 <!--
-Thank you 🙏 for contributing to the [Ultralytics](https://www.ultralytics.com/) agent skills 🚀! To help us review and merge your Pull Request (PR) quickly:
+Thank you 🙏 for contributing to the [Ultralytics](https://www.ultralytics.com) agent skills 🚀! To help us review and merge your Pull Request (PR) quickly:
 
 1. Check existing PRs to make sure your change is not already in progress.
 2. Link the related issue if there is one.
