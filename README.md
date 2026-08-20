@@ -11,7 +11,7 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 
 [![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics)
 [![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com)
-[![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://reddit.com/r/ultralytics)
+[![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
 
 ## 🧩 Skills
 
@@ -25,7 +25,7 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 | [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                          |
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/OpenVINO/LiteRT/NPU export, quantization, benchmarking           |
 
-Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.119; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform/).
+Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.119; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
 
 ## 📦 Install
 

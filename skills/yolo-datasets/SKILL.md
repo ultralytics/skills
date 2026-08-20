@@ -27,8 +27,8 @@ The #1 cause of silent training failure is a malformed dataset — validate befo
 
 Platform datasets currently cover six tasks; depth dataset support is still pending.
 Smart Annotation is unavailable for connected cloud datasets. See
-[Platform Data](https://docs.ultralytics.com/platform/data/) and the
-[Annotation Editor](https://docs.ultralytics.com/platform/data/annotation/).
+[Platform Data](https://docs.ultralytics.com/platform/data) and the
+[Annotation Editor](https://docs.ultralytics.com/platform/data/annotation).
 
 To train on the same dataset from local code, create an API key under **Settings > API
 Keys**, set `ULTRALYTICS_API_KEY`, and use its URI directly:

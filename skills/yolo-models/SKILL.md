@@ -26,8 +26,8 @@ checkpoints for further fine-tuning.
 
 Use a Platform model page to inspect metrics, test it in **Predict**, export it, deploy it,
 clone it into another project, or download its `.pt` weights for the Python/CLI workflows
-below. See [Platform Models](https://docs.ultralytics.com/platform/train/models/) and
-[Explore](https://docs.ultralytics.com/platform/explore/).
+below. See [Platform Models](https://docs.ultralytics.com/platform/train/models) and
+[Explore](https://docs.ultralytics.com/platform/explore).
 
 ## Model = family + size + task suffix
 

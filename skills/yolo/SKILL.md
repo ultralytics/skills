@@ -63,7 +63,7 @@ yolo export model=best.pt format=onnx                        # exported model lo
    epochs, then monitor the run.
 5. Use the completed model's **Predict**, **Export**, or **Deploy** tab.
 
-Start with the [Platform quickstart](https://docs.ultralytics.com/platform/quickstart/).
+Start with the [Platform quickstart](https://docs.ultralytics.com/platform/quickstart).
 Use the stage skill below for both Platform and package details.
 
 ## Route before coding

@@ -34,7 +34,7 @@ in the confusion matrix → nothing else matters until fixed.
 
 ## Compare experiments in Platform
 
-Keep candidates in one [Platform project](https://docs.ultralytics.com/platform/train/projects/).
+Keep candidates in one [Platform project](https://docs.ultralytics.com/platform/train/projects).
 Train from the **New Model** dialog, or stream local runs by setting
 `project=username/project-slug` and a unique `name`. Select models together in the
 project charts, or use **Table > Diff** to compare training arguments and final metrics.
