@@ -35,7 +35,7 @@ from a task trainer, loaded checkpoint, or explicit argument; inspect the run's
 | `freeze`                        | None            | int N, or list of layer indices/module names such as `"23.cv2"`                               |
 | `multi_scale`                   | 0.0             | imgsz jitter fraction during training                                                         |
 | `compile`                       | False           | torch.compile: True/`"default"`/`"reduce-overhead"`/`"max-autotune-no-cudagraphs"`            |
-| `channels_last`                 | None            | auto on supported CUDA training and x86 CPU inference; bool overrides                         |
+| `channels_last`                 | None            | auto on CUDA training; Linux/Windows x86_64 inference requires MKLDNN; bool overrides         |
 | `overlap_mask` / `mask_ratio`   | True / 4        | segment: merge overlapping masks; mask downsample                                             |
 | `dropout`                       | 0.0             | classify only                                                                                 |
 | `val` / `plots`                 | True / True     | validate + plot during training                                                               |

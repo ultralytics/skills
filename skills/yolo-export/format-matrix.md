@@ -49,3 +49,5 @@ Notes:
   rknn, axelera, deepx) — first export is slow; tell the user it isn't hung.
 - Core AI export requires Apple silicon, macOS 26+, torch>=2.8, and Python 3.11–3.13.
   The `.aimodel` runtime targets iOS 27+/macOS 27+; use Core ML for broader Apple support.
+- Core AI accepts `quantize=16`, but some FP16 `.aimodel` assets can abort during Apple
+  Neural Engine loading. Prefer FP32 until the upstream runtime issue is fixed.
