@@ -76,7 +76,7 @@ BGR), torch tensor, or a list of these. `vid_stride=N` processes every Nth frame
 | `imgsz`        | model   | inherited from the checkpoint; set explicitly when a different inference shape is required                                      |
 | `classes`      | None    | keep only these ids, e.g. `classes=[0]`                                                                                         |
 | `max_det`      | 300     | raise for dense scenes                                                                                                          |
-| `quantize`     | None    | `16` requests FP16 on supported GPUs; benchmark against FP32 (replaces deprecated `half`)                                       |
+| `quantize`     | None    | `16` selects FP16 compute for PyTorch/TorchScript; other backends use artifact/runtime precision (replaces deprecated `half`)   |
 | `batch`        | 1       | >1 speeds up folders/videos with `stream=True`                                                                                  |
 | `retina_masks` | False   | full-resolution masks (slower, crisper)                                                                                         |
 | `augment`      | False   | test-time augmentation: +accuracy, ~3× slower                                                                                   |
@@ -142,7 +142,7 @@ out.release()
 
 ## Performance checklist
 
-1. On a supported GPU, benchmark `quantize=16` against FP32 on the deployment target.
+1. For PyTorch/TorchScript on a supported GPU, benchmark `quantize=16` against FP32.
 2. Export to the target-native backend (TensorRT/OpenVINO/CoreML) and benchmark it (see
    yolo-export; exports load straight back into `YOLO()`).
 3. Use a smaller model or `imgsz`.

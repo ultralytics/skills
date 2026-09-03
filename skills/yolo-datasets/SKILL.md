@@ -25,8 +25,8 @@ The #1 cause of silent training failure is a malformed dataset — validate befo
 4. Review the **Classes**, **Charts**, and **Errors** tabs, fix the split, and create a
    numbered dataset version before important runs.
 
-Platform datasets currently cover six tasks; depth dataset support is still pending.
-Smart Annotation is unavailable for connected cloud datasets. See
+Platform datasets cover all seven YOLO tasks. Depth targets are imported rather than
+drawn in the editor. See
 [Platform Data](https://docs.ultralytics.com/platform/data) and the
 [Annotation Editor](https://docs.ultralytics.com/platform/data/annotation).
 
@@ -72,7 +72,10 @@ kpt_shape: [17, 3] # [num_keypoints, dims]; dims 2 (x,y) or 3 (x,y,visibility)
 flip_idx: [0, 2, 1, ...] # L/R keypoint swap map — without it, flip augs are auto-disabled
 # semantic only (optional — polygon labels/ also work):
 masks_dir: masks # per-pixel PNG mask images
-# depth only: paired depth/{train,val}/*.npy float32 depth maps, nc: 1
+# depth only (replace names above; pair depth/{train,val}/*.png or float .npy maps):
+# nc: 1
+# names: {0: depth}
+# depth_scale: 1000 # PNG units per meter; default millimeters
 ```
 
 - Classification datasets use **no yaml**: folder structure is the label

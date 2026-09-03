@@ -10,7 +10,7 @@ one object per line, 0-based integer class indices.
 | Pose     | `class cx cy w h px1 py1 [v1] ... pxK pyK [vK]`                                  | 5 + K×dims  |
 | OBB      | `class x1 y1 x2 y2 x3 y3 x4 y4` (4 corners in order around the box)              | 9           |
 | Semantic | PNG index masks in `masks_dir` (or `masks/` at root); else polygon .txt fallback | —           |
-| Depth    | no .txt — paired `depth/<split>/<stem>.npy` float32 meters                       | —           |
+| Depth    | no .txt — paired `depth/<split>/<stem>.png` uint16, or float `.npy` meters       | —           |
 | Classify | no label files — folder structure is the label                                   | —           |
 
 ## Details that trip people up
@@ -27,8 +27,10 @@ one object per line, 0-based integer class indices.
   training errors.
 - **OBB**: 4 corners in order around the box, normalized. DOTA-converted data can have
   values slightly outside [0,1]; clamp them.
-- **Depth**: `.npy` arrays, float32, same H×W as the image, metric meters (invalid
-  pixels: 0 or negative).
+- **Depth**: prefer 2D uint16 PNG maps; divide stored values by `depth_scale` from
+  data.yaml (default 1000) to get meters. Floating-point 2D `.npy` meter arrays remain
+  supported. The map may differ in size from its image if the aspect ratio matches;
+  non-positive values are invalid.
 
 ## Symptom → cause
 
