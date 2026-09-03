@@ -32,7 +32,8 @@ Common constructor args (`SolutionConfig`): `model`, `region` (pixel coords in t
 frame), `classes`, `conf`, `iou`, `tracker` (default `botsort.yaml` here), `device`,
 `show`, `line_width`, `imgsz`, `quantize` (`half` is deprecated). `quantize` controls
 PyTorch/TorchScript compute precision; other backends primarily use the artifact/runtime
-precision. Invalid keys raise ValueError — the message lists valid ones.
+precision. With `quantize=16`, OpenVINO and Triton inputs are rounded to FP16 and Triton
+outputs are returned as FP16. Invalid keys raise ValueError — the message lists valid ones.
 
 ## Catalog (CLI name → class)
 
