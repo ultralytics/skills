@@ -2,7 +2,7 @@
 name: yolo-export
 description: >
   Use when exporting or deploying Ultralytics YOLO models in Platform or code — the
-  Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML,
+  Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI,
   OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera,
   DeepX), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference
   with .pt weights or Platform endpoints, see yolo-inference.
@@ -48,14 +48,16 @@ model = YOLO("best.onnx")  # or best.engine, best_openvino_model/, ...
 | -------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | NVIDIA GPU / Jetson                                      | `engine` (TensorRT)                                               | fastest on NVIDIA; **build on the deployment device** — engines are not portable across GPUs/TRT versions |
 | Intel CPU/iGPU/NPU                                       | `openvino`                                                        | ~3× CPU speedup                                                                                           |
-| Apple iOS/macOS                                          | `coreml`                                                          | Neural Engine                                                                                             |
+| Apple iOS/macOS                                          | `coreml`                                                          | broad OS coverage, Vision/iOS/Flutter support                                                             |
+| Apple iOS 27+/macOS 27+                                  | `coreai`                                                          | native `.aimodel`; use `coreml` for iOS/Flutter SDKs; export on Apple silicon/macOS 26+                   |
 | Android                                                  | `litert` (renamed from `tflite`) or `ncnn`                        | NCNN strong on ARM                                                                                        |
 | Raspberry Pi                                             | `ncnn`                                                            | best ARM CPU latency                                                                                      |
 | PyTorch Edge                                             | `executorch`                                                      |                                                                                                           |
 | Cross-platform / unsure                                  | `onnx`                                                            | runs everywhere; start here, specialize when latency demands                                              |
 | NPUs (Rockchip/Qualcomm/Hailo/Huawei/Sony/Axelera/DeepX) | `rknn` / `qnn` / `hailo` / `ascend` / `imx` / `axelera` / `deepx` | `name=` selects the exact chip for rknn/qnn/hailo/ascend                                                  |
 
-Full 20-format matrix with per-format supported args: `format-matrix.md` (this folder).
+Full 21-target local export matrix with per-format supported args: `format-matrix.md`
+(this folder). Platform currently offers 20 deployment formats.
 
 ## Key arguments
 
@@ -67,7 +69,7 @@ Full 20-format matrix with per-format supported args: `format-matrix.md` (this f
 | `dynamic`   | False   | variable input shape/batch where supported; check `format-matrix.md` and benchmark the target                                                                                                   |
 | `batch`     | 1       | max batch baked into the export                                                                                                                                                                 |
 | `simplify`  | True    | simplify ONNX graph                                                                                                                                                                             |
-| `opset`     | newest  | pin lower if the consumer runtime complains                                                                                                                                                     |
+| `opset`     | None    | compatible ONNX opset selected automatically when unset; pin lower if the consumer runtime complains                                                                                            |
 | `end2end`   | None    | preserve the model setting; set `False` on YOLO26/YOLOv10 when the target needs raw outputs or conventional NMS                                                                                 |
 | `nms`       | False   | bake NMS into a raw-output pipeline where supported; for YOLO26/YOLOv10 also set `end2end=False`                                                                                                |
 | `workspace` | None    | TensorRT builder GiB — lower if the build OOMs                                                                                                                                                  |
@@ -119,12 +121,13 @@ each supported precision and benchmark on deployment hardware, not your dev box.
 | Export much less accurate                       | imgsz mismatch; too little/unrepresentative calibration data; wrong custom pre/post-processing; use a supported higher precision or backend |
 | Engine fails on another machine                 | TensorRT engines are device+version specific — rebuild on target                                                                            |
 | CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                    |
+| Core AI export is unavailable                   | requires Apple silicon, macOS 26+, torch>=2.8, and Python 3.11–3.13; use Core ML for broader production support                             |
 | Deprecation warnings for `half`/`int8`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `tflite→litert`) — switch to the new names                                           |
 
 ## Related pages
 
-- `format-matrix.md` — all 20 formats, artifacts produced, and which args each format
-  supports. Read when using any format beyond onnx/engine/openvino/coreml.
+- `format-matrix.md` — all 21 local export targets, artifacts produced, and supported
+  args. Read when using any format beyond onnx/engine/openvino/coreml.
 
 If the installed version rejects an argument, trust the error text (it lists valid
 values) and `yolo cfg` over this file.

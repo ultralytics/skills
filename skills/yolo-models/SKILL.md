@@ -58,9 +58,9 @@ Notes on the newer tasks:
 
 - **semantic** (`-sem`): dataset uses PNG masks via `masks_dir` (default `masks/`) or
   polygon labels; metric is mIoU.
-- **depth** (`-depth`): labels are float32 `.npy` depth maps; metric is delta1. Exposes a
-  unique `model.calibrate(data=...)` step that fits a metric-scale correction, then
-  `model.save(...)` to persist it.
+- **depth** (`-depth`): targets are scaled uint16 PNG maps (preferred) or floating-point
+  `.npy` maps in meters; metric is delta1. Exposes a unique `model.calibrate(data=...)`
+  step that fits a metric-scale correction, then `model.save(...)` to persist it.
 
 ## Family cheat sheet
 

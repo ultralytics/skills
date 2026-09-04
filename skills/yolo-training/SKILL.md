@@ -32,7 +32,7 @@ yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug \
   epochs=100 project=username/project-slug name=experiment-1
 ```
 
-With `ultralytics>=8.4.104`, the `ul://` URI downloads the Platform dataset and the
+With `ultralytics>=8.4.120`, the `ul://` URI downloads the Platform dataset and the
 `username/project-slug` target streams metrics back to that Platform project.
 
 ## Quickstart (detection)
