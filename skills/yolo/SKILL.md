@@ -75,15 +75,15 @@ Read the skill for the stage you're working on BEFORE writing code — each cont
 formats, argument tables with defaults, recipes, and symptom→fix tables. A request
 spanning stages ("train and deploy") → read each relevant skill.
 
-| Working on                                                                                       | Skill            |
-| ------------------------------------------------------------------------------------------------ | ---------------- |
-| choosing a model family/size/task, YOLO26 vs YOLO11, YOLO-World/YOLOE, SAM, RT-DETR              | `yolo-models`    |
-| data.yaml, labels, annotation conversion, auto-labeling, dataset analysis/errors, splits         | `yolo-datasets`  |
-| training, fine-tuning, hyperparameters, augmentation, OOM / NaN / low mAP, reading runs          | `yolo-training`  |
-| hyperparameter tuning, Ray Tune, systematic model improvement, "autotraining"                    | `yolo-tuning`    |
-| predict on images/video/streams, Results API, tracking IDs, counting/heatmaps/Solutions          | `yolo-inference` |
-| ONNX / TensorRT / CoreML / Core AI / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking | `yolo-export`    |
-| Platform API from a terminal: `ul cloud` commands, `ultralytics-platform`, scripted resource, trash, deployment, and cloud-run changes | `platform-cli` |
+| Working on                                                                                                                             | Skill            |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| choosing a model family/size/task, YOLO26 vs YOLO11, YOLO-World/YOLOE, SAM, RT-DETR                                                    | `yolo-models`    |
+| data.yaml, labels, annotation conversion, auto-labeling, dataset analysis/errors, splits                                               | `yolo-datasets`  |
+| training, fine-tuning, hyperparameters, augmentation, OOM / NaN / low mAP, reading runs                                                | `yolo-training`  |
+| hyperparameter tuning, Ray Tune, systematic model improvement, "autotraining"                                                          | `yolo-tuning`    |
+| predict on images/video/streams, Results API, tracking IDs, counting/heatmaps/Solutions                                                | `yolo-inference` |
+| ONNX / TensorRT / CoreML / Core AI / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking                                       | `yolo-export`    |
+| Platform API from a terminal: `ul cloud` commands, `ultralytics-platform`, scripted resource, trash, deployment, and cloud-run changes | `platform-cli`   |
 
 ## CLI specifics
 

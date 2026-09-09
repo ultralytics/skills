@@ -15,16 +15,16 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 
 ## 🧩 Skills
 
-| Skill                                              | Use it for                                                                                           |
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [`yolo`](skills/yolo/SKILL.md)                     | Platform and local lifecycle overview, core CLI/Python grammar, routing to the other skills          |
-| [`yolo-models`](skills/yolo-models/SKILL.md)       | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names |
-| [`yolo-datasets`](skills/yolo-datasets/SKILL.md)   | Platform upload/annotation, data.yaml, formats, converters, splitting, validation                    |
-| [`yolo-training`](skills/yolo-training/SKILL.md)   | Platform cloud/remote training, local train/val, arguments, results, troubleshooting                 |
-| [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Platform experiment comparison, improvement playbook, `model.tune()`, Ray Tune                       |
-| [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                          |
-| [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU export, quantization, benchmarking   |
-| [`platform-cli`](skills/platform-cli/SKILL.md) | Scripting Platform from a terminal with `ul cloud`: resources, uploads, trash/restore, exports, deployments, cloud training runs |
+| Skill                                              | Use it for                                                                                                                       |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| [`yolo`](skills/yolo/SKILL.md)                     | Platform and local lifecycle overview, core CLI/Python grammar, routing to the other skills                                      |
+| [`yolo-models`](skills/yolo-models/SKILL.md)       | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names                             |
+| [`yolo-datasets`](skills/yolo-datasets/SKILL.md)   | Platform upload/annotation, data.yaml, formats, converters, splitting, validation                                                |
+| [`yolo-training`](skills/yolo-training/SKILL.md)   | Platform cloud/remote training, local train/val, arguments, results, troubleshooting                                             |
+| [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Platform experiment comparison, improvement playbook, `model.tune()`, Ray Tune                                                   |
+| [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                                                      |
+| [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU export, quantization, benchmarking                               |
+| [`platform-cli`](skills/platform-cli/SKILL.md)     | Scripting Platform from a terminal with `ul cloud`: resources, uploads, trash/restore, exports, deployments, cloud training runs |
 
 Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.138; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
 

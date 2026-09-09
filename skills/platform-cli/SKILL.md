@@ -31,14 +31,14 @@ Endpoint semantics are documented in the
 ## Canonical command shapes
 
 ```bash
-ul cloud account summary                              # plan, credits, counts; `username` is your workspace
-ul cloud datasets list                                # omit owner= for your own workspace; owner=TEAM for a team
+ul cloud account summary # plan, credits, counts; `username` is your workspace
+ul cloud datasets list   # omit owner= for your own workspace; owner=TEAM for a team
 ul cloud projects create project=helmets name="Helmet Detection" visibility=private
 ul cloud models create body='{"owner":"WS","project":"helmets","model":"exp1","name":"Experiment 1"}'
 ul cloud training start model_id=MODEL_ID gpu_type=l4 \
   train_args='{"model":"yolo26n.pt","data":"ul://WS/datasets/helmets","epochs":50}'
-ul cloud models training project=helmets model=exp1  # live status, epoch progress, metrics
-ul cloud models files project=helmets model=exp1     # short-lived weights download URL
+ul cloud models training project=helmets model=exp1 # live status, epoch progress, metrics
+ul cloud models files project=helmets model=exp1    # short-lived weights download URL
 ```
 
 Argument rules:
@@ -102,20 +102,20 @@ not expose; use the UI for those.
 Commands omit the `ul cloud` prefix, the defaulted owner, and the `project=`/`model=`/
 `dataset=` path identifiers that `--help` lists.
 
-| Goal               | Commands                                                                                                                                                                                                                                                                                                       |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Inventory          | `projects list`, `datasets list`, `models list project=P`. `explore search q=... type=datasets` searches public content, which is not private inventory. Retrieve a dataset to check task, classes, splits, and readiness.                                                                                      |
-| Create             | `projects create project=slug name="Display"`, `datasets create dataset=slug name="Display" task=detect`. Set `visibility=` deliberately.                                                                                                                                                                      |
-| Copy               | `datasets clone`, `projects clone`, `models clone`: path `owner`/`project`/`model`/`dataset` name the source; `owner_body`, `project_body`, `model_body`, `dataset_body` name the destination. A model's destination project must already exist.                                                                |
-| Rename, edit, move | `<resource> update` with the changed fields only. Move a model with `models update project_id=DEST_ID` alone.                                                                                                                                                                                                  |
-| Compare runs       | `projects retrieve` for model summaries, `models list`, or `datasets models` for runs on a dataset; `models retrieve` only for missing metrics. Tabulate status, dataset/version, configuration, and requested metrics with links. Missing metrics are unknown, not zero. There is no compare command.          |
-| Weights            | `models files` returns a temporary checkpoint URL. No training or export is needed.                                                                                                                                                                                                                            |
-| Convert            | `exports create format=onnx`, then `exports retrieve export_id=ID` for progress and the download URL. `format=engine` needs `gpu_type`. Exporting does not deploy.                                                                                                                                             |
-| Dataset versions   | `datasets create-export` saves an immutable numbered snapshot and returns its signed NDJSON URL; `datasets export` (current data) or `datasets export v=N` (a saved version) returns a signed download URL; `datasets restore version=N` rolls the live dataset back in place.                                    |
-| Deploy             | `deployments create project=P model=M deployment=slug name="Display" region=us-central1`. `deployments update deployment=D body='{"action":"replace","project":"P","model":"M"}'` swaps the model on the same URL; `body='{"action":"stop"}'` and `{"action":"start"}` pause and resume it. `health` warms it. |
-| Inference          | `models predict body='{"file":"@image.jpg"}'` or `deployments predict deployment=D body='{"file":"@image.jpg"}'`; `deployments logs`/`metrics` inspect a service. `images predict image_id=ID model_id=ul://...` predicts on a dataset image without saving labels.                                             |
+| Goal               | Commands                                                                                                                                                                                                                                                                                                              |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inventory          | `projects list`, `datasets list`, `models list project=P`. `explore search q=... type=datasets` searches public content, which is not private inventory. Retrieve a dataset to check task, classes, splits, and readiness.                                                                                            |
+| Create             | `projects create project=slug name="Display"`, `datasets create dataset=slug name="Display" task=detect`. Set `visibility=` deliberately.                                                                                                                                                                             |
+| Copy               | `datasets clone`, `projects clone`, `models clone`: path `owner`/`project`/`model`/`dataset` name the source; `owner_body`, `project_body`, `model_body`, `dataset_body` name the destination. A model's destination project must already exist.                                                                      |
+| Rename, edit, move | `<resource> update` with the changed fields only. Move a model with `models update project_id=DEST_ID` alone.                                                                                                                                                                                                         |
+| Compare runs       | `projects retrieve` for model summaries, `models list`, or `datasets models` for runs on a dataset; `models retrieve` only for missing metrics. Tabulate status, dataset/version, configuration, and requested metrics with links. Missing metrics are unknown, not zero. There is no compare command.                |
+| Weights            | `models files` returns a temporary checkpoint URL. No training or export is needed.                                                                                                                                                                                                                                   |
+| Convert            | `exports create format=onnx`, then `exports retrieve export_id=ID` for progress and the download URL. `format=engine` needs `gpu_type`. Exporting does not deploy.                                                                                                                                                    |
+| Dataset versions   | `datasets create-export` saves an immutable numbered snapshot and returns its signed NDJSON URL; `datasets export` (current data) or `datasets export v=N` (a saved version) returns a signed download URL; `datasets restore version=N` rolls the live dataset back in place.                                        |
+| Deploy             | `deployments create project=P model=M deployment=slug name="Display" region=us-central1`. `deployments update deployment=D body='{"action":"replace","project":"P","model":"M"}'` swaps the model on the same URL; `body='{"action":"stop"}'` and `{"action":"start"}` pause and resume it. `health` warms it.        |
+| Inference          | `models predict body='{"file":"@image.jpg"}'` or `deployments predict deployment=D body='{"file":"@image.jpg"}'`; `deployments logs`/`metrics` inspect a service. `images predict image_id=ID model_id=ul://...` predicts on a dataset image without saving labels.                                                   |
 | Import data        | `datasets create`, then `upload signed-url body=` (`assetType`, `assetId`, `filename`, `contentType`, `totalBytes`), PUT the bytes with the returned headers, `upload complete session_id=S`, `datasets ingest body='{"sessionId":"S"}'` (or `{"sourceUrl":...}`), then retrieve until ready. Queued is not imported. |
-| Trash              | `<resource> delete` moves to 30-day trash. `lifecycle trash` lists it, `lifecycle restore id=ID type=model` undeletes, `lifecycle delete-trash body='{"id":"ID","type":"model"}'` purges one item and `body='{"all":true}'` the whole account.                                                                     |
+| Trash              | `<resource> delete` moves to 30-day trash. `lifecycle trash` lists it, `lifecycle restore id=ID type=model` undeletes, `lifecycle delete-trash body='{"id":"ID","type":"model"}'` purges one item and `body='{"all":true}'` the whole account.                                                                        |
 
 ## Cloud training
 
@@ -229,6 +229,6 @@ constraints it omits; `--help` and the error text still win when they disagree.
 
 The installed CLI is the authority: `ul version` shows the versions, `ul cloud <resource>
 <operation> --help` lists valid arguments and choices, and error text beats any command
-shape or gotcha in this file. For endpoint semantics, the
+shape or got you in this file. For endpoint semantics, the
 [Platform API reference](https://docs.ultralytics.com/platform/api) and the live
 `/openapi.json` win over memory.
