@@ -16,7 +16,7 @@ Use the same lifecycle through three complementary surfaces:
   test predictions, export, and deploy a dedicated endpoint without local setup.
 - **`ultralytics` package / `yolo` CLI** — use local or remote compute, scripts,
   notebooks, custom pipelines, and exported artifacts directly.
-- **`ul` CLI** (installed by `ultralytics` or `ultralytics-platform`) — script the Platform API itself:
+- **`ul` CLI** (Python 3.11+, installed by `ultralytics` or `ultralytics-platform`) — script the Platform API itself:
   `ul cloud <resource> <operation> key=value` lists, creates, clones, trains, exports, and
   deploys Platform resources from a terminal (see `platform-cli`).
 

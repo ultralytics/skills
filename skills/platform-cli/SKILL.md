@@ -12,11 +12,11 @@ description: >
 
 # Platform CLI (`ul cloud`)
 
-`ul` ships in `ultralytics-platform`, so both `pip install ultralytics` (which depends on it
-on Python 3.11+) and `pip install ultralytics-platform` install it. `ul cloud` calls the
-Platform API through the generated SDK; `ul login`, `ul train`, `ul predict`, and the other
-local commands delegate to the `ultralytics` package. This skill covers Platform operations,
-not model selection or hyperparameter tuning.
+`ul` needs Python 3.11+ and comes with `pip install ultralytics` or
+`pip install ultralytics-platform`. `ul cloud` calls the Platform API through the generated
+SDK; `ul login`, `ul train`, `ul predict`, and the other local commands delegate to the
+`ultralytics` package. This skill covers Platform operations, not model selection or
+hyperparameter tuning.
 
 ```bash
 pip install ultralytics                   # or `pip install ultralytics-platform`
@@ -64,10 +64,9 @@ curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
 Behavior rules:
 
 - Output is the complete API response on stdout, printed as JSON, text, or bytes according
-  to its content type; every current operation returns JSON. Download operations return
-  signed URLs, not bytes: `datasets export`, `datasets create-export`, `models files`, and a
-  completed `exports retrieve` return URLs that expire. Preserve them verbatim and fetch
-  them separately.
+  to its content type. Download operations return signed URLs, not bytes: `datasets export`,
+  `datasets create-export`, `models files`, and a completed `exports retrieve` return URLs
+  that expire. Preserve them verbatim and fetch them separately.
 - Failures go to stderr: exit 1 for API/connection errors, 2 for argument/file errors, 130
   when interrupted. Interrupting does not cancel a submitted job; use its cancel operation
   (`models delete-training`, `exports delete`, `datasets delete-batch`).
