@@ -54,7 +54,7 @@ Argument rules:
 - Object and array values accept `@file.json` or `@-` for stdin. Multipart binaries such as
   the predict `file` field accept `@path` only.
 - Help shows only `body (dict[str, Any])` for union bodies. Read that request schema from the
-  contract instead of guessing or loading the whole file:
+  production contract instead of guessing or loading the whole file:
 
 ```bash
 curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
@@ -63,11 +63,11 @@ curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
 
 Behavior rules:
 
-- Output is the complete API response on stdout, JSON for every current operation (the
-  contract declares no binary responses). Download operations return signed URLs, not
-  bytes: `datasets export`, `datasets create-export`, `models files`, and a completed
-  `exports retrieve` return URLs that expire. Preserve them verbatim and fetch them
-  separately.
+- Output is the complete API response on stdout, printed as JSON, text, or bytes according
+  to its content type; every current operation returns JSON. Download operations return
+  signed URLs, not bytes: `datasets export`, `datasets create-export`, `models files`, and a
+  completed `exports retrieve` return URLs that expire. Preserve them verbatim and fetch
+  them separately.
 - Failures go to stderr: exit 1 for API/connection errors, 2 for argument/file errors, 130
   when interrupted. Interrupting does not cancel a submitted job; use its cancel operation
   (`models delete-training`, `exports delete`, `datasets delete-batch`).

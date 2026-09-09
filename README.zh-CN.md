@@ -38,7 +38,7 @@
 pip install ultralytics
 ```
 
-这同时会安装 `platform-cli` Skill 使用的 `ul` CLI；它随 [`ultralytics-platform`](https://pypi.org/project/ultralytics-platform/) 依赖提供，也可以单独安装该包。
+在 Python 3.11+ 环境中，这同时会安装 `platform-cli` Skill 使用的 `ul` CLI；它随 [`ultralytics-platform`](https://pypi.org/project/ultralytics-platform/) 依赖提供，也可以单独安装该包。
 
 如需其他安装方式，包括 [Conda](https://anaconda.org/conda-forge/ultralytics)、[Docker](https://hub.docker.com/r/ultralytics/ultralytics) 和通过 Git 从源码构建，请参阅[快速入门指南](https://docs.ultralytics.com/quickstart)。
 

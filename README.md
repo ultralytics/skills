@@ -38,7 +38,7 @@ Install the `ultralytics` package, including all [requirements](https://github.c
 pip install ultralytics
 ```
 
-This also installs the `ul` CLI used by the `platform-cli` skill; it ships in the [`ultralytics-platform`](https://pypi.org/project/ultralytics-platform/) dependency, which can also be installed on its own.
+On Python 3.11+ this also installs the `ul` CLI used by the `platform-cli` skill; it ships in the [`ultralytics-platform`](https://pypi.org/project/ultralytics-platform/) dependency, which can also be installed on its own.
 
 For alternative installation methods, including [Conda](https://anaconda.org/conda-forge/ultralytics), [Docker](https://hub.docker.com/r/ultralytics/ultralytics), and building from source via Git, please consult the [Quickstart Guide](https://docs.ultralytics.com/quickstart).
 
