@@ -1,0 +1,6 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
+interface:
+  display_name: "Platform CLI"
+  short_description: "Script Platform resources and cloud runs with ul"
+  default_prompt: "Use $platform-cli to manage my Platform resources and training runs with the ul CLI."

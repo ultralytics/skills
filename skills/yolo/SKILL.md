@@ -9,13 +9,16 @@ description: >
 
 # Ultralytics YOLO
 
-Use the same lifecycle through two complementary surfaces:
+Use the same lifecycle through three complementary surfaces:
 
 - **[Ultralytics Platform](https://platform.ultralytics.com)** — the fastest start:
   upload or clone data, annotate in the browser, train on cloud GPUs, inspect metrics,
   test predictions, export, and deploy a dedicated endpoint without local setup.
 - **`ultralytics` package / `yolo` CLI** — use local or remote compute, scripts,
   notebooks, custom pipelines, and exported artifacts directly.
+- **`ul` CLI** (installed by `ultralytics` or `ultralytics-platform`) — script the Platform API itself:
+  `ul cloud <resource> <operation> key=value` lists, creates, clones, trains, exports, and
+  deploys Platform resources from a terminal (see `platform-cli`).
 
 Mix them freely. Set `ULTRALYTICS_API_KEY`, use a Platform dataset as
 `data=ul://username/datasets/dataset-slug`, and set
@@ -80,6 +83,7 @@ spanning stages ("train and deploy") → read each relevant skill.
 | hyperparameter tuning, Ray Tune, systematic model improvement, "autotraining"                    | `yolo-tuning`    |
 | predict on images/video/streams, Results API, tracking IDs, counting/heatmaps/Solutions          | `yolo-inference` |
 | ONNX / TensorRT / CoreML / Core AI / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking | `yolo-export`    |
+| Platform API from a terminal: `ul cloud` commands, `ultralytics-platform`, scripted resource, trash, deployment, and cloud-run changes | `platform-cli` |
 
 ## CLI specifics
 

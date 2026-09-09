@@ -24,6 +24,7 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 | [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Platform experiment comparison, improvement playbook, `model.tune()`, Ray Tune                       |
 | [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                          |
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU export, quantization, benchmarking   |
+| [`platform-cli`](skills/platform-cli/SKILL.md) | Scripting Platform from a terminal with `ul cloud`: resources, uploads, trash/restore, exports, deployments, cloud training runs |
 
 Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.138; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
 
@@ -36,6 +37,8 @@ Install the `ultralytics` package, including all [requirements](https://github.c
 ```bash
 pip install ultralytics
 ```
+
+This also installs the `ul` CLI used by the `platform-cli` skill; it ships in the [`ultralytics-platform`](https://pypi.org/project/ultralytics-platform/) dependency, which can also be installed on its own.
 
 For alternative installation methods, including [Conda](https://anaconda.org/conda-forge/ultralytics), [Docker](https://hub.docker.com/r/ultralytics/ultralytics), and building from source via Git, please consult the [Quickstart Guide](https://docs.ultralytics.com/quickstart).
 
@@ -117,7 +120,7 @@ Or simply copy (or symlink) the folders under `skills/` into your agent's skills
 - Skills are divided by lifecycle stage / user intent, not by model family.
 - Frontmatter is portable: `name` + `description` only.
 - Each lifecycle skill covers both the Platform UI and local Python/CLI path where applicable.
-- Every skill defers to the installed version at runtime: `yolo checks` (version), `yolo cfg` (valid arguments), and error messages beat any table in these files.
+- Every skill defers to the installed version at runtime: `yolo checks` (version), `yolo cfg` (valid arguments), and error messages beat any table in these files. The Platform CLI skill defers to `ul version`, `ul cloud <resource> <operation> --help`, and the live `/openapi.json`.
 
 ## 💡 Contribute
 

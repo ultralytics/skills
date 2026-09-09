@@ -24,6 +24,7 @@
 | [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Platform 实验对比、系统化改进方法、`model.tune()` 和 Ray Tune                               |
 | [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/端点、本地推理、Results API、跟踪和 Solutions                              |
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/本地 ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU 导出、量化和基准测试         |
+| [`platform-cli`](skills/platform-cli/SKILL.md) | 在终端中通过 `ul cloud` 脚本化操作 Platform：资源、上传、回收站/恢复、导出、部署和云端训练 |
 
 每个 Skill 都包含一个 `SKILL.md`（操作步骤、决策表和注意事项）以及 Codex/ChatGPT 展示元数据；必要时还会包含配套参考文件，用于保存随版本变化的目录信息（权重名称、参数表、导出格式矩阵）。软件包信息基于 `ultralytics` v8.4.138；Platform 流程基于当前的 [Platform 文档](https://docs.ultralytics.com/platform)。
 
@@ -36,6 +37,8 @@
 ```bash
 pip install ultralytics
 ```
+
+这同时会安装 `platform-cli` Skill 使用的 `ul` CLI；它随 [`ultralytics-platform`](https://pypi.org/project/ultralytics-platform/) 依赖提供，也可以单独安装该包。
 
 如需其他安装方式，包括 [Conda](https://anaconda.org/conda-forge/ultralytics)、[Docker](https://hub.docker.com/r/ultralytics/ultralytics) 和通过 Git 从源码构建，请参阅[快速入门指南](https://docs.ultralytics.com/quickstart)。
 
@@ -117,7 +120,7 @@ npx skills add ultralytics/skills -g                    # 全局安装到 ~/.cla
 - Skills 按生命周期阶段和用户意图划分，而不是按模型系列划分。
 - Frontmatter 具有可移植性，仅包含 `name` 和 `description`。
 - 每个生命周期 Skill 都会在适用时同时介绍 Platform UI 与本地 Python/CLI 路径。
-- 每个 Skill 都以安装版本的运行时信息为准：`yolo checks`（版本）、`yolo cfg`（有效参数）和错误消息优先于这些文件中的任何表格。
+- 每个 Skill 都以安装版本的运行时信息为准：`yolo checks`（版本）、`yolo cfg`（有效参数）和错误消息优先于这些文件中的任何表格。Platform CLI Skill 以 `ul version`、`ul cloud <resource> <operation> --help` 和实时的 `/openapi.json` 为准。
 
 ## 💡 贡献
 
