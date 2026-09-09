@@ -63,13 +63,18 @@ curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
 
 Behavior rules:
 
-- Every `ul cloud` operation prints JSON to stdout; none streams bytes. `datasets export`,
-  `datasets create-export`, `models files`, and a completed `exports retrieve` return signed
-  download URLs that expire. Preserve them verbatim and fetch them separately.
-- Failures go to stderr: exit 1 for API/connection errors, 2 for argument/file errors.
-  There is no `--json`, `--fields`, `--dry-run`, or automatic pagination. `list` operations
-  take only `limit=` (raise it once to its maximum); only `explore search`, `datasets images`,
-  and `deployments logs` page through `offset`/`cursor`/`page_token`.
+- Output is the complete API response on stdout, JSON for every current operation (the
+  contract declares no binary responses). Download operations return signed URLs, not
+  bytes: `datasets export`, `datasets create-export`, `models files`, and a completed
+  `exports retrieve` return URLs that expire. Preserve them verbatim and fetch them
+  separately.
+- Failures go to stderr: exit 1 for API/connection errors, 2 for argument/file errors, 130
+  when interrupted. Interrupting does not cancel a submitted job; use its cancel operation
+  (`models delete-training`, `exports delete`, `datasets delete-batch`).
+- There is no `--json`, `--fields`, `--dry-run`, or automatic pagination. `list` operations
+  take only `limit=` (raise it once to its maximum). Operations that page expose `page`,
+  `offset`, `cursor`, or `page_token` in their help; the CLI never fetches the next page, so
+  keep requesting until the response reports no more.
 - An omitted path `owner` defaults to the logged-in username after one account lookup. Pass
   `owner=TEAM` for team workspaces. Account, billing, trash, storage-integration, and Roboflow
   commands act on the credential's own account, and `account summary` does not list teams
@@ -229,6 +234,6 @@ constraints it omits; `--help` and the error text still win when they disagree.
 
 The installed CLI is the authority: `ul version` shows the versions, `ul cloud <resource>
 <operation> --help` lists valid arguments and choices, and error text beats any command
-shape or got you in this file. For endpoint semantics, the
+shape or caveat in this file. For endpoint semantics, the
 [Platform API reference](https://docs.ultralytics.com/platform/api) and the live
 `/openapi.json` win over memory.
