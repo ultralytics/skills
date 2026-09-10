@@ -188,8 +188,11 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - `projects update archived=true` only organizes; it frees nothing.
 - Deleting a project trashes its models and cancels their training.
 - Restore a parent before its children; independently trashed children need their own
-  restore. `datasets restore version=N` rolls the live dataset back in place and is not a
-  trash restore. Stop active annotation before it.
+  restore. Dataset version restore is separate: `datasets restore dataset=D version=N`
+  replaces the current images, splits, classes, and annotations with the selected snapshot.
+  It cannot be undone unless the current state was first versioned. When preservation
+  matters, first run `datasets create-export dataset=D`. Stop active annotation and wait for
+  the dataset to return to `ready` after restoring.
 - `images delete` and `images delete-bulk` are permanent and bypass trash.
 - `datasets create-export` reuses an identical existing snapshot instead of creating a
   duplicate.
