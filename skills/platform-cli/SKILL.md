@@ -92,8 +92,8 @@ Behavior rules:
 2. Read current state when it affects the change (visibility, status, existing children).
 3. Execute the smallest requested change, then verify from the response. Retrieve again when
    the response omits needed state, the write is uncertain, or the job is asynchronous.
-4. Report what actually changed, current status, warnings, and the resource link. Creating
-   an entry, accepting a job, and completing it are separate outcomes.
+4. Report what actually changed, current status, warnings, and a verified resource link when
+   one exists. Creating an entry, accepting a job, and completing it are separate outcomes.
 
 Execute clearly requested actions without repeated confirmation. For spending, sharing, or
 irreversible changes, resolve ambiguity about target or consequence first. A request for
@@ -148,7 +148,12 @@ Commands drop only the `ul cloud` prefix and the defaulted owner.
 
 Resource links use `https://platform.ultralytics.com`: projects `/{owner}/{project}`,
 datasets `/{owner}/datasets/{dataset}`, models and training `/{owner}/{project}/{model}`.
-Use returned slugs after changes; retrieve missing slugs.
+Use returned slugs after changes; retrieve missing slugs. Deployments are the exception:
+there is no per-deployment Platform page. Link to
+`/{owner}/{project}/{model}?tab=deploy` by default; use `/deploy` only when the owning model
+identifiers are unavailable. After status is `ready`, report the exact `serviceUrl` returned
+by `deployments retrieve` for inference; never construct a UI or service URL from the
+deployment ID, name, or slug.
 
 ## Operation gotchas
 
