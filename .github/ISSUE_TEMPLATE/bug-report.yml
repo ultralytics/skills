@@ -29,6 +29,7 @@ body:
         - yolo-tuning
         - yolo-inference
         - yolo-export
+        - platform-cli
         - Installation or plugin packaging
         - Other
     validations:
@@ -60,7 +61,7 @@ body:
       description: Include your agent version and `ultralytics` version when relevant.
       placeholder: |
         Agent: Codex 1.2.3
-        ultralytics: 8.4.119
+        ultralytics: 8.4.138
 
   - type: textarea
     attributes:
