@@ -24,6 +24,7 @@ body:
         - yolo-tuning
         - yolo-inference
         - yolo-export
+        - platform-cli
         - Installation or plugin packaging
         - New skill
         - Other

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to AI coding agents (Claude Code, etc.) when working with code in this repository. CLAUDE.md is a symlink to this file.
+Repository guidance for coding agents. `CLAUDE.md` is a symlink to this file.
 
 ## Core Principles (CRITICAL)
 
@@ -26,17 +26,34 @@ After opening a PR:
 4. Never fight other commits: Ultralytics Actions may push commits, and multiple users may work on the same PR. `git pull --rebase` before pushing; never reset or revert commits you did not author.
 5. After the PR merges, clean up: remove local worktrees and branches for it, then `git checkout main && git pull`.
 
-## Commands
+## Commands and validation
 
 ```bash
-python .github/scripts/lint_skills.py # validate skill frontmatter, size limits, and manifest JSON (CI command)
-claude plugin validate .              # optional: validate plugin/marketplace packaging (Claude Code CLI)
+python3 .github/scripts/lint_skills.py
+claude --plugin-dir .
 ```
 
-CI runs the lint script on every push and PR; it must pass before merge.
+The validator checks skill format, metadata, and manifest agreement; it does not execute examples or establish factual correctness. Ground package facts against the version documented in the READMEs and companion headings; inspect `yolo checks`, `yolo cfg`, `export_formats()`, and the matching package source. Ground Platform instructions against live docs and installed `ul cloud <resource> <operation> --help`. Installed plugins are cached; `claude --plugin-dir .` exercises this checkout directly.
 
-## Architecture
+## Where to look
 
-This repo is a pack of agent skills (per the [Agent Skills format](https://agentskills.io)) for Ultralytics Platform, the `ultralytics` Python package, the `yolo` CLI, and the `ul` Platform CLI (`ultralytics-platform`). It contains skill content, validation, and plugin manifests rather than a runtime Python package. `skills/` holds one directory per skill: a `SKILL.md` (frontmatter `name` + `description` only; body ≤500 lines of procedures, decision tables, and gotchas), `agents/openai.yaml` for Codex/ChatGPT presentation metadata, plus optional flat companion `.md` files for version-volatile catalogs (weight names, argument tables, export format matrix). `skills/yolo/SKILL.md` is the router: Platform and CLI/Python lifecycle guidance plus a table directing agents to the seven stage skills (models, datasets, training, tuning, inference, export, platform-cli). Plugin packaging lives in `.claude-plugin/` (plugin + marketplace manifests), `.codex-plugin/`, and `.agents/plugins/`, all pointing at the same `skills/` tree. `format.yml` runs Ultralytics Actions on PRs (Ruff, Prettier, codespell, link checks, AI labels/summaries) and commits fixes back to the PR branch.
+- Skill instructions and companion references → `skills/`.
+- Validation rules → `.github/scripts/lint_skills.py`.
+- Plugin packaging → `.claude-plugin/`, `.codex-plugin/`, `.agents/plugins/`.
+- Install and grounding version → `README.md`, `README.zh-CN.md`.
+- Skill dropdowns → `.github/ISSUE_TEMPLATE/`.
 
-Skill content conventions: descriptions state when to use the skill (with trigger keywords), never summarize its workflow; facts are grounded against a pinned `ultralytics` version (currently v8.4.138) and every skill ends by deferring to the installed version (`yolo checks`, `yolo cfg`, `ul version`, `ul cloud <resource> <operation> --help`, error messages) over its own tables. `platform-cli` is deliberately not pinned to an `ultralytics-platform` version; its facts defer to the installed CLI's help and the live `/openapi.json`. When a new ultralytics release changes defaults, update the companion catalog files rather than rewriting SKILL.md bodies.
+## Conventions
+
+- `SKILL.md` frontmatter is exactly two keys, `name` and `description`, and must be the very first bytes of the file. Do not add a license header or blank line above it, and do not add vendor keys (`license`, `metadata`, `allowed-tools`) — the linter rejects any third key. House style (not linted) writes `description` as a YAML folded scalar (`description: >` followed by indented lines) so it wraps in the file.
+- Descriptions state when to use the skill (with trigger keywords), never summarize its workflow. Where two skills border each other, the description says which sibling to use instead (`yolo-export` ↔ `yolo-inference`, `yolo-training` ↔ `yolo-tuning`, `platform-cli` → `yolo`).
+- Version-volatile catalogs (weight names, argument tables, export format matrix, Solutions list) live in flat companion `.md` files next to `SKILL.md` and are referenced from a `## Related pages` section by filename; keep them flat (no subdirectories). The three package-derived catalogs (`training-args.md`, `format-matrix.md`, `weights-catalog.md`) carry the grounded version in their `# Title (v8.4.138)` heading; `label-formats.md` and `solutions.md` do not.
+- Facts are grounded against a pinned `ultralytics` version (currently v8.4.138, stated in `README.md`, `README.zh-CN.md`, this file, and the companion-file headings) and every skill ends by deferring to the installed version (`yolo checks`, `yolo cfg`, `ul version`, `ul cloud <resource> <operation> --help`, error messages) over its own tables. `platform-cli` is deliberately not pinned to an `ultralytics-platform` version; its facts defer to the installed CLI's help and the live `/openapi.json`. When a new ultralytics release changes defaults, update the companion catalog files rather than rewriting SKILL.md bodies.
+- Stage skills cover both surfaces: `yolo-datasets`, `yolo-training`, `yolo-inference`, and `yolo-export` open with a `## Fastest route: ... in Platform` section, `yolo-models` with `## Choose in Platform`, and `yolo-tuning` puts `## Compare experiments in Platform` right after its playbook; the local `yolo`/Python path follows, and training, inference, and export end with a `## Troubleshooting` symptom→fix table. Follow the existing bodies for house style: `key=value` arguments (never `--flags`), YOLO26 as the default recommendation, no "v" in YOLO11/YOLO26 (only legacy YOLOv8/YOLOv10 keep it), `best.pt` for inference and `last.pt` only for `resume=True`, `stream=True` for video, `quantize=` rather than the deprecated `half=`/`int8=`.
+- `agents/openai.yaml` and the lint script carry the `# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license` header; Markdown files carry no header.
+- Links: use canonical Ultralytics URLs without trailing slashes (`https://docs.ultralytics.com/platform`, `https://www.ultralytics.com`) and follow redirects to their final target before committing; `format.yml` runs a Lychee link check on PRs, and #9 canonicalized redirected and trailing-slash URLs repo-wide.
+- Ultralytics-owned PyPI packages use `MAJOR.MINOR.PATCH` versions only; no suffixes.
+
+## Pitfalls
+
+- Every directory under `skills/` is treated as a skill. Do not park drafts, shared assets, or `__pycache__` there.
