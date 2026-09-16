@@ -280,8 +280,10 @@ constraints it omits; `--help` and the error text still win when they disagree.
   `tp`/`fp`/`fn`/`f1` use IoU 0.50 at a confidence threshold the run did not record, so
   they cannot rebuild metrics at another threshold.
 - `models find-similar-training-images project=P model=M` searches public datasets from
-  the run's worst validation images, excluding its training dataset; it is available only
-  inside the model's workspace. `hashes=H1,H2` must all come from
+  the run's worst validation images, excluding its training dataset. This read-only search
+  requires access to the model's workspace, including viewer access; it does not require
+  edit access or a non-connected training dataset. Adding candidates to a dataset is a
+  separate write operation. `hashes=H1,H2` must all come from
   `analysis.cohorts.worst.examples[].hash`; any other hash rejects the whole request. A run
   without a captured cohort returns an empty list; missing run/dataset identifiers or
   unavailable embeddings return errors instead.
