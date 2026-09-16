@@ -196,6 +196,7 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - Trashing a project also trashes its models and cancels their training. Both
   `projects delete` and `models delete` permanently delete attached deployments during
   the trash operation; restoring the project or model does not restore deployments.
+  HTTP 502 means cleanup is incomplete; inspect deployments before reporting them deleted.
   If deployments are attached, explain this consequence and obtain explicit authorization
   before trashing, unless the user's request already covers their permanent deletion.
 - Restore a parent before its children; independently trashed children need their own
