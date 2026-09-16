@@ -189,10 +189,15 @@ constraints it omits; `--help` and the error text still win when they disagree.
 
 ### Delete, trash, restore
 
+- `lifecycle delete-trash` is irreversible. Run it only when the user explicitly requests
+  permanent deletion of the specified items; `body='{"all":true}'` requires an explicit
+  request to empty all workspace trash. Otherwise, leave purging to the user in the UI.
 - `projects update archived=true` only organizes; it frees nothing.
-- Deleting a project trashes its models and cancels their training. Deleting a project
-  or model also permanently deletes its deployments; restoring from trash does not
-  restore those deployments.
+- Trashing a project also trashes its models and cancels their training. Both
+  `projects delete` and `models delete` permanently delete attached deployments during
+  the trash operation; restoring the project or model does not restore deployments.
+  If deployments are attached, explain this consequence and obtain explicit authorization
+  before trashing, unless the user's request already covers their permanent deletion.
 - Restore a parent before its children; independently trashed children need their own
   restore. Dataset version restore is separate: `datasets restore dataset=D version=N`
   replaces the current images, splits, classes, and annotations with the selected snapshot.
