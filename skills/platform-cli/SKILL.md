@@ -236,31 +236,35 @@ constraints it omits; `--help` and the error text still win when they disagree.
   small; pass `nextCursor` as `cursor` while `hasMore`. The cursor works only with the
   default `newest`/`oldest` sort; other sorts page with `offset`. Equal `hash` values mean
   the same stored bytes, not visual similarity.
-- `search=TERM` matches substrings of filenames (extension optional) and custom metadata
-  with no field selector, so retrieve matches to verify which field hit. A 32-hex term
+- `search=TERM` matches substrings of filenames (extension optional) and metadata keys,
+  scalar values, and array entries, but not values inside nested objects. There is no
+  field selector; retrieve matches to verify which field hit. A 32-hex term
   matches the content `hash` exactly and a 24-hex term matches the image ID, so
   `search=HASH` finds every stored copy of an image without exporting.
-- Listings omit custom `metadata`; `images retrieve image_id=ID` returns it with the full
-  labels. Listed labels are a capped preview: honor `labelsTruncated` and compare returned
-  lengths with `labelCount`. `datasets selected-images dataset=D image_ids='["ID1","ID2"]'`
-  fetches known IDs with the same optional fields; `images urls image_ids=[...]` refreshes
-  signed URLs for up to 100 IDs from one dataset. The `datasets export` NDJSON carries every
-  image's metadata and annotations for bulk aggregation.
+- Listings omit custom `metadata`; `images retrieve image_id=ID` returns it with labels.
+  Both listing and retrieval can truncate labels: honor `labelsTruncated` and compare
+  returned lengths with `labelCount` or retrieval's `properties.annotationCount`.
+  `datasets selected-images dataset=D image_ids='["ID1","ID2"]'` fetches known IDs with
+  the same optional fields; `images urls image_ids=[...]` refreshes
+  signed URLs for up to 100 IDs from one dataset. `datasets export dataset=D` provides
+  NDJSON metadata and annotations for bulk aggregation; On Premise datasets cannot export.
 - `images find-similar-images image_id=ID` returns up to 24 near neighbors from public
   datasets, excluding the image's own dataset and near-duplicate copies of the query. It
   takes only an existing image ID. HTTP 404 `not_embedded` means no embedding is currently
   available for the image's hash; embeddings come from dataset analysis, so an unanalyzed
   dataset's image is searchable only when the same content was analyzed elsewhere.
 - `datasets embeddings dataset=D` reports analysis freshness and progress.
-  `datasets clustering dataset=D` returns 2D UMAP points, not raw embeddings; the default
-  `limit` returns the whole layout, and `nextOffset` pages as `offset` otherwise.
+  `datasets clustering dataset=D` returns 2D UMAP points, not raw embeddings; pass
+  `nextOffset` as `offset` while `hasMore`, including with the default page size.
   `not_analyzed` means no layout exists; use returned IDs with `selected-images` for
   details. `create-embeddings` starts analysis; `delete-embeddings` cancels it, not images.
 
 ### Model analysis and similarity
 
-- `models retrieve project=P model=M analysis=1` returns per-image validation `analysis`
-  instead of model details; null means no completed detection run has recorded results.
+- `models retrieve project=P model=M analysis=1` requires authentication and returns
+  per-image validation `analysis` instead of model details; null means analysis is
+  unavailable. A completed detection run with recorded per-image results is required;
+  a missing dataset version or manifest leaves scores available without image traits.
   Before generalizing, compare `population` with `retained` and read `coverage.mode`:
   only `full` covers every validation image. `traitsAvailable` gates `comparisons` (image
   traits versus F1); `cohorts.worst` and `.best` give whole-cohort `count` and `metrics`
@@ -273,12 +277,14 @@ constraints it omits; `--help` and the error text still win when they disagree.
   the run's worst validation images, excluding its training dataset; it is available only
   inside the model's workspace. `hashes=H1,H2` must all come from
   `analysis.cohorts.worst.examples[].hash`; any other hash rejects the whole request. A run
-  without recorded per-image results returns an empty list.
+  without a captured cohort returns an empty list; missing run/dataset identifiers or
+  unavailable embeddings return errors instead.
 
 ### Connected storage
 
-- Connected datasets are indexed in place, not copied. They cannot take appended uploads,
-  versions, clones, or batch annotation.
+- Connected datasets (cloud storage or On Premise) are indexed in place, not copied.
+  They cannot take appended uploads, versions, clones, batch annotation, or new embedding
+  analysis; do not start analysis to obtain a missing clustering layout.
 - Disconnecting an integration leaves provider objects intact but breaks dataset access
   until the same account reconnects. Roboflow credentials are separate from Platform
   credentials.
