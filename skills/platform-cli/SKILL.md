@@ -274,7 +274,8 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - `models retrieve project=P model=M analysis=1` requires authentication and returns
   per-image validation `analysis` instead of model details; null means analysis is
   unavailable. A completed detection run with recorded per-image results is required;
-  a missing dataset version or manifest leaves scores available without image traits.
+  a missing dataset version or manifest returns scores with `traitsAvailable=false`
+  and `coverage.mode="unavailable"`, not null analysis.
   Before generalizing, compare `population` with `retained` and read `coverage.mode`:
   only `full` covers every validation image. `traitsAvailable` gates `comparisons` (image
   traits versus F1); `cohorts.worst` and `.best` give whole-cohort `count` and `metrics`
