@@ -90,7 +90,8 @@ Behavior rules:
 1. Resolve the requested outcome and target. Use exact supplied identifiers; otherwise list
    and pick one unambiguous match. For several matches, inspect distinguishing metadata and
    ask when the target or consequence stays ambiguous. A bounded listing does not prove
-   absence; broaden discovery or report what was searched.
+   absence; broaden discovery or report what was searched. Retrieve named datasets in the
+   caller's workspace; public Explore is not private inventory.
 2. Read current state when it affects the change (visibility, status, existing children).
 3. Execute the smallest requested change, then verify from the response. Retrieve again when
    the response omits needed state, the write is uncertain, or the job is asynchronous.
@@ -232,6 +233,9 @@ constraints it omits; `--help` and the error text still win when they disagree.
 
 ### Dataset inspection and analysis
 
+- For duplicates or split leakage, group all image records by hash and compare IDs and splits.
+  Storage deduplication does not prevent duplicate records. Use small pages or a downloaded
+  export; if records are missing or clipped, report partial coverage, not zero duplicates.
 - `datasets retrieve dataset=D` returns task, classes, splits, and counts.
   `datasets class-stats dataset=D` returns distributions and heatmaps; a set `sampleSize`
   means the stats came from a capped subset, and histogram bins carry a `size` width.
@@ -278,7 +282,9 @@ constraints it omits; `--help` and the error text still win when they disagree.
   manifest, not the current dataset. `scatterSample.rows` are
   `[f1, width, height, pixels, aspectRatio, instanceCount]` points. Per-image
   `tp`/`fp`/`fn`/`f1` use IoU 0.50 at a confidence threshold the run did not record, so
-  they cannot rebuild metrics at another threshold.
+  they cannot rebuild metrics at another threshold. Check the model's reported precision/recall
+  before diagnosing poor performance; these counts alone do not establish deployment precision
+  or explain a particular false positive.
 - `models find-similar-training-images project=P model=M` searches public datasets from
   the run's worst validation images, excluding its training dataset. Use credentials with
   access to the model's workspace. The command returns candidates without adding them to
