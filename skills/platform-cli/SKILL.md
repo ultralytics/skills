@@ -257,7 +257,7 @@ constraints it omits; `--help` and the error text still win when they disagree.
   Both listing and retrieval can truncate labels: honor `labelsTruncated` and compare
   returned lengths with `labelCount` or retrieval's `properties.annotationCount`.
   `datasets selected-images dataset=D image_ids='["ID1","ID2"]'` fetches known IDs with
-  the same optional fields; `images urls image_ids=[...]` refreshes
+  the same optional fields; `images urls image_ids='["ID1","ID2"]'` refreshes
   signed URLs for up to 100 IDs from one dataset. `datasets export dataset=D` provides
   NDJSON metadata and annotations for bulk aggregation; On Premise datasets cannot export.
 - `images find-similar-images image_id=ID` returns up to 24 near neighbors from public
