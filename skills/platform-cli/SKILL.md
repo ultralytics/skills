@@ -91,7 +91,9 @@ Behavior rules:
    and pick one unambiguous match. For several matches, inspect distinguishing metadata and
    ask when the target or consequence stays ambiguous. A bounded listing does not prove
    absence; broaden discovery or report what was searched. Retrieve named datasets in the
-   caller's workspace; public Explore is not private inventory.
+   caller's workspace; use Explore to find new public datasets. Before recommending them
+   for training, verify clone eligibility, labels, and splits. If none match or search fails,
+   say so.
 2. Read current state when it affects the change (visibility, status, existing children).
 3. Execute the smallest requested change, then verify from the response. Retrieve again when
    the response omits needed state, the write is uncertain, or the job is asynchronous.
