@@ -2,5 +2,5 @@
 
 interface:
   display_name: "Platform CLI"
-  short_description: "Script Platform resources and cloud runs with ul"
-  default_prompt: "Use $platform-cli to manage my Platform resources and training runs with the ul CLI."
+  short_description: "Script and inspect Platform resources with the ul cloud CLI"
+  default_prompt: "Use $platform-cli to manage and inspect my Platform datasets, models, training runs, and usage with the ul cloud CLI."

@@ -24,7 +24,7 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 | [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Platform experiment comparison, improvement playbook, `model.tune()`, Ray Tune                                                   |
 | [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                                                      |
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU export, quantization, benchmarking                               |
-| [`platform-cli`](skills/platform-cli/SKILL.md)     | Scripting Platform from a terminal with `ul cloud`: resources, uploads, trash/restore, exports, deployments, cloud training runs |
+| [`platform-cli`](skills/platform-cli/SKILL.md)     | Scripting Platform with `ul cloud`: resources, dataset inspection, cloud training, model analysis, exports, deployments, billing |
 
 Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.138; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
 
