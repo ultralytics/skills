@@ -27,8 +27,8 @@ into your working directory. These three need `ultralytics` installed; the
 
 ```bash
 ul cloud train model=yolo26n.pt data=ul://WS/datasets/helmets epochs=100 # → weights/best.pt, results.csv
-ul cloud predict model=ul://WS/helmets/exp1 source=video.mp4            # → annotated output
-ul cloud export model=ul://WS/helmets/exp1 format=onnx                  # → downloaded artifact
+ul cloud predict model=ul://WS/helmets/exp1 source=video.mp4             # → annotated output
+ul cloud export model=ul://WS/helmets/exp1 format=onnx                   # → downloaded artifact
 ```
 
 Mix them freely. Set `ULTRALYTICS_API_KEY`, use a Platform dataset as
