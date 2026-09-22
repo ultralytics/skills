@@ -28,7 +28,7 @@ without canceling training. All four shortcuts need `ultralytics` installed; the
 
 ```bash
 ul cloud train model=yolo26n.pt data=ul://WS/datasets/helmets epochs=100 # → run URI and download command
-ul cloud download model=ul://OWNER/PROJECT/MODEL                         # → weights/best.pt and results
+ul cloud download model=ul://WS/helmets/exp1                             # → weights/best.pt and results
 ul cloud predict model=ul://WS/helmets/exp1 source=video.mp4             # → annotated output
 ul cloud export model=ul://WS/helmets/exp1 format=onnx                   # → downloaded artifact
 ```
