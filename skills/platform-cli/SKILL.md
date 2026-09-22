@@ -38,7 +38,7 @@ ul cloud datasets list   # omit owner= for your own workspace; owner=TEAM for a 
 ul cloud projects create project=helmets name="Helmet Detection" visibility=private
 ul cloud train model=yolo26n.pt data=ul://WS/datasets/helmets project=helmets name=exp1 epochs=50
 ul cloud models training project=helmets model=exp1 # live status, epoch progress, metrics
-ul cloud download model=ul://WS/helmets/exp1         # use the returned run URI; waits and saves results
+ul cloud download model=ul://WS/helmets/exp1        # use the returned run URI; waits and saves results
 ```
 
 API resource argument rules:
