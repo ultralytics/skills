@@ -24,7 +24,7 @@ hyperparameter tuning.
 pip install ultralytics                   # or `pip install ultralytics-platform`
 export ULTRALYTICS_API_KEY="YOUR_API_KEY" # or `ul login API_KEY`
 ul cloud --help                           # every resource and operation
-ul cloud training start --help            # one operation's arguments, types, and choices
+ul cloud train --help                     # training workflow arguments
 ```
 
 Endpoint semantics are documented in the
@@ -36,14 +36,12 @@ Endpoint semantics are documented in the
 ul cloud account summary # plan, credits, counts; `username` is your workspace
 ul cloud datasets list   # omit owner= for your own workspace; owner=TEAM for a team
 ul cloud projects create project=helmets name="Helmet Detection" visibility=private
-ul cloud models create body='{"owner":"WS","project":"helmets","model":"exp1","name":"Experiment 1"}'
-ul cloud training start model_id=MODEL_ID gpu_type=l4 \
-  train_args='{"model":"yolo26n.pt","data":"ul://WS/datasets/helmets","epochs":50}'
+ul cloud train model=yolo26n.pt data=ul://WS/datasets/helmets project=helmets name=exp1 epochs=50
 ul cloud models training project=helmets model=exp1 # live status, epoch progress, metrics
-ul cloud models files project=helmets model=exp1    # short-lived weights download URL
+ul cloud download model=ul://WS/helmets/exp1         # use the returned run URI; waits and saves results
 ```
 
-Argument rules:
+API resource argument rules:
 
 - Arguments are SDK Python names as `key=value` (`gpu_type`, `project_id`), never
   `--key value`. A bare boolean means `true`. Quote JSON for the shell.
@@ -65,10 +63,9 @@ curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
 
 Behavior rules:
 
-- Output is the complete API response on stdout, printed as JSON, text, or bytes according
-  to its content type. Download operations return signed URLs, not bytes: `datasets export`,
-  `datasets create-export`, `models files`, and a completed `exports retrieve` return URLs
-  that expire. Preserve them verbatim and fetch them separately.
+- API resource commands print the complete response on stdout as JSON, text, or bytes.
+  `datasets export`, `datasets create-export`, `models files`, and completed
+  `exports retrieve` return expiring URLs; preserve them verbatim and fetch them separately.
 - Failures go to stderr: exit 1 for API/connection errors, 2 for argument/file errors, 130
   when interrupted. Interrupting does not cancel a submitted job; use its cancel operation
   (`models delete-training`, `exports delete`, `datasets delete-batch`).
@@ -131,15 +128,18 @@ Commands drop only the `ul cloud` prefix and the defaulted owner.
 
 1. Resolve the workspace, project, a ready dataset, starting weights, and requested settings.
    Check `training gpu-availability` before choosing `gpu_type`; cloud training spends
-   credits. `data` must use the dataset's actual owner, which may differ from the model's.
-2. `models create body=...` with `owner`, `project`, the `model` slug, and `name` for a new
-   experiment. Reuse a pending entry from a failed start after checking its state.
-3. `training start model_id=ID gpu_type=... train_args=...` with a fresh `train_args`
-   holding `model`, `data`, and numeric `epochs` plus requested settings. Omit `device`.
-   Do not copy stored worker arguments wholesale; saved data paths may be worker-local.
-4. `models training` or `models retrieve` for progress. Return the run link and actual
-   status without waiting for completion unless asked. `models delete-training` cancels a
-   run and keeps its entry; never start an active run again.
+   credits. Dataset URIs must use the dataset's actual owner, which may differ from the model's.
+2. `train` requires `ultralytics`, uploads local inputs, creates a new run, and returns
+   after submission with the model URI, GPU/cost estimate, run link, and download command.
+   Return the link and actual status without waiting unless asked.
+3. Add `watch` to follow training and download results, or later use
+   `download model=ul://OWNER/PROJECT/MODEL` with the returned URI. It waits if needed and
+   saves `weights/best.pt`, `args.yaml`, `results.json`, and optional `results.csv`
+   under YOLO's save directory. Ctrl-C stops waiting but leaves training running.
+4. For an existing model entry, use `training start model_id=ID gpu_type=... train_args=...`
+   with fresh `model`, `data`, and numeric `epochs`; omit `device` and worker-local paths.
+   Inspect `models training` or `models retrieve` before retrying; another `train` creates
+   another run. `models delete-training` cancels and keeps the entry; never restart an active run.
 
 ## Recover
 
@@ -325,8 +325,7 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - Export `delete` cancels a running conversion or removes the finished file; the source
   model is untouched.
 
-The installed CLI is the authority: `ul version` shows the versions, `ul cloud <resource>
-<operation> --help` lists valid arguments and choices, and error text beats any command
-shape or caveat in this file. For endpoint semantics, the
-[Platform API reference](https://docs.ultralytics.com/platform/api) and the live
-`/openapi.json` win over memory.
+The installed CLI is the authority: `ul version` shows versions; `ul cloud <command> --help`
+and `ul cloud <resource> <operation> --help` list valid arguments. Help and errors beat
+this file. For endpoint semantics, the [Platform API reference](https://docs.ultralytics.com/platform/api)
+and live `/openapi.json` win over memory.

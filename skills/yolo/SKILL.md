@@ -20,13 +20,13 @@ Use the same lifecycle through three complementary surfaces:
   `ul cloud <resource> <operation> key=value` lists, creates, clones, trains, exports, and
   deploys Platform resources from a terminal (see `platform-cli`).
 
-`ul cloud train|predict|export` are the local-first shortcuts over that API: they upload
-your local weights, dataset, or source, run on Platform GPUs, and write the results back
-into your working directory. These three need `ultralytics` installed; the
-`ul cloud <resource> <operation>` commands do not.
+`ul cloud train|predict|export` upload local inputs as needed and run on Platform.
+Training returns after submission; add `watch` to follow and download results, or use
+`ul cloud download` later. These shortcuts need `ultralytics` installed; the
+`ul cloud <resource> <operation>` commands do not. See `platform-cli` for run handling.
 
 ```bash
-ul cloud train model=yolo26n.pt data=ul://WS/datasets/helmets epochs=100 # → weights/best.pt, results.csv
+ul cloud train model=yolo26n.pt data=ul://WS/datasets/helmets epochs=100 # → run URI and download command
 ul cloud predict model=ul://WS/helmets/exp1 source=video.mp4             # → annotated output
 ul cloud export model=ul://WS/helmets/exp1 format=onnx                   # → downloaded artifact
 ```
