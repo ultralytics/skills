@@ -45,8 +45,8 @@ ul cloud models files project=helmets model=exp1    # short-lived weights downlo
 
 Argument rules:
 
-- The command shapes in this file match the current CLI. Run `--help` only for an operation or
-  argument this file does not show, or after an argument error.
+- Use the command shapes shown here without a preliminary `--help` call. Check operation help
+  when a needed argument is missing or after an argument error.
 - Arguments are SDK Python names as `key=value` (`gpu_type`, `project_id`), never
   `--key value`. A bare boolean means `true`. Quote JSON for the shell.
 - An operation takes one `body=` JSON object exactly when its help lists
@@ -58,9 +58,9 @@ Argument rules:
   `args` are still JSON values.
 - Object and array values accept `@file.json` or `@-` for stdin. Multipart binaries such as
   the predict `file` field accept `@path` only.
-- Help lists each union body's key sets, with `?` marking optional keys. For value types, read
-  that request schema from the production contract instead of guessing or loading the whole
-  file:
+- Help may show only `body (dict[str, Any])`; SDKs with body-shape help also list top-level
+  keys, with `?` marking optional ones. For value types, read the request schema from the
+  production contract instead of guessing or loading the whole file:
 
 ```bash
 curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
@@ -76,8 +76,10 @@ Behavior rules:
 - Failures go to stderr: exit 1 for API/connection errors, 2 for argument/file errors, 130
   when interrupted. Interrupting does not cancel a submitted job; use its cancel operation
   (`models delete-training`, `exports delete`, `datasets delete-batch`).
-- There is no `--json`, `--fields`, `--dry-run`, or automatic pagination. `list` operations
-  differ in filters and pagination; inspect their help. Operations that page expose `page`,
+- There is no `--json`, `--fields`, `--dry-run`, or automatic pagination. `datasets list`
+  (`limit`, `include_samples`, `include_image_urls`) and `projects list` (`limit`) take no
+  `offset` or `search`; pass `include_samples=false` to keep dataset listings small.
+  `models list` requires `project=`. Operations that page expose `page`,
   `offset`, `cursor`, or `page_token`; the CLI never fetches the next page. Follow returned
   continuation fields until exhausted. A limit-only listing may still be incomplete.
 - An omitted path `owner` defaults to the logged-in username after one account lookup. Pass
@@ -87,14 +89,16 @@ Behavior rules:
 - Display names, URL slugs, database IDs, and URIs are distinct. Training data is
   `ul://OWNER/datasets/DATASET`; starting weights are a checkpoint name or
   `ul://OWNER/PROJECT/MODEL`. Carry returned IDs and slugs into the next command; retrieve
-  missing identifiers instead of inferring them from names or URLs.
+  missing identifiers instead of inferring them from names or URLs. Take a named dataset's or
+  project's slug from its listing before retrieving it.
 
 ## Working method
 
 1. Resolve the requested outcome and target. Use exact supplied identifiers; otherwise list
    and pick one unambiguous match. For several matches, inspect distinguishing metadata and
-   ask when the target or consequence stays ambiguous. A bounded listing does not prove
-   absence; broaden discovery or report what was searched. Retrieve named datasets in the
+   ask when the target or consequence stays ambiguous. When a named resource is not found,
+   say so and offer the closest matches; never substitute another one. A bounded listing does
+   not prove absence; broaden discovery or report what was searched. Retrieve named datasets in the
    caller's workspace; use Explore to find new public datasets. Explore `q` matches one literal
    phrase, so search one short keyword per call (`aerial`, then `UAV`) and narrow with
    `task=`; there is no relevance sort. Before recommending them for training, verify clone
@@ -223,10 +227,14 @@ constraints it omits; `--help` and the error text still win when they disagree.
   `images predict` alone saves nothing. Retrieve first for a partial edit, and when the
   retrieve reports `labelsTruncated`, do not overwrite the labels you did not see.
 - `datasets create-batch` persists labels and saves a version, normally on unlabeled images
-  only. `include_annotated=true` also processes labeled images while retaining old labels.
-  `delete-batch` cancels or dismisses a run without undoing labels already saved.
-- Annotation prediction needs compatible tasks and classes or a `class_mapping`, and rejects
-  connected, depth, and more-than-three-channel datasets.
+  only. Use `datasets create-batch dataset=D body='{"modelId":"ul://OWNER/PROJECT/MODEL"}'`;
+  `"includeAnnotated":true` in its body also processes labeled images while retaining old
+  labels. `delete-batch` cancels or dismisses a run without undoing labels already saved.
+- `datasets create-batch dataset=D body='{"operation":"blur"}'` blurs faces in the dataset's
+  images (one image with `imageId`) and saves no version; run `datasets create-export` first
+  when the originals matter.
+- Annotation prediction needs compatible tasks and classes or a `classMapping` in its body.
+  It rejects connected, depth, and more-than-three-channel datasets.
 
 ### Classes, splits, task
 
