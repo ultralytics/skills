@@ -45,18 +45,22 @@ ul cloud models files project=helmets model=exp1    # short-lived weights downlo
 
 Argument rules:
 
+- The command shapes in this file match the current CLI. Run `--help` only for an operation or
+  argument this file does not show, or after an argument error.
 - Arguments are SDK Python names as `key=value` (`gpu_type`, `project_id`), never
   `--key value`. A bare boolean means `true`. Quote JSON for the shell.
 - An operation takes one `body=` JSON object exactly when its help lists
   `body (dict[str, Any])`. These are the operations whose API request is a union of
   shapes: `models create`, `deployments update`, `images update`, `lifecycle delete-trash`,
-  `datasets ingest`, `upload signed-url`, `storage-integrations create`/`discover`, and
-  `models predict`/`deployments predict`. Every other operation takes flat fields; nested
-  objects such as `train_args`, `metadata`, and `args` are still JSON values.
+  `datasets ingest`, `datasets create-batch`, `upload signed-url`,
+  `storage-integrations create`/`discover`, and `models predict`/`deployments predict`. Every
+  other operation takes flat fields; nested objects such as `train_args`, `metadata`, and
+  `args` are still JSON values.
 - Object and array values accept `@file.json` or `@-` for stdin. Multipart binaries such as
   the predict `file` field accept `@path` only.
-- Help shows only `body (dict[str, Any])` for union bodies. Read that request schema from the
-  production contract instead of guessing or loading the whole file:
+- Help lists each union body's key sets, with `?` marking optional keys. For value types, read
+  that request schema from the production contract instead of guessing or loading the whole
+  file:
 
 ```bash
 curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
@@ -91,9 +95,10 @@ Behavior rules:
    and pick one unambiguous match. For several matches, inspect distinguishing metadata and
    ask when the target or consequence stays ambiguous. A bounded listing does not prove
    absence; broaden discovery or report what was searched. Retrieve named datasets in the
-   caller's workspace; use Explore to find new public datasets. Before recommending them
-   for training, verify clone eligibility, labels, and splits. If none match or search fails,
-   say so.
+   caller's workspace; use Explore to find new public datasets. Explore `q` matches one literal
+   phrase, so search one short keyword per call (`aerial`, then `UAV`) and narrow with
+   `task=`; there is no relevance sort. Before recommending them for training, verify clone
+   eligibility, labels, and splits. If none match or search fails, say so.
 2. Read current state when it affects the change (visibility, status, existing children).
 3. Execute the smallest requested change, then verify from the response. Retrieve again when
    the response omits needed state, the write is uncertain, or the job is asynchronous.
@@ -241,9 +246,10 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - `datasets retrieve dataset=D` returns task, classes, splits, and counts.
   `datasets class-stats dataset=D` returns distributions and heatmaps; a set `sampleSize`
   means the stats came from a capped subset, and histogram bins carry a `size` width.
-- `datasets images dataset=D` filters by `split`, `has_label`, `has_error`, `class_ids`,
-  and `search`. For counts alone, use `limit=1` and read `total` (included by default), not
-  the page length. `has_error` means a recorded processing error. Disable
+- List a dataset's images with `datasets images dataset=D` (there is no `images list`); it
+  filters by `split`, `has_label`, `has_error`, `class_ids`, and `search`. For counts alone,
+  use `limit=1` and read `total` (included by default), not the page length. `has_error`
+  means a recorded processing error. Disable
   `include_thumbnails`, `include_image_urls`, and `include_labels` to keep inventory pages
   small; pass `nextCursor` as `cursor` while `hasMore`. The cursor works only with the
   default `newest`/`oldest` sort; other sorts page with `offset`. Equal `hash` values mean
@@ -256,10 +262,11 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - Listings omit custom `metadata`; `images retrieve image_id=ID` returns it with labels.
   Both listing and retrieval can truncate labels: honor `labelsTruncated` and compare
   returned lengths with `labelCount` or retrieval's `properties.annotationCount`.
-  `datasets selected-images dataset=D image_ids='["ID1","ID2"]'` fetches known IDs with
-  the same optional fields; `images urls image_ids='["ID1","ID2"]'` refreshes
-  signed URLs for up to 100 IDs from one dataset. `datasets export dataset=D` provides
-  NDJSON metadata and annotations for bulk aggregation; On Premise datasets cannot export.
+  `datasets selected-images dataset=D image_ids='["ID1","ID2"]'` fetches several known IDs in
+  one call, not one `images retrieve` each, with the same optional fields;
+  `images urls image_ids='["ID1","ID2"]'` refreshes signed URLs for up to 100 IDs from one
+  dataset. `datasets export dataset=D` provides NDJSON metadata and annotations for bulk
+  aggregation; On Premise datasets cannot export.
 - `images find-similar-images image_id=ID` returns up to 24 near neighbors from public
   datasets, excluding the image's own dataset and near-duplicate copies of the query. It
   takes only an existing image ID. HTTP 404 `not_embedded` means no embedding is currently
