@@ -99,9 +99,9 @@ Behavior rules:
    ask when the target or consequence stays ambiguous. When a named resource is not found,
    say so and offer the closest matches; never substitute another one. A bounded listing does
    not prove absence; broaden discovery or report what was searched. Retrieve named datasets in the
-   caller's workspace; use Explore to find new public datasets. Explore `q` matches one literal
-   phrase, so search one short keyword per call (`aerial`, then `UAV`) and narrow with
-   `task=`; there is no relevance sort. Before recommending them for training, verify clone
+   caller's workspace; use Explore to find new public datasets. Start Explore searches with one short keyword (`aerial`, then `UAV`) and narrow with
+   `task=`; dataset search uses token autocomplete, while project search matches literal
+   substrings. There is no relevance sort. Before recommending them for training, verify clone
    eligibility, labels, and splits. If none match or search fails, say so.
 2. Read current state when it affects the change (visibility, status, existing children).
 3. Execute the smallest requested change, then verify from the response. Retrieve again when
@@ -233,8 +233,9 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - `datasets create-batch dataset=D body='{"operation":"blur"}'` blurs faces in the dataset's
   images (one image with `imageId`) and saves no version; run `datasets create-export` first
   when the originals matter.
-- Annotation prediction needs compatible tasks and classes or a `classMapping` in its body.
-  It rejects connected, depth, and more-than-three-channel datasets.
+- Annotation prediction needs compatible tasks and classes, or an explicit mapping:
+  `class_mapping=` for `images predict`, `classMapping` inside `body=` for
+  `datasets create-batch`. It rejects connected, depth, and more-than-three-channel datasets.
 
 ### Classes, splits, task
 
