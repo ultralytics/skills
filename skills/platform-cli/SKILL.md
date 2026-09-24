@@ -45,18 +45,21 @@ ul cloud models files project=helmets model=exp1    # short-lived weights downlo
 
 Argument rules:
 
+- Use the command shapes shown here without a preliminary `--help` call. Check operation help
+  when a needed argument is missing or after an argument error.
 - Arguments are SDK Python names as `key=value` (`gpu_type`, `project_id`), never
   `--key value`. A bare boolean means `true`. Quote JSON for the shell.
 - An operation takes one `body=` JSON object exactly when its help lists
   `body (dict[str, Any])`. These are the operations whose API request is a union of
   shapes: `models create`, `deployments update`, `images update`, `lifecycle delete-trash`,
-  `datasets ingest`, `upload signed-url`, `storage-integrations create`/`discover`, and
-  `models predict`/`deployments predict`. Every other operation takes flat fields; nested
-  objects such as `train_args`, `metadata`, and `args` are still JSON values.
+  `datasets ingest`, `datasets create-batch`, `upload signed-url`,
+  `storage-integrations create`/`discover`, and `models predict`/`deployments predict`. Every
+  other operation takes flat fields; nested objects such as `train_args`, `metadata`, and
+  `args` are still JSON values.
 - Object and array values accept `@file.json` or `@-` for stdin. Multipart binaries such as
   the predict `file` field accept `@path` only.
-- Help shows only `body (dict[str, Any])` for union bodies. Read that request schema from the
-  production contract instead of guessing or loading the whole file:
+- For body keys and value types, read the request schema from the production contract
+  instead of guessing or loading the whole file:
 
 ```bash
 curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
@@ -72,8 +75,10 @@ Behavior rules:
 - Failures go to stderr: exit 1 for API/connection errors, 2 for argument/file errors, 130
   when interrupted. Interrupting does not cancel a submitted job; use its cancel operation
   (`models delete-training`, `exports delete`, `datasets delete-batch`).
-- There is no `--json`, `--fields`, `--dry-run`, or automatic pagination. `list` operations
-  differ in filters and pagination; inspect their help. Operations that page expose `page`,
+- There is no `--json`, `--fields`, `--dry-run`, or automatic pagination. `datasets list`
+  (`limit`, `include_samples`, `include_image_urls`) and `projects list` (`limit`) take no
+  `offset` or `search`; pass `include_samples=false` to keep dataset listings small.
+  `models list` requires `project=`. Operations that page expose `page`,
   `offset`, `cursor`, or `page_token`; the CLI never fetches the next page. Follow returned
   continuation fields until exhausted. A limit-only listing may still be incomplete.
 - An omitted path `owner` defaults to the logged-in username after one account lookup. Pass
@@ -83,17 +88,20 @@ Behavior rules:
 - Display names, URL slugs, database IDs, and URIs are distinct. Training data is
   `ul://OWNER/datasets/DATASET`; starting weights are a checkpoint name or
   `ul://OWNER/PROJECT/MODEL`. Carry returned IDs and slugs into the next command; retrieve
-  missing identifiers instead of inferring them from names or URLs.
+  missing identifiers instead of inferring them from names or URLs. Take a named dataset's or
+  project's slug from its listing before retrieving it.
 
 ## Working method
 
 1. Resolve the requested outcome and target. Use exact supplied identifiers; otherwise list
    and pick one unambiguous match. For several matches, inspect distinguishing metadata and
-   ask when the target or consequence stays ambiguous. A bounded listing does not prove
-   absence; broaden discovery or report what was searched. Retrieve named datasets in the
-   caller's workspace; use Explore to find new public datasets. Before recommending them
-   for training, verify clone eligibility, labels, and splits. If none match or search fails,
-   say so.
+   ask when the target or consequence stays ambiguous. When a named resource is not found,
+   say so and offer the closest matches; never substitute another one. A bounded listing does
+   not prove absence; broaden discovery or report what was searched. Retrieve named datasets in the
+   caller's workspace; use Explore to find new public datasets. Start with one short keyword
+   (`aerial`, then `UAV`) and narrow with `task=`; dataset search uses token autocomplete, while project search matches literal
+   substrings. There is no relevance sort. Before recommending them for training, verify clone
+   eligibility, labels, and splits. If none match or search fails, say so.
 2. Read current state when it affects the change (visibility, status, existing children).
 3. Execute the smallest requested change, then verify from the response. Retrieve again when
    the response omits needed state, the write is uncertain, or the job is asynchronous.
@@ -218,10 +226,15 @@ constraints it omits; `--help` and the error text still win when they disagree.
   `images predict` alone saves nothing. Retrieve first for a partial edit, and when the
   retrieve reports `labelsTruncated`, do not overwrite the labels you did not see.
 - `datasets create-batch` persists labels and saves a version, normally on unlabeled images
-  only. `include_annotated=true` also processes labeled images while retaining old labels.
-  `delete-batch` cancels or dismisses a run without undoing labels already saved.
-- Annotation prediction needs compatible tasks and classes or a `class_mapping`, and rejects
-  connected, depth, and more-than-three-channel datasets.
+  only. Use `datasets create-batch dataset=D body='{"modelId":"ul://OWNER/PROJECT/MODEL"}'`;
+  `"includeAnnotated":true` in its body also processes labeled images while retaining old
+  labels. `delete-batch` cancels or dismisses a run without undoing labels already saved.
+- `datasets create-batch dataset=D body='{"operation":"blur"}'` blurs faces in the dataset's
+  images (one image with `imageId`) and saves no version; run `datasets create-export` first
+  when the originals matter.
+- Annotation prediction needs compatible tasks and classes, or an explicit mapping:
+  `class_mapping=` for `images predict`, `classMapping` inside `body=` for
+  `datasets create-batch`. It rejects connected, depth, and more-than-three-channel datasets.
 
 ### Classes, splits, task
 
@@ -241,9 +254,10 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - `datasets retrieve dataset=D` returns task, classes, splits, and counts.
   `datasets class-stats dataset=D` returns distributions and heatmaps; a set `sampleSize`
   means the stats came from a capped subset, and histogram bins carry a `size` width.
-- `datasets images dataset=D` filters by `split`, `has_label`, `has_error`, `class_ids`,
-  and `search`. For counts alone, use `limit=1` and read `total` (included by default), not
-  the page length. `has_error` means a recorded processing error. Disable
+- List a dataset's images with `datasets images dataset=D` (there is no `images list`); it
+  filters by `split`, `has_label`, `has_error`, `class_ids`, and `search`. For counts alone,
+  use `limit=1` and read `total` (included by default), not the page length. `has_error`
+  means a recorded processing error. Disable
   `include_thumbnails`, `include_image_urls`, and `include_labels` to keep inventory pages
   small; pass `nextCursor` as `cursor` while `hasMore`. The cursor works only with the
   default `newest`/`oldest` sort; other sorts page with `offset`. Equal `hash` values mean
@@ -256,10 +270,11 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - Listings omit custom `metadata`; `images retrieve image_id=ID` returns it with labels.
   Both listing and retrieval can truncate labels: honor `labelsTruncated` and compare
   returned lengths with `labelCount` or retrieval's `properties.annotationCount`.
-  `datasets selected-images dataset=D image_ids='["ID1","ID2"]'` fetches known IDs with
-  the same optional fields; `images urls image_ids='["ID1","ID2"]'` refreshes
-  signed URLs for up to 100 IDs from one dataset. `datasets export dataset=D` provides
-  NDJSON metadata and annotations for bulk aggregation; On Premise datasets cannot export.
+  `datasets selected-images dataset=D image_ids='["ID1","ID2"]'` fetches several known IDs in
+  one call, not one `images retrieve` each, with the same optional fields;
+  `images urls image_ids='["ID1","ID2"]'` refreshes signed URLs for up to 100 IDs from one
+  dataset. `datasets export dataset=D` provides NDJSON metadata and annotations for bulk
+  aggregation; On Premise datasets cannot export.
 - `images find-similar-images image_id=ID` returns up to 24 near neighbors from public
   datasets, excluding the image's own dataset and near-duplicate copies of the query. It
   takes only an existing image ID. HTTP 404 `not_embedded` means no embedding is currently
