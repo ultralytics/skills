@@ -58,9 +58,8 @@ Argument rules:
   `args` are still JSON values.
 - Object and array values accept `@file.json` or `@-` for stdin. Multipart binaries such as
   the predict `file` field accept `@path` only.
-- Help may show only `body (dict[str, Any])`; SDKs with body-shape help also list top-level
-  keys, with `?` marking optional ones. For value types, read the request schema from the
-  production contract instead of guessing or loading the whole file:
+- For body keys and value types, read the request schema from the production contract
+  instead of guessing or loading the whole file:
 
 ```bash
 curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
@@ -99,8 +98,8 @@ Behavior rules:
    ask when the target or consequence stays ambiguous. When a named resource is not found,
    say so and offer the closest matches; never substitute another one. A bounded listing does
    not prove absence; broaden discovery or report what was searched. Retrieve named datasets in the
-   caller's workspace; use Explore to find new public datasets. Start Explore searches with one short keyword (`aerial`, then `UAV`) and narrow with
-   `task=`; dataset search uses token autocomplete, while project search matches literal
+   caller's workspace; use Explore to find new public datasets. Start with one short keyword
+   (`aerial`, then `UAV`) and narrow with `task=`; dataset search uses token autocomplete, while project search matches literal
    substrings. There is no relevance sort. Before recommending them for training, verify clone
    eligibility, labels, and splits. If none match or search fails, say so.
 2. Read current state when it affects the change (visibility, status, existing children).
