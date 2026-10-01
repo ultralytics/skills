@@ -8,9 +8,8 @@ description: >
   monitoring cloud training runs; per-image model validation analysis; downloading
   weights, exports, deployments, uploads, trash and restore, storage integrations, and
   account usage, storage, and billing; and building Agents (YOLO, LLM, gate, and alert
-  workflows). For the Platform web UI or local yolo commands,
-  see yolo; for choosing what to train and how to improve it, see yolo-training and
-  yolo-tuning.
+  workflows). For the Platform web UI or local yolo commands, see yolo; for choosing
+  what to train and how to improve it, see yolo-training and yolo-tuning.
 ---
 
 # Platform CLI (`ul cloud`)
@@ -133,7 +132,7 @@ Commands drop only the `ul cloud` prefix and the defaulted owner.
 | Deploy             | `deployments create project=P model=M deployment=slug name="Display" region=us-central1`. `deployments update deployment=D body='{"action":"replace","project":"P","model":"M"}'` swaps the model on the same URL; `body='{"action":"stop"}'` and `{"action":"start"}` pause and resume it. `deployments health deployment=D` warms it.                  |
 | Usage, services    | `account storage`, `billing usage-summary`, and `billing transactions` inspect workspace usage; `deployments list`, `retrieve`, `logs`, and `metrics` inspect endpoints. See [Usage and billing](#usage-and-billing) and [Compute](#compute) for filters and pagination.                                                                                 |
 | Inference          | `models predict project=P model=M body='{"file":"@image.jpg"}'` or `deployments predict deployment=D body='{"file":"@image.jpg"}'`. `images predict image_id=ID model_id=ul://...` predicts on a dataset image without saving labels.                                                                                                                    |
-| Agents             | `agents save name="Display" graph='{...}' version=0` creates a canvas Agent; read `agents save --help` for blocks first. Use real datasets, models, deployments, and detectable classes; fix returned `errors`. Edit: `agents list id=ID`, then `agents save id=ID version=V` with the full graph.                                                       |
+| Agents             | `agents save name="Display" graph='{...}' version=0` creates a canvas Agent; read `agents save --help` for blocks first. Use real datasets, models, deployments, and detectable classes; fix returned `errors`. Edit: `agents list id=ID`, then `agents save id=ID name=N version=V` with the full graph.                                                |
 | Import data        | `datasets create dataset=D name="Display"`, then `upload signed-url body=` (`assetType`, `assetId`, `filename`, `contentType`, `totalBytes`), PUT the bytes with the returned headers, `upload complete session_id=S`, `datasets ingest dataset=D body='{"sessionId":"S"}'` (or `{"sourceUrl":...}`), then retrieve until ready. Queued is not imported. |
 | Trash              | `projects delete project=P`, `datasets delete dataset=D`, and `models delete project=P model=M` move them to 30-day trash. `lifecycle trash` lists it, `lifecycle restore id=ID type=model` undeletes, `lifecycle delete-trash body='{"id":"ID","type":"model"}'` purges one item, and `body='{"all":true}'` permanently empties all workspace trash.    |
 
