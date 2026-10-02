@@ -255,6 +255,9 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - `datasets retrieve dataset=D` returns task, classes, splits, and counts.
   `datasets class-stats dataset=D` returns distributions and heatmaps; a set `sampleSize`
   means the stats came from a capped subset, and histogram bins carry a `size` width.
+  In `objectsPerImageHistogram`, `bin` is the lower bound: `bin=0, size=6` counts
+  images with 0–5 objects, not just zero objects. For the unlabeled-image count, use
+  `datasets images dataset=D has_label=false limit=1` and read `total`.
 - List a dataset's images with `datasets images dataset=D` (there is no `images list`); it
   filters by `split`, `has_label`, `has_error`, `class_ids`, and `search`. For counts alone,
   use `limit=1` and read `total` (included by default), not the page length. `has_error`
