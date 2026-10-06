@@ -58,13 +58,10 @@ Argument rules:
   `args` are still JSON values.
 - Object and array values accept `@file.json` or `@-` for stdin. Multipart binaries such as
   the predict `file` field accept `@path` only.
-- For body keys and value types, read the request schema from the production contract
-  instead of guessing or loading the whole file:
-
-```bash
-curl -s https://platform.ultralytics.com/openapi.json | python3 -c \
-  "import json,sys; print(json.dumps(json.load(sys.stdin)['paths']['/api/models']['post']['requestBody'], indent=1))"
-```
+- For body keys and value types, read only the operation's request schema, such as
+  `paths["/api/models"].post.requestBody`, from the production contract at
+  `https://platform.ultralytics.com/openapi.json`, instead of guessing or loading the whole
+  file.
 
 Behavior rules:
 
