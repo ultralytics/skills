@@ -35,6 +35,10 @@
     "websiteURL": "https://www.ultralytics.com",
     "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
     "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",
+    "logo": "./assets/logo.svg",
+    "logoDark": "./assets/logo-dark.svg",
+    "composerIcon": "./assets/logo.svg",
+    "composerIconDark": "./assets/logo-dark.svg",
     "defaultPrompt": [
       "Run YOLO on a sample image and show me what it detects",
       "Turn my images into a custom YOLO model, labeled and trained in Ultralytics Platform",
