@@ -1,7 +1,7 @@
 ---
 name: yolo-models
 description: >
-  Use when choosing or comparing Ultralytics models in Platform or code — picking a model family (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM/SAM2/FastSAM, RT-DETR, YOLO-NAS), size (n/s/m/l/x), task variant (-seg, -sem, -cls, -pose, -obb, -depth), pretrained checkpoint, open-vocabulary or promptable detection/segmentation, or custom architecture, Platform Explore, or exact weight names and availability.
+  Use when choosing or comparing Ultralytics models in Platform or code — picking a model family (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM/SAM2/FastSAM, RT-DETR, YOLO-NAS), size (n/s/m/l/x), task variant (-seg, -sem, -cls, -pose, -obb, -depth), pretrained checkpoint, open-vocabulary or promptable detection/segmentation, custom architecture, Platform Explore, or exact weight names and availability.
 ---
 
 # Choosing an Ultralytics model
