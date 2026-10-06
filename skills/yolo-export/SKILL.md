@@ -99,7 +99,7 @@ Produces the task metric + latency per exportable format **on this machine**. Re
 | Engine fails on another machine                           | TensorRT engines are device+version specific — rebuild on target                                                                                                                                                                            |
 | CoreML export fails on Windows                            | export on macOS or Linux                                                                                                                                                                                                                    |
 | Core AI export is unavailable                             | requires macOS 26+ on Apple silicon or x86_64 Linux (glibc 2.34+), torch>=2.8, and Python 3.11–3.14; use CoreML for broader production support                                                                                              |
-| Deprecation warnings for `half`/`int8`/`end2end`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `end2end=True→nms=False`, `end2end=False→nms=None`, `tflite→litert`) — switch to the new names                                                                                       |
+| Deprecation warnings for `half`/`int8`/`end2end`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `end2end=True→nms=False`, `end2end=False→nms=None` unless `nms=True` is also passed, `tflite→litert`) — switch to the new names                                                      |
 
 ## Related pages
 
