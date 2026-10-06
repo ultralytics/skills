@@ -45,8 +45,8 @@ ul cloud models files project=helmets model=exp1    # short-lived weights downlo
 
 Argument rules:
 
-- Use the command shapes shown here without a preliminary `--help` call. Check operation help
-  when a needed argument is missing or after an argument error.
+- Use the command shapes shown here without a preliminary `--help` call. Check operation
+  help when a needed argument is missing or after an argument error.
 - Arguments are SDK Python names as `key=value` (`gpu_type`, `project_id`), never
   `--key value`. A bare boolean means `true`. Quote JSON for the shell.
 - An operation takes one `body=` JSON object exactly when its help lists
@@ -75,8 +75,8 @@ Behavior rules:
 - There is no `--json`, `--fields`, `--dry-run`, or automatic pagination. `datasets list`
   (`limit`, `include_samples`, `include_image_urls`) and `projects list` (`limit`) take no
   `offset` or `search`; pass `include_samples=false` to keep dataset listings small.
-  `models list` requires `project=`. Operations that page expose `page`,
-  `offset`, `cursor`, or `page_token`; the CLI never fetches the next page. Follow returned
+  `models list` requires `project=`. Operations that page expose `page`, `offset`,
+  `cursor`, or `page_token`; the CLI never fetches the next page. Follow returned
   continuation fields until exhausted. A limit-only listing may still be incomplete.
 - An omitted path `owner` defaults to the logged-in username after one account lookup. Pass
   `owner=TEAM` for team workspaces. Account, billing, trash, storage-integration, and Roboflow
@@ -93,11 +93,12 @@ Behavior rules:
 1. Resolve the requested outcome and target. Use exact supplied identifiers; otherwise list
    and pick one unambiguous match. For several matches, inspect distinguishing metadata and
    ask when the target or consequence stays ambiguous. When a named resource is not found,
-   say so and offer the closest matches; never substitute another one. A bounded listing does
-   not prove absence; broaden discovery or report what was searched. Retrieve named datasets in the
-   caller's workspace; use Explore to find new public datasets. Start with one short keyword
-   (`aerial`, then `UAV`) and narrow with `task=`; dataset search uses token autocomplete, while project search matches literal
-   substrings. There is no relevance sort. Before recommending them for training, verify clone
+   say so and offer the closest matches; never substitute another one. A bounded listing
+   does not prove absence; broaden discovery or report what was searched. Retrieve named
+   datasets in the caller's workspace; use Explore to find new public datasets. Start with
+   one short keyword (`aerial`, then `UAV`) and narrow with `task=`; dataset search uses
+   token autocomplete, while project search matches literal substrings. There is no
+   relevance sort. Before recommending a public dataset for training, verify clone
    eligibility, labels, and splits. If none match or search fails, say so.
 2. Read current state when it affects the change (visibility, status, existing children).
 3. Execute the smallest requested change, then verify from the response. Retrieve again when
@@ -113,7 +114,7 @@ not expose; use the UI for those.
 
 ## Workflows
 
-Commands drop only the `ul cloud` prefix and the defaulted owner.
+Commands below omit the `ul cloud` prefix and the default `owner`.
 
 | Goal               | Commands                                                                                                                                                                                                                                                                                                                                                 |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -256,16 +257,16 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - List a dataset's images with `datasets images dataset=D` (there is no `images list`); it
   filters by `split`, `has_label`, `has_error`, `class_ids`, and `search`. For counts alone,
   use `limit=1` and read `total` (included by default), not the page length. `has_error`
-  means a recorded processing error. Disable
-  `include_thumbnails`, `include_image_urls`, and `include_labels` to keep inventory pages
-  small; pass `nextCursor` as `cursor` while `hasMore`. The cursor works only with the
-  default `newest`/`oldest` sort; other sorts page with `offset`. Equal `hash` values mean
-  the same stored bytes, not visual similarity.
+  means a recorded processing error. Disable `include_thumbnails`, `include_image_urls`,
+  and `include_labels` to keep inventory pages small; pass `nextCursor` as `cursor` while
+  `hasMore`. The cursor works only with the default `newest`/`oldest` sort; other sorts
+  page with `offset`. Equal `hash` values mean the same stored bytes, not visual
+  similarity.
 - `search=TERM` matches substrings of filenames (extension optional) and metadata keys,
   scalar values, and array entries, but not values inside nested objects. There is no
-  field selector; retrieve matches to verify which field hit. A 32-hex term
-  matches the content `hash` exactly and a 24-hex term matches the image ID, so
-  `search=HASH` finds every stored copy of an image without exporting.
+  field selector; retrieve matches to verify which field hit. A 32-hex term matches the
+  content `hash` exactly and a 24-hex term matches the image ID, so `search=HASH` finds
+  every stored copy of an image without exporting.
 - Listings omit custom `metadata`; `images retrieve image_id=ID` returns it with labels.
   Both listing and retrieval can truncate labels: honor `labelsTruncated` and compare
   returned lengths with `labelCount` or retrieval's `properties.annotationCount`.
@@ -289,26 +290,25 @@ constraints it omits; `--help` and the error text still win when they disagree.
 
 - `models retrieve project=P model=M analysis=1` requires authentication and returns
   per-image validation `analysis` instead of model details; null means analysis is
-  unavailable. A completed detection run with recorded per-image results is required;
-  a missing dataset version or manifest returns scores with `traitsAvailable=false`
-  and `coverage.mode="unavailable"`, not null analysis.
-  Before generalizing, compare `population` with `retained` and read `coverage.mode`:
-  only `full` covers every validation image. `traitsAvailable` gates `comparisons` (image
-  traits versus F1); `cohorts.worst` and `.best` give whole-cohort `count` and `metrics`
-  but only the first 100 rows as `examples`, whose labels come from the run's saved
-  manifest, not the current dataset. `scatterSample.rows` are
-  `[f1, width, height, pixels, aspectRatio, instanceCount]` points. Per-image
-  `tp`/`fp`/`fn`/`f1` use IoU 0.50 at a confidence threshold the run did not record, so
-  they cannot rebuild metrics at another threshold. Check the model's reported precision/recall
-  before diagnosing poor performance; these counts alone do not establish deployment precision
-  or explain a particular false positive.
+  unavailable. A completed detection run with recorded per-image results is required; a
+  missing dataset version or manifest returns scores with `traitsAvailable=false` and
+  `coverage.mode="unavailable"`, not null analysis. Before generalizing, compare
+  `population` with `retained` and read `coverage.mode`: only `full` covers every
+  validation image. `traitsAvailable` gates `comparisons` (image traits versus F1);
+  `cohorts.worst` and `.best` give whole-cohort `count` and `metrics` but only the first
+  100 rows as `examples`, whose labels come from the run's saved manifest, not the current
+  dataset. `scatterSample.rows` are `[f1, width, height, pixels, aspectRatio, instanceCount]`
+  points. Per-image `tp`/`fp`/`fn`/`f1` use IoU 0.50 at a confidence threshold the run
+  did not record, so they cannot rebuild metrics at another threshold. Check the model's
+  reported precision/recall before diagnosing poor performance; these counts alone do not
+  establish deployment precision or explain a particular false positive.
 - `models find-similar-training-images project=P model=M` searches public datasets from
   the run's worst validation images, excluding its training dataset. Use credentials with
   access to the model's workspace. The command returns candidates without adding them to
-  the dataset. `hashes=H1,H2` must all come from
-  `analysis.cohorts.worst.examples[].hash`; any other hash rejects the whole request. A run
-  without a captured cohort returns an empty list; missing run/dataset identifiers or
-  unavailable embeddings return errors instead.
+  the dataset. `hashes=H1,H2` must all come from `analysis.cohorts.worst.examples[].hash`;
+  any other hash rejects the whole request. A run without a captured cohort returns an
+  empty list; missing run/dataset identifiers or unavailable embeddings return errors
+  instead.
 
 ### Connected storage
 
@@ -339,8 +339,8 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - Export `delete` cancels a running conversion or removes the finished file; the source
   model is untouched.
 
-The installed CLI is the authority: `ul version` shows the versions, `ul cloud <resource>
-<operation> --help` lists valid arguments and choices, and error text beats any command
-shape or caveat in this file. For endpoint semantics, the
+The installed CLI is the authority: `ul version` shows the versions,
+`ul cloud <resource> <operation> --help` lists valid arguments and choices, and error text
+beats any command shape or caveat in this file. For endpoint semantics, the
 [Platform API reference](https://docs.ultralytics.com/platform/api) and the live
 `/openapi.json` win over memory.

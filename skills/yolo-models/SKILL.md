@@ -18,9 +18,10 @@ auto-download on first use; `sam3.pt` requires manual access and download.
 
 ## Choose in Platform
 
-For the quickest no-code start, open [Platform Explore](https://platform.ultralytics.com/explore),
-select **Projects**, clone the official `@ultralytics` project for the model family, then
-train one of its pretrained models on your dataset. The **New Model** dialog filters base
+For the quickest no-code start, open
+[Platform Explore](https://platform.ultralytics.com/explore), select **Projects**, clone
+the official `@ultralytics` project for the model family, then train one of its
+pretrained models on your dataset. The **New Model** dialog filters base
 models to the selected dataset task and offers official models plus your own completed
 checkpoints for further fine-tuning.
 
@@ -59,8 +60,9 @@ Notes on the newer tasks:
 - **semantic** (`-sem`): dataset uses PNG masks via `masks_dir` (default `masks/`) or
   polygon labels; metric is mIoU.
 - **depth** (`-depth`): targets are scaled uint16 PNG maps (preferred) or floating-point
-  `.npy` maps in meters; metric is delta1. Exposes a unique `model.calibrate(data=...)`
-  step that fits a metric-scale correction, then `model.save(...)` to persist it.
+  `.npy` maps in meters; metric is delta1. Depth models also expose
+  `model.calibrate(data=...)`, which fits a metric-scale correction; persist it with
+  `model.save(...)`.
 
 ## Family cheat sheet
 

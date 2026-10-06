@@ -102,8 +102,8 @@ each supported precision and benchmark on deployment hardware, not your dev box.
 - In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize,
   BGR→RGB, /255) and output decoding.
 - Detect output layout differs: end-to-end YOLO26 emits final
-  `[x1,y1,x2,y2,conf,cls]` rows. If export disables end-to-end, YOLO26—like
-  YOLO11/v8—emits raw `[4+nc, anchors]` heads; where supported, `nms=True` wraps them.
+  `[x1,y1,x2,y2,conf,cls]` rows. If export disables end-to-end, YOLO26 emits raw
+  `[4+nc, anchors]` heads like YOLO11/v8; where supported, `nms=True` wraps them.
   Set `end2end=False nms=True` to request that path explicitly. Segment, pose, and OBB
   add task-specific outputs. Check export warnings and shapes.
 - Class names travel in export metadata where supported; otherwise ship the `names`

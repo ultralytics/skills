@@ -151,10 +151,12 @@ into val and inflate mAP. For classify: `split_classify_dataset(source_dir, 0.8)
 
 3. **Task-loader smoke test** — run one epoch with matching task/model/data; this builds
    the real dataset and produces task-aware training plots (detection example):
+
    ```bash
    yolo detect train data=data.yaml model=yolo26n.pt epochs=1 fraction=0.1
    # inspect runs/detect/train/train_batch0.jpg — boxes must sit on objects
    ```
+
 4. **Distribution sanity** — check task-appropriate class/target balance and split
    leakage. For box tasks, also inspect very small boxes at train `imgsz` and the
    background-image share.

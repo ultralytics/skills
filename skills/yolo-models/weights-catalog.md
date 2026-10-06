@@ -3,7 +3,7 @@
 `ultralytics.utils.downloads.GITHUB_ASSETS_NAMES` is the package-known fast-path set, not
 an exhaustive release catalog. The downloader also queries configured live release assets
 for other names. Use the exact names and patterns below and official model/task docs; do not
-guess or interpolate them. SAM 3 is the noted gated exception.
+guess or interpolate them. SAM 3 is gated and needs a manual download (see below).
 
 ## YOLO detectors and task variants
 

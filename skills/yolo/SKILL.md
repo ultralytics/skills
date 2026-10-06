@@ -9,16 +9,17 @@ description: >
 
 # Ultralytics YOLO
 
-Use the same lifecycle through three complementary surfaces:
+Run the same lifecycle on three complementary surfaces:
 
 - **[Ultralytics Platform](https://platform.ultralytics.com)** — the fastest start:
   upload or clone data, annotate in the browser, train on cloud GPUs, inspect metrics,
   test predictions, export, and deploy a dedicated endpoint without local setup.
 - **`ultralytics` package / `yolo` CLI** — use local or remote compute, scripts,
   notebooks, custom pipelines, and exported artifacts directly.
-- **`ul` CLI** (Python 3.11+, installed by `ultralytics` or `ultralytics-platform`) — script the Platform API itself:
-  `ul cloud <resource> <operation> key=value` lists, creates, clones, trains, exports, and
-  deploys Platform resources from a terminal (see `platform-cli`).
+- **`ul` CLI** (Python 3.11+, installed by `ultralytics` or `ultralytics-platform`) —
+  script the Platform API itself: `ul cloud <resource> <operation> key=value` lists,
+  creates, clones, trains, exports, and deploys Platform resources from a terminal (see
+  `platform-cli`).
 
 `ul cloud train|predict|export` upload local inputs as needed and run on Platform.
 Training returns after submission; add `watch` to follow and download results.
@@ -38,8 +39,8 @@ Mix them freely. Set `ULTRALYTICS_API_KEY`, use a Platform dataset as
 `project=username/project-slug name=experiment` during local training to stream its
 metrics back to Platform.
 
-One API, two surfaces. The CLI grammar is `yolo TASK MODE arg=value ...`; Python mirrors
-it with the same argument names:
+The `yolo` CLI and Python share one API. The CLI grammar is `yolo TASK MODE arg=value ...`,
+and Python takes the same argument names:
 
 ```bash
 yolo detect train data=data.yaml model=yolo26n.pt epochs=100 imgsz=640
@@ -141,6 +142,6 @@ Parsing rules that matter:
 6. **Prefer built-ins over custom code**: dataset converters and checkers
    (`ultralytics.data`), trackers, and Solutions modules replace whole categories of
    hand-written glue.
-7. **Trust the installed version over memory** — if an argument is rejected
-   (`yolo checks` shows the version), the API moved: `yolo cfg` and the error text list
-   valid arguments; prefer those over any table in these skills.
+7. **Trust the installed version over memory** — if an argument is rejected, the API has
+   moved: `yolo cfg` and the error text list valid arguments, and `yolo checks` shows the
+   version. Prefer them over any table in these skills.

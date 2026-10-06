@@ -82,19 +82,19 @@ BGR), torch tensor, or a list of these. `vid_stride=N` processes every Nth frame
 | `augment`      | False   | test-time augmentation: +accuracy, ~3× slower                                                                                   |
 | `verbose`      | True    | False in loops to silence per-frame logs                                                                                        |
 
-Saving/drawing: `save`, `save_txt`, `save_conf`, `save_crop`, `show`, `line_width` →
-`runs/<task>/predict*/`.
-
 `quantize=16` also rounds OpenVINO and Triton inputs to FP16 and returns Triton
 outputs as FP16. It replaces the deprecated `half` argument.
+
+Saving/drawing: `save`, `save_txt`, `save_conf`, `save_crop`, `show`, `line_width` →
+`runs/<task>/predict*/`.
 
 ## Results API
 
 Each `Results` has the task's payload — `.boxes`, `.masks`, `.keypoints`, `.probs`
 (classify), `.obb`, `.semantic_mask`, `.depth` — plus `.names` (id→name), `.orig_img`
 (BGR), `.speed`, and methods `.plot()`, `.show()`, `.save()`, `.save_txt()`,
-`.save_crop()`, `.summary()`, and exports `to_df()` / `to_csv()` / `to_json()` (these
-three only).
+`.save_crop()`, and `.summary()`. The only exporters are `to_df()`, `to_csv()`, and
+`to_json()`.
 
 ```python
 r = results[0]
