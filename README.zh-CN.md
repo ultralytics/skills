@@ -6,12 +6,9 @@
 
 面向 [Ultralytics Platform](https://platform.ultralytics.com)、[`ultralytics`](https://github.com/ultralytics/ultralytics) Python 包和 `yolo` CLI 的 Agent Skills。它们帮助 AI 编程智能体（Claude Code、Codex、Cursor，以及任何支持 [Agent Skills 格式](https://agentskills.io)的智能体）掌握完整的计算机视觉生命周期：数据/标注 → 训练 → 调优 → 推理/跟踪 → 导出/部署。
 
-[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml)
-[![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
+[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml) [![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
 
-[![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics)
-[![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com)
-[![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
+[![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics) [![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com) [![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
 
 ## 🧩 Skills
 
@@ -26,7 +23,7 @@
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/本地 ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU 导出、量化和基准测试         |
 | [`platform-cli`](skills/platform-cli/SKILL.md)     | 通过 `ul cloud` 脚本化操作 Platform：资源、数据集检查、云端训练、模型分析、导出、部署、用量 |
 
-每个 Skill 都包含一个 `SKILL.md`（操作步骤、决策表和注意事项）以及 Codex/ChatGPT 展示元数据；必要时还会包含配套参考文件，用于保存随版本变化的目录信息（权重名称、参数表、导出格式矩阵）。软件包信息基于 `ultralytics` v8.4.138；Platform 流程基于当前的 [Platform 文档](https://docs.ultralytics.com/platform)。
+每个 Skill 都由一个 `SKILL.md`（操作步骤、决策表和注意事项）和 `agents/openai.yaml` 中的 Codex 与 ChatGPT 展示元数据组成。随版本变化的目录信息（权重名称、参数表、导出格式）保存在同一目录的配套文件中。软件包信息基于 `ultralytics` v8.4.138；Platform 流程基于当前的 [Platform 文档](https://docs.ultralytics.com/platform)。
 
 ## 📦 安装
 
@@ -92,8 +89,7 @@ codex plugin marketplace add .
 codex plugin add yolo@ultralytics
 ```
 
-编辑后请重启 Codex。要拉取 GitHub 源的新版本，请运行
-`codex plugin marketplace upgrade ultralytics`，然后运行 `codex plugin add yolo@ultralytics`。
+编辑后请重启 Codex。要拉取 GitHub 源的新版本，请运行 `codex plugin marketplace upgrade ultralytics`，然后运行 `codex plugin add yolo@ultralytics`。
 
 </details>
 
@@ -121,6 +117,10 @@ npx skills add ultralytics/skills -g                    # 全局安装到 ~/.cla
 - Frontmatter 具有可移植性，仅包含 `name` 和 `description`。
 - 每个生命周期 Skill 都会在适用时同时介绍 Platform UI 与本地 Python/CLI 路径。
 - 每个 Skill 都以安装版本的运行时信息为准：`yolo checks`（版本）、`yolo cfg`（有效参数）和错误消息优先于这些文件中的任何表格。Platform CLI Skill 以 `ul version`、`ul cloud <resource> <operation> --help` 和实时的 `/openapi.json` 为准。
+
+## 🔒 数据与网络访问
+
+本插件仅包含说明文字，加载时不会运行任何内容。它建议的命令可能会下载软件包、权重、数据集和公开的 Platform API 架构；`ul cloud` 命令会使用你的 API 密钥将你提供的文件上传到 [Ultralytics Platform](https://platform.ultralytics.com)。`ultralytics` 软件包还会发送匿名使用统计，可运行 `yolo settings sync=False` 关闭。
 
 ## 💡 贡献
 

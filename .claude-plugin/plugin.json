@@ -1,8 +1,8 @@
 {
   "name": "yolo",
   "displayName": "Ultralytics YOLO",
-  "version": "0.3.0",
-  "description": "Agent skills for Ultralytics YOLO and Platform: model selection, dataset annotation, training, tuning, inference, export, and deployment through the web UI, Python package, yolo CLI, and ul Platform CLI.",
+  "version": "0.4.0",
+  "description": "Agent skills for Ultralytics YOLO and Platform: model selection, dataset annotation, training, tuning, inference, export, and deployment through the Platform web UI, the Python package, and the yolo and ul CLIs.",
   "author": {
     "name": "Ultralytics",
     "email": "hello@ultralytics.com",
@@ -25,5 +25,10 @@
     "onnx",
     "tensorrt"
   ],
+  "icon": "./assets/logo.svg",
+  "documentationUrl": "https://docs.ultralytics.com/integrations/agent-skills",
+  "supportUrl": "https://www.ultralytics.com/support",
+  "privacyPolicyUrl": "https://www.ultralytics.com/legal/privacy",
+  "termsOfServiceUrl": "https://www.ultralytics.com/legal/terms-of-service",
   "skills": "./skills/"
 }

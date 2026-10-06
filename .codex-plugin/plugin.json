@@ -1,7 +1,7 @@
 {
   "name": "yolo",
-  "version": "0.3.0",
-  "description": "Agent skills for Ultralytics YOLO and Platform: model selection, dataset annotation, training, tuning, inference, export, and deployment through the web UI, Python package, yolo CLI, and ul Platform CLI.",
+  "version": "0.4.0",
+  "description": "Agent skills for Ultralytics YOLO and Platform: model selection, dataset annotation, training, tuning, inference, export, and deployment through the Platform web UI, the Python package, and the yolo and ul CLIs.",
   "author": {
     "name": "Ultralytics",
     "email": "hello@ultralytics.com",
@@ -27,19 +27,23 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Ultralytics YOLO",
-    "shortDescription": "Build and deploy YOLO with code or Platform",
-    "longDescription": "Skills covering the full Ultralytics computer-vision lifecycle through Platform and local code: dataset upload, annotation, and validation; model selection; cloud or local training; tuning; inference and tracking; dedicated endpoints; Solutions; export to ONNX, TensorRT, CoreML, Core AI, OpenVINO, and NPU formats; and scripted Platform API operations through the ul CLI.",
+    "shortDescription": "Train and deploy vision AI",
+    "longDescription": "Ultralytics YOLO skills help Codex build computer-vision models end to end, in Ultralytics Platform or local code. Choose the right YOLO model, upload and annotate datasets, train on cloud or local GPUs, improve accuracy, and run inference, tracking, and Solutions such as object counting, then export to ONNX, TensorRT, CoreML, Core AI, OpenVINO, or NPU formats or deploy a dedicated endpoint. The skills also script Platform with the ul CLI, and they defer to your installed ultralytics version over their own tables.",
     "developerName": "Ultralytics",
-    "category": "Coding",
+    "category": "Developer Tools",
     "capabilities": ["Interactive", "Write"],
     "websiteURL": "https://www.ultralytics.com",
+    "supportURL": "https://www.ultralytics.com/support",
     "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
     "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",
+    "logo": "./assets/logo.svg",
+    "logoDark": "./assets/logo-dark.svg",
+    "composerIcon": "./assets/logo.svg",
+    "composerIconDark": "./assets/logo-dark.svg",
     "defaultPrompt": [
-      "Build my first YOLO model in Ultralytics Platform",
-      "Annotate my dataset and train a YOLO model",
-      "Train a YOLO model on my custom dataset",
-      "Deploy my YOLO model to a production endpoint"
+      "Run YOLO on a sample image and show me what it detects",
+      "Turn my images into a custom YOLO model, labeled and trained in Ultralytics Platform",
+      "Deploy my YOLO model as an API endpoint or export it to ONNX, TensorRT, or CoreML"
     ],
     "brandColor": "#042AFF"
   }

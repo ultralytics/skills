@@ -19,10 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v7
+      - uses: ultralytics/actions/setup-uv@main
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Validate skills and manifests
-        run: |
-          python .github/scripts/lint_skills.py
+        run: python .github/scripts/lint_skills.py
