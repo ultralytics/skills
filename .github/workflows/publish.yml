@@ -1,6 +1,6 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
-# Tag and release the plugin when its version changes, attaching the Codex upload ZIP
+# Tag and release the plugin when its version changes, attaching the Codex upload ZIP and an SBOM
 
 name: Publish
 
@@ -58,4 +58,22 @@ jobs:
           uvx --from ultralytics-actions ultralytics-actions-summarize-release
           ZIP="yolo-$CURRENT_TAG-codex.zip" # skills-only package for the OpenAI plugin upload
           git archive --format=zip -o "$ZIP" "$CURRENT_TAG" .codex-plugin skills assets README.md README.zh-CN.md LICENSE
+          unzip -q "$ZIP" -d plugin # the shipped files, scanned for the SBOM below
           gh release upload "$CURRENT_TAG" "$ZIP" --clobber
+
+      - uses: anchore/sbom-action@v0
+        if: steps.version.outputs.release == 'true'
+        with:
+          path: plugin
+          format: spdx-json
+          output-file: sbom.spdx.json
+        env:
+          SYFT_SOURCE_NAME: ${{ github.repository }} # name the SBOM after the repo, not the scan directory
+          SYFT_SOURCE_VERSION: ${{ steps.version.outputs.tag }}
+
+      - name: Attach SBOM
+        if: steps.version.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_TAG: ${{ steps.version.outputs.tag }}
+        run: gh release upload "$CURRENT_TAG" sbom.spdx.json --clobber
