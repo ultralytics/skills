@@ -12,11 +12,12 @@ description: >
 
 ## Fastest route: export in Platform
 
-Open a completed model's **Export** tab, select one of the 20 formats, configure its
+Open a completed model's **Export** tab, select a format, configure its
 arguments, and click **Start Export**. Platform runs CPU exports directly and asks for a
 target GPU where the format requires one (notably TensorRT); download the artifact when
-the job completes. Match TensorRT's selected GPU family and software environment to the
-deployment target, just as with a local engine build.
+the job completes. For TensorRT, select the deployment device's GPU family or Jetson
+target; if its TensorRT/CUDA versions differ from the device's, export locally on that
+device instead.
 
 Use Platform when you do not want to install each exporter toolchain locally. Use the
 Python/CLI path below for custom calibration, repeatable automation, local hardware
@@ -47,7 +48,7 @@ model = YOLO("best.onnx")  # or best.engine, best_openvino_model/, ...
 | Target                                                   | `format=`                                                         | Why                                                                                                       |
 | -------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | NVIDIA GPU / Jetson                                      | `engine` (TensorRT)                                               | fastest on NVIDIA; **build on the deployment device** — engines are not portable across GPUs/TRT versions |
-| Intel CPU/iGPU/NPU                                       | `openvino`                                                        | ~3× CPU speedup                                                                                           |
+| Intel CPU/iGPU/NPU                                       | `openvino`                                                        | up to 3× CPU speedup on Intel                                                                             |
 | Apple iOS/macOS                                          | `coreml`                                                          | broad OS coverage, Vision/iOS/Flutter support                                                             |
 | Apple iOS 27+/macOS 27+                                  | `coreai`                                                          | native `.aimodel`; use `coreml` for iOS/Flutter SDKs; export on Apple silicon/macOS 26+                   |
 | Android                                                  | `litert` (renamed from `tflite`) or `ncnn`                        | NCNN strong on ARM                                                                                        |
@@ -57,7 +58,7 @@ model = YOLO("best.onnx")  # or best.engine, best_openvino_model/, ...
 | NPUs (Rockchip/Qualcomm/Hailo/Huawei/Sony/Axelera/DeepX) | `rknn` / `qnn` / `hailo` / `ascend` / `imx` / `axelera` / `deepx` | `name=` selects the exact chip for rknn/qnn/hailo/ascend                                                  |
 
 Full 21-target local export matrix with per-format supported args: `format-matrix.md`
-(this folder). Platform currently offers 20 deployment formats.
+(this folder).
 
 ## Key arguments
 
@@ -73,7 +74,7 @@ Full 21-target local export matrix with per-format supported args: `format-matri
 | `end2end`   | None    | preserve the model setting; set `False` on YOLO26/YOLOv10 when the target needs raw outputs or conventional NMS                                                                                 |
 | `nms`       | False   | bake NMS into a raw-output pipeline where supported; for YOLO26/YOLOv10 also set `end2end=False`                                                                                                |
 | `workspace` | None    | TensorRT builder GiB — lower if the build OOMs                                                                                                                                                  |
-| `device`    | None    | `device=0` required for TensorRT; also speeds INT8 calibration                                                                                                                                  |
+| `device`    | None    | TensorRT needs a GPU (auto-set to `device=0` when unset); a GPU also speeds INT8 calibration                                                                                                    |
 | `fraction`  | 1.0     | fraction of calibration data used                                                                                                                                                               |
 
 ## Verify parity after export (always)
@@ -103,7 +104,7 @@ each supported precision and benchmark on deployment hardware, not your dev box.
   BGR→RGB, /255) and output decoding.
 - Detect output layout differs: end-to-end YOLO26 emits final
   `[x1,y1,x2,y2,conf,cls]` rows. If export disables end-to-end, YOLO26 emits raw
-  `[4+nc, anchors]` heads like YOLO11/v8; where supported, `nms=True` wraps them.
+  `[4+nc, anchors]` heads like YOLO11/YOLOv8; where supported, `nms=True` wraps them.
   Set `end2end=False nms=True` to request that path explicitly. Segment, pose, and OBB
   add task-specific outputs. Check export warnings and shapes.
 - Class names travel in export metadata where supported; otherwise ship the `names`
@@ -113,21 +114,21 @@ each supported precision and benchmark on deployment hardware, not your dev box.
 
 ## Troubleshooting
 
-| Symptom                                         | Fix                                                                                                                                         |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Export crashes on missing package               | most backends auto-install on first export; rerun. TensorRT must match your CUDA — install per NVIDIA docs                                  |
-| `Unsupported ONNX opset` downstream             | export with lower `opset=`, or upgrade the runtime                                                                                          |
-| TensorRT build OOM/slow                         | lower `workspace`, `batch=1`, `dynamic=False`                                                                                               |
-| Export much less accurate                       | imgsz mismatch; too little/unrepresentative calibration data; wrong custom pre/post-processing; use a supported higher precision or backend |
-| Engine fails on another machine                 | TensorRT engines are device+version specific — rebuild on target                                                                            |
-| CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                    |
-| Core AI export is unavailable                   | requires Apple silicon, macOS 26+, torch>=2.8, and Python 3.11–3.13; use Core ML for broader production support                             |
-| Deprecation warnings for `half`/`int8`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `tflite→litert`) — switch to the new names                                           |
+| Symptom                                         | Fix                                                                                                                                                                                                                                         |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Export crashes on missing package               | most backends auto-install on first export; rerun. On Linux, TensorRT auto-installs as `tensorrt-cu<torch CUDA major>`; elsewhere install it per NVIDIA docs. Hailo (Dataflow Compiler) and Ascend (CANN `atc`) need their vendor SDK first |
+| `Unsupported ONNX opset` downstream             | export with lower `opset=`, or upgrade the runtime                                                                                                                                                                                          |
+| TensorRT build OOM/slow                         | lower `workspace`, `batch=1`, `dynamic=False`                                                                                                                                                                                               |
+| Export much less accurate                       | imgsz mismatch; too little/unrepresentative calibration data; wrong custom pre/post-processing; use a supported higher precision or backend                                                                                                 |
+| Engine fails on another machine                 | TensorRT engines are device+version specific — rebuild on target                                                                                                                                                                            |
+| CoreML export fails on Windows                  | export on macOS or Linux                                                                                                                                                                                                                    |
+| Core AI export is unavailable                   | requires Apple silicon, macOS 26+, torch>=2.8, and Python 3.11–3.13; use CoreML for broader production support                                                                                                                              |
+| Deprecation warnings for `half`/`int8`/`tflite` | auto-forwarded (`half→quantize=16`, `int8→quantize=8`, `tflite→litert`) — switch to the new names                                                                                                                                           |
 
 ## Related pages
 
 - `format-matrix.md` — all 21 local export targets, artifacts produced, and supported
   args. Read when using any format beyond onnx/engine/openvino/coreml.
 
-If the installed version rejects an argument, trust the error text (it lists valid
-values) and `yolo cfg` over this file.
+If the installed version rejects an argument, trust the error text (format and quantize
+errors list valid values) and `yolo cfg` over this file.

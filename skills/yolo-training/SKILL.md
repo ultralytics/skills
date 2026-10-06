@@ -15,7 +15,7 @@ description: >
 Use [Platform cloud training](https://docs.ultralytics.com/platform/train/cloud-training)
 when you want to start in a few clicks without configuring a local GPU:
 
-1. Create a project and click **New Model** (or start from a dataset's **Train** action).
+1. Click **New Model** on a project page, or on a dataset page to preselect that dataset.
 2. Select a compatible pretrained model, ready dataset, GPU, epochs, image size, and
    batch size.
 3. Click **Start Training** and watch live charts, console logs, and system metrics.
@@ -54,24 +54,24 @@ rows for classes whose names match).
 
 ## Base arguments worth setting (task trainers can override them)
 
-| Arg              | Default     | Notes                                                                               |
-| ---------------- | ----------- | ----------------------------------------------------------------------------------- |
-| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                        |
-| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations       |
-| `imgsz`          | task/model  | global fallback 640; classify uses 224 when unset; explicit values win              |
-| `batch`          | 16          | `-1` auto-fits ~60% VRAM; float like `0.8` = VRAM fraction; else integer            |
-| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                            |
-| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                                     |
-| `workers`        | 8           | lower if RAM/shared-memory errors                                                   |
-| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                   |
-| `optimizer`      | auto        | leave on auto (YOLO26 adds MuSGD); depth fine-tuning overrides it below             |
-| `lr0` / `lrf`    | 0.01 / 0.01 | base values; depth fine-tuning uses a lower `lr0` below                             |
-| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                    |
-| `resume`         | False       | continue an interrupted run (see recipes)                                           |
-| `project`/`name` | None        | local output naming; authenticated `username/project-slug` also streams to Platform |
-| `seed`           | 0           | reproducible with `deterministic=True` (default)                                    |
-| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                             |
-| `time`           | None        | max training hours — overrides epochs                                               |
+| Arg              | Default     | Notes                                                                                        |
+| ---------------- | ----------- | -------------------------------------------------------------------------------------------- |
+| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                                 |
+| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations                |
+| `imgsz`          | task/model  | global fallback 640; classify uses 224 when unset; explicit values win                       |
+| `batch`          | 16          | `-1` auto-fits ~60% VRAM (single GPU); float like `0.8` = VRAM fraction; else integer        |
+| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                                     |
+| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                                              |
+| `workers`        | 8           | lower if RAM/shared-memory errors                                                            |
+| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                            |
+| `optimizer`      | auto        | leave on auto (MuSGD above 10k iterations, else AdamW); depth fine-tuning overrides it below |
+| `lr0` / `lrf`    | 0.01 / 0.01 | ignored by `optimizer=auto`; set an explicit optimizer to use them (see depth recipe)        |
+| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                             |
+| `resume`         | False       | continue an interrupted run (see recipes)                                                    |
+| `project`/`name` | None        | local output naming; authenticated `username/project-slug` also streams to Platform          |
+| `seed`           | 0           | reproducible with `deterministic=True` (default)                                             |
+| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                                      |
+| `time`           | None        | max training hours — overrides epochs                                                        |
 
 Full argument, augmentation, and loss-weight tables: `training-args.md` (this folder) —
 read before changing anything not listed above. `yolo cfg` shows the base schema and
@@ -82,8 +82,9 @@ defaults; task trainers, checkpoints, and explicit arguments determine effective
 - **Resume interrupted run**: `YOLO("runs/detect/train/weights/last.pt").train(resume=True)`.
   Resume finishes the original `epochs`; to train longer after completion, start a NEW
   training from `best.pt` (resume can't extend a finished run).
-- **Multi-GPU**: `device=[0,1]`. Run as a script — DDP spawns processes and breaks in
-  notebooks (and on Windows, guard with `if __name__ == "__main__":`).
+- **Multi-GPU**: `device=[0,1]` with an integer `batch` (AutoBatch is single-GPU only).
+  DDP relaunches from a generated script, so notebook-defined callbacks and trainers don't
+  carry over; on Windows, guard with `if __name__ == "__main__":`.
 - **Small detect-style dataset (<~1k images)**: pretrained + `freeze=10`, `n`/`s` model,
   default augmentation, watch val curves.
 - **Depth fine-tuning**: start from `-depth.pt` and use
@@ -93,8 +94,9 @@ defaults; task trainers, checkpoints, and explicit arguments determine effective
 - **Experiment hygiene**: self-describing run names
   (`name=0811_yolo26s_helmets_e100`), one variable per run; each run's full config is
   saved in `runs/<task>/<name>/args.yaml` — diff those to compare runs.
-- **Logging integrations**: `yolo settings tensorboard=True` (likewise `wandb`,
-  `mlflow`, `comet`, `clearml`) — then train normally.
+- **Logging integrations**: `yolo settings tensorboard=True` (likewise `wandb`), then train
+  normally. `mlflow`, `comet`, and `clearml` are on by default and activate once their
+  package is installed.
 - **Knowledge distillation**: `distill_model=yolo26l.pt dis=6.0` trains the student
   with a larger teacher.
 
@@ -146,5 +148,5 @@ defaults); tuning hyperparameters while the confusion matrix screams label noise
 - `training-args.md` — full train/augmentation/loss-weight argument tables. Read before
   setting any argument not in the table above.
 
-If the installed version rejects an argument, `yolo cfg` and the error text are the
-truth, not this file (`yolo checks` shows the version).
+If the installed version rejects an argument (`yolo checks` shows the version), trust
+the error text and `yolo cfg` over this file.

@@ -15,8 +15,8 @@ from ultralytics import solutions
 
 counter = solutions.ObjectCounter(
     model="yolo26n.pt",
-    region=[(20, 400), (1080, 400)],  # 2 points = line (counts crossings, in/out);
-    classes=[2, 3, 5, 7],  # 3+ points = polygon (counts entries/presence)
+    region=[(20, 400), (1080, 400)],  # 2 points = line crossings (in/out); 3+ = polygon entries
+    classes=[2, 3, 5, 7],  # COCO car, motorcycle, bus, truck
     show=False,
 )
 cap = cv2.VideoCapture("traffic.mp4")
@@ -30,32 +30,30 @@ while cap.isOpened():
 
 Common constructor args (`SolutionConfig`): `model`, `region` (pixel coords in the
 frame), `classes`, `conf`, `iou`, `tracker` (default `botsort.yaml` here), `device`,
-`show`, `line_width`, `imgsz`, `quantize` (`half` is deprecated). `quantize` controls
-PyTorch/TorchScript compute precision; other backends primarily use the artifact/runtime
-precision. With `quantize=16`, OpenVINO and Triton inputs are rounded to FP16 and Triton
-outputs are returned as FP16. Invalid keys raise ValueError — the message lists valid ones.
+`show`, `line_width`, `imgsz`, `quantize` (same semantics as predict; `half` is deprecated). Invalid keys raise
+`ValueError` with a link to the argument docs; `SolutionConfig`'s fields are the valid keys.
 
 ## Catalog (CLI name → class)
 
-| Need                                  | CLI         | Class                  | Notes                                                      |
-| ------------------------------------- | ----------- | ---------------------- | ---------------------------------------------------------- |
-| Count line-crossings / region entries | `count`     | `ObjectCounter`        | in/out + per-class                                         |
-| Count per multiple named zones        | `region`    | `RegionCounter`        |                                                            |
-| Track only inside a zone              | `trackzone` | `TrackZone`            |                                                            |
-| Movement heatmap                      | `heatmap`   | `Heatmap`              | `colormap=cv2.COLORMAP_JET` etc.                           |
-| Speed estimation                      | `speed`     | `SpeedEstimator`       | `meter_per_pixel` for physical units; estimate, not radar  |
-| Queue length monitoring               | `queue`     | `QueueManager`         | polygon region                                             |
-| Parking occupancy                     | `parking`   | `ParkingManagement`    | slots via `ParkingPtsSelection()` GUI → JSON               |
-| Workout rep counting                  | `workout`   | `AIGym`                | pose model + `kpts=[6,8,10]` joint indices                 |
-| Alert on detections                   | `security`  | `SecurityAlarm`        | `authenticate(from_email, password, to_email)` then emails |
-| Privacy blur                          | `blur`      | `ObjectBlurrer`        | `blur_ratio`                                               |
-| Crop detections to files              | `crop`      | `ObjectCropper`        | `crop_dir`                                                 |
-| Segmentation overlay + tracking       | `isegment`  | `InstanceSegmentation` | needs `-seg` model                                         |
-| Point-to-object mapping               | `visioneye` | `VisionEye`            | `vision_point`                                             |
-| Live charts of counts                 | `analytics` | `Analytics`            | line/bar/pie; call takes `(im0, frame_number)`             |
-| Distance between two tracks           | —           | `DistanceCalculation`  | interactive                                                |
-| Semantic image search                 | —           | `VisualAISearch`       | natural-language search over a folder                      |
-| Browser demo, zero code               | `inference` | `Inference`            | Streamlit UI                                               |
+| Need                                  | CLI         | Class                  | Notes                                                                                        |
+| ------------------------------------- | ----------- | ---------------------- | -------------------------------------------------------------------------------------------- |
+| Count line-crossings / region entries | `count`     | `ObjectCounter`        | in/out + per-class                                                                           |
+| Count per multiple named zones        | `region`    | `RegionCounter`        |                                                                                              |
+| Track only inside a zone              | `trackzone` | `TrackZone`            |                                                                                              |
+| Movement heatmap                      | `heatmap`   | `Heatmap`              | `colormap=cv2.COLORMAP_JET` etc.                                                             |
+| Speed estimation                      | `speed`     | `SpeedEstimator`       | set `meter_per_pixel` and the video's `fps` (default 30) for real units; estimate, not radar |
+| Queue length monitoring               | `queue`     | `QueueManager`         | polygon region                                                                               |
+| Parking occupancy                     | `parking`   | `ParkingManagement`    | slots via `ParkingPtsSelection()` GUI → JSON                                                 |
+| Workout rep counting                  | `workout`   | `AIGym`                | pose model + `kpts=[6,8,10]` joint indices                                                   |
+| Alert on detections                   | `security`  | `SecurityAlarm`        | `authenticate(from_email, password, to_email)` then emails                                   |
+| Privacy blur                          | `blur`      | `ObjectBlurrer`        | `blur_ratio`                                                                                 |
+| Crop detections to files              | `crop`      | `ObjectCropper`        | `crop_dir`                                                                                   |
+| Segmentation overlay + tracking       | `isegment`  | `InstanceSegmentation` | needs `-seg` model                                                                           |
+| Point-to-object mapping               | `visioneye` | `VisionEye`            | `vision_point`                                                                               |
+| Live charts of counts                 | `analytics` | `Analytics`            | line/bar/pie/area via `analytics_type`; call takes `(im0, frame_number)`                     |
+| Distance between two tracks           | —           | `DistanceCalculation`  | interactive                                                                                  |
+| Semantic image search                 | —           | `VisualAISearch`       | natural-language search over a folder                                                        |
+| Browser demo, zero code               | `inference` | `Inference`            | Streamlit UI                                                                                 |
 
 CLI: `yolo solutions SOLUTION arg=value...`, e.g.
 
@@ -66,14 +64,14 @@ yolo solutions inference # Streamlit app (note: `yolo streamlit-predict` does NO
 yolo solutions help
 ```
 
-Output video lands in `runs/solutions/exp/`. An invalid solution name falls back to
+Output video lands in `runs/solutions/exp*/`. An invalid solution name falls back to
 `count` (with a logged warning) — spell exactly.
 
 ## Notes
 
 - Region coordinates are **pixels in the frame** — grab one frame, note the resolution,
-  then define regions. Double counting on a line usually means it sits where objects
-  jitter; move it perpendicular to travel direction.
+  then define regions. Each track ID counts once, so double counts on a line come from ID
+  switches; place the line where objects are unoccluded, perpendicular to travel direction.
 - Solutions accept any custom-trained `best.pt` matching their task type.
 - Read state from attributes (`in_count`, `classwise_count`, …), not by parsing the
   drawn frame; `dir(obj)` lists what a module exposes.

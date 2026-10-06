@@ -19,9 +19,9 @@ The #1 cause of silent training failure is a malformed dataset — validate befo
 2. Upload images, videos, ZIP/TAR archives, or NDJSON. Existing YOLO labels and COCO JSON
    can be imported; cloud-storage integrations can keep supported data in place.
 3. Open an image in the fullscreen editor. Use manual tools for detect, segment,
-   semantic, classify, pose, or OBB. For detect, segment, semantic, and OBB, switch to
-   **Smart** mode to label with SAM or predictions from a compatible official/custom YOLO
-   model.
+   semantic, classify, pose, or OBB. Switch to **Smart** mode to label with SAM (detect,
+   segment, semantic, OBB) or a compatible official/custom YOLO model (those tasks plus
+   pose).
 4. Review the **Classes**, **Charts**, and **Errors** tabs, fix the split, and create a
    numbered dataset version before important runs.
 
@@ -31,7 +31,7 @@ drawn in the editor. See
 [Annotation Editor](https://docs.ultralytics.com/platform/data/annotation).
 
 To train on the same dataset from local code, create an API key under **Settings > API
-Keys**, set `ULTRALYTICS_API_KEY`, and use its URI directly:
+Keys**, set `ULTRALYTICS_API_KEY`, and pass the dataset's `ul://` URI as `data`:
 
 ```bash
 yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug epochs=100
@@ -51,8 +51,9 @@ dataset/
 └── labels/train/  img001.txt ...     └── labels/val/  ...
 ```
 
-- Labels next to images, or in a dir not named `labels`, are **not found** → silent
-  all-background training.
+- Labels next to images in an `images/` dir, or in a dir not named `labels`, are **not
+  found** → training stops with `No labels found`; if only some are missing, those images
+  train as backgrounds.
 - Filenames must match stems exactly (case-sensitive on Linux).
 - An image with no/empty label file trains as a **background image**. A few percent of
   true backgrounds reduce false positives; accidentally missing labels destroy recall.
@@ -60,7 +61,7 @@ dataset/
 ## data.yaml anatomy
 
 ```yaml
-path: /abs/dataset/root # relative paths resolve against `yolo settings` datasets_dir — prefer absolute
+path: /abs/dataset/root # prefer absolute; a relative path missing from the CWD resolves under datasets_dir
 train: images/train # dir, .txt file of image paths, or list of dirs
 val: images/val
 test: images/test # optional
@@ -70,7 +71,7 @@ names: # 0-based, contiguous indices
 # pose only:
 kpt_shape: [17, 3] # [num_keypoints, dims]; dims 2 (x,y) or 3 (x,y,visibility)
 flip_idx: [0, 2, 1, ...] # L/R keypoint swap map — without it, flip augs are auto-disabled
-# semantic only (optional — polygon labels/ also work):
+# semantic only (optional — polygon .txt labels in labels/ also work):
 masks_dir: masks # per-pixel PNG mask images
 # depth only (replace names above; pair depth/{train,val}/*.png or float .npy maps):
 # nc: 1
@@ -89,9 +90,12 @@ masks_dir: masks # per-pixel PNG mask images
 ```python
 from ultralytics.data.converter import convert_coco
 
-convert_coco(labels_dir="coco/annotations/", use_segments=True)  # COCO → detect/segment
-convert_coco(labels_dir="coco/annotations/", use_keypoints=True)  # COCO → pose
+convert_coco(labels_dir="coco/annotations/", use_segments=True, cls91to80=False)  # → segment; omit use_segments for detect
+convert_coco(labels_dir="coco/annotations/", use_keypoints=True, cls91to80=False)  # → pose
 ```
+
+`cls91to80=False` keeps custom category IDs (as `category_id - 1`); leave the default `True`
+only for the official COCO 91-class IDs.
 
 Also in `ultralytics.data.converter`: `convert_dota_to_yolo_obb(root)` (DOTA → OBB),
 `convert_segment_masks_to_yolo_seg(masks_dir, output_dir, classes)` (index PNGs →
@@ -103,7 +107,7 @@ Auto-label a raw image folder (detector proposes boxes, SAM refines masks):
 ```python
 from ultralytics.data.annotator import auto_annotate
 
-auto_annotate(data="path/to/images", det_model="yolo26x.pt", sam_model="sam_b.pt")
+auto_annotate(data="dataset/images/train", det_model="yolo26x.pt", sam_model="sam_b.pt", output_dir="dataset/labels/train")
 ```
 
 For VOC XML/CSV there is no converter — write a small script emitting the per-task line

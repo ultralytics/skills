@@ -29,9 +29,11 @@ truth: `from ultralytics.engine.exporter import export_formats; print(export_for
 
 Notes:
 
-- `name=` doubles as the hardware target selector for `rknn` (e.g. `name=rk3588`),
-  `qnn`, `hailo`, `ascend`. For rknn/qnn/hailo the error message lists valid chip
-  names; for ascend pass any CANN soc version like `Ascend310P3`.
+- `name=` doubles as the hardware target selector for `rknn` (e.g. `name=rk3588`), `qnn`
+  (Hexagon HTP arch, e.g. `name=73`), `hailo`, and `ascend`. When omitted it falls back to
+  `rk3588`, `73`, `hailo8l`, or `Ascend310B4`, so always set it. For rknn/qnn/hailo the error
+  message lists valid targets; for ascend pass a CANN SoC version whose kernels are
+  installed, like `Ascend310P3`.
 - `quantize` aliases canonicalize `8`/`int8`/`w8a8` to `8`,
   `16`/`fp16`/`w16a16` to `16`, and `32`/`fp32`/`w32a32` to `32`; `w8a16` and `w8a32`
   remain mixed schemes. FP32 (`32`) is usually equivalent to unset, with format-specific
@@ -40,14 +42,15 @@ Notes:
   `openvino`, `engine`, `coreml`, `mnn`, `ncnn`, `rknn` (chip-dependent), `ascend`,
   `coreai`.
   INT8: `onnx`, `openvino`, `engine`, `coreml`, `saved_model`, `edgetpu`, `mnn`, `imx`,
-  `rknn`, `axelera`, `deepx`, `hailo`, `litert`. `w8a16`: `coreml`, `imx`, `qnn`,
+  `rknn` (detect only), `axelera`, `deepx`, `hailo`, `litert`. `w8a16`: `coreml`, `imx`, `qnn`,
   `litert`; `w8a32`: `litert` only. Explicit unsupported precision requests fail;
   with `quantize` unset, some device formats select their required precision automatically.
 - Calibration requirements vary by backend and scheme. Pass representative `data` when
   required; LiteRT `w8a32` needs no calibration.
-- Some formats install their toolchains in isolated environments on first use (imx,
-  rknn, axelera, deepx) — first export is slow; tell the user it isn't hung.
+- Some formats pip-install heavy, pinned toolchains into the active environment on first
+  use (imx, rknn, axelera, deepx). The first export is slow, so tell the user it isn't hung;
+  the pins can downgrade shared packages, so prefer a dedicated virtual environment.
 - Core AI export requires Apple silicon, macOS 26+, torch>=2.8, and Python 3.11–3.13.
-  The `.aimodel` runtime targets iOS 27+/macOS 27+; use Core ML for broader Apple support.
+  The `.aimodel` runtime targets iOS 27+/macOS 27+; use CoreML for broader Apple support.
 - Core AI accepts `quantize=16`, but some FP16 `.aimodel` assets can abort during Apple
   Neural Engine loading. Prefer FP32 until the upstream runtime issue is fixed.
