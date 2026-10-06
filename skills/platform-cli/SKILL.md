@@ -205,9 +205,10 @@ constraints it omits; `--help` and the error text still win when they disagree.
 - Trashing a project also trashes its models and cancels their training. Both
   `projects delete` and `models delete` permanently delete attached deployments during
   the trash operation; restoring the project or model does not restore deployments.
-  HTTP 502 means cleanup is incomplete; inspect deployments before reporting them deleted.
-  If deployments are attached, explain this consequence and obtain explicit authorization
-  before trashing, unless the user's request already covers their permanent deletion.
+  A 502 response means cleanup is incomplete; inspect deployments before reporting them
+  deleted. If deployments are attached, explain this consequence and obtain explicit
+  authorization before trashing, unless the user's request already covers their permanent
+  deletion.
 - Restore a parent before its children; independently trashed children need their own
   restore. Dataset version restore is separate: `datasets restore dataset=D version=N`
   replaces the current images, splits, classes, and annotations with the selected snapshot.
@@ -275,9 +276,9 @@ constraints it omits; `--help` and the error text still win when they disagree.
   aggregation; On Premise datasets cannot export.
 - `images find-similar-images image_id=ID` returns up to 24 near neighbors from public
   datasets, excluding the image's own dataset and near-duplicate copies of the query. It
-  takes only an existing image ID. HTTP 404 `not_embedded` means no embedding is currently
-  available for the image's hash; embeddings come from dataset analysis, so an unanalyzed
-  dataset's image is searchable only when the same content was analyzed elsewhere.
+  takes only an existing image ID. A 404 `not_embedded` response means no embedding is
+  currently available for the image's hash; embeddings come from dataset analysis, so an
+  unanalyzed dataset's image is searchable only when the same content was analyzed elsewhere.
 - `datasets embeddings dataset=D` reports analysis freshness and progress.
   `datasets clustering dataset=D` returns 2D UMAP points, not raw embeddings; pass
   `nextOffset` as `offset` while `hasMore`, including with the default page size.
