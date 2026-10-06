@@ -36,10 +36,9 @@
     "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
     "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",
     "defaultPrompt": [
-      "Build my first YOLO model in Ultralytics Platform",
-      "Annotate my dataset and train a YOLO model",
-      "Train a YOLO model on my custom dataset",
-      "Deploy my YOLO model to a production endpoint"
+      "Run YOLO on a sample image and show me what it detects",
+      "Turn my images into a custom YOLO model, labeled and trained in Ultralytics Platform",
+      "Deploy my YOLO model as an API endpoint or export it to ONNX, TensorRT, or CoreML"
     ],
     "brandColor": "#042AFF"
   }
