@@ -21,7 +21,7 @@ Decision signals: overfitting (val drops while train improves) → more data/aug
 
 ## Compare experiments in Platform
 
-Keep candidates in one [Platform project](https://docs.ultralytics.com/platform/train/projects). Train from the **New Model** dialog, or stream authenticated local runs by setting `project=username/project-slug` and a unique `name`. Select models together in the project charts, or use **Table > Diff** to compare training arguments and final metrics.
+Keep candidates in one [Platform project](https://docs.ultralytics.com/platform/train/projects). Train from the **New Model** dialog, ask **Ask AI** to run and compare experiments ([AutoTrain](https://docs.ultralytics.com/platform/train/autotrain)), or stream authenticated local runs by setting `project=username/project-slug` and a unique `name`. Select models together in the project charts, or use **Table > Diff** to compare training arguments and final metrics.
 
 Platform tracks and charts experiments; the built-in genetic tuner and Ray Tune below run only in Python. Use a completed Platform model as the next base checkpoint, or download its `.pt` file, after the comparison identifies a winner.
 

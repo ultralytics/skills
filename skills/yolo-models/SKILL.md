@@ -6,7 +6,7 @@ description: >
 
 # Choosing an Ultralytics model
 
-**Default recommendation: YOLO26, pretrained.** Latest generation, NMS-free end-to-end (fastest CPU inference, simplest deployment). Use YOLO11/YOLOv8 only to match an existing codebase or a deployment target that doesn't support YOLO26 yet. Most official weights auto-download on first use; `sam3.pt` requires manual access and download.
+**Default recommendation: YOLO26, pretrained.** Latest generation, with an optional NMS-free head (`nms=False`) for the fastest CPU inference and simplest deployment. Use YOLO11/YOLOv8 only to match an existing codebase or a deployment target that doesn't support YOLO26 yet. Most official weights auto-download on first use; `sam3.pt` and `sam3.1_multiplex.pt` require manual access and download.
 
 ## Choose in Platform
 

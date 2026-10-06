@@ -53,7 +53,7 @@ Class-count changes are automatic — a 3-class data.yaml on an 80-class pretrai
 | `workers`        | 8           | lower if RAM/shared-memory errors                                                            |
 | `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                            |
 | `optimizer`      | auto        | leave on auto (MuSGD above 10k iterations, else AdamW); depth fine-tuning overrides it below |
-| `lr0` / `lrf`    | 0.01 / 0.01 | ignored by `optimizer=auto`; set an explicit optimizer to use them (see depth recipe)        |
+| `lr0` / `lrf`    | 0.01 / 0.01 | `lr0` ignored by `optimizer=auto`; set an explicit optimizer to use it (see depth recipe)    |
 | `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                             |
 | `resume`         | False       | continue an interrupted run (see recipes)                                                    |
 | `project`/`name` | None        | local output naming; authenticated `username/project-slug` also streams to Platform          |
@@ -66,7 +66,7 @@ Full argument, augmentation, and loss-weight tables: `training-args.md` (this fo
 ## Recipes
 
 - **Resume interrupted run**: `YOLO("runs/detect/train/weights/last.pt").train(resume=True)`. Resume finishes the original `epochs`; to train longer after completion, start a NEW training from `best.pt` (resume can't extend a finished run).
-- **Multi-GPU**: `device=[0,1]` with an integer `batch` (AutoBatch is single-GPU only). DDP relaunches from a generated script, so notebook-defined callbacks and trainers don't carry over; on Windows, guard with `if __name__ == "__main__":`.
+- **Multi-GPU**: `device=[0,1]` with an integer `batch` (AutoBatch is single-GPU only). DDP workers rebuild from a generated script that cloudpickles the trainer, model, and callbacks; official Windows PyTorch>=2.4 wheels can't launch DDP, so use Linux or WSL2.
 - **Small detect-style dataset (<~1k images)**: pretrained + `freeze=10`, `n`/`s` model, default augmentation, watch val curves.
 - **Depth fine-tuning**: start from `-depth.pt` and use `optimizer=AdamW lr0=1e-4 warmup_bias_lr=1e-4`.
 - **Small objects**: try `imgsz=1280` (more compute/VRAM; reduce batch if needed), or tile large images at dataset level.
@@ -80,7 +80,7 @@ Full argument, augmentation, and loss-weight tables: `training-args.md` (this fo
 yolo val model=runs/detect/train/weights/best.pt data=data.yaml # split=val by default
 ```
 
-Per-task headline metrics: detect/obb `mAP50-95(B)`, segment `(M)`, pose `(P)`, semantic `mIoU`, depth `delta1`, classify `accuracy_top1`. Val base defaults are `conf=0.001` (`0.01` for OBB) and `iou=0.7`; `iou` is inactive for default end-to-end YOLO26. Use `split=test` for the test set and `save_json=True` for COCO-format eval.
+Per-task headline metrics: detect/obb `mAP50-95(B)`, segment `(M)`, pose `(P)`, semantic `mIoU`, depth `delta1`, classify `accuracy_top1`. Val base defaults are `conf=0.001` (`0.01` for OBB), `iou=0.7`, and `nms=None` (one-to-many head + NMS); `nms=False` validates YOLO26's NMS-free head, where `iou` is inactive. Use `split=test` for the test set and `save_json=True` for COCO-format eval.
 
 ## Reading a finished run (`runs/<task>/<name>/`)
 
