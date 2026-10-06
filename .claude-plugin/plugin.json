@@ -25,5 +25,10 @@
     "onnx",
     "tensorrt"
   ],
+  "icon": "./assets/logo.svg",
+  "documentationUrl": "https://docs.ultralytics.com",
+  "supportUrl": "https://github.com/ultralytics/skills/issues",
+  "privacyPolicyUrl": "https://www.ultralytics.com/legal/privacy",
+  "termsOfServiceUrl": "https://www.ultralytics.com/legal/terms-of-service",
   "skills": "./skills/"
 }

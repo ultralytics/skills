@@ -122,6 +122,10 @@ npx skills add ultralytics/skills -g                    # 全局安装到 ~/.cla
 - 每个生命周期 Skill 都会在适用时同时介绍 Platform UI 与本地 Python/CLI 路径。
 - 每个 Skill 都以安装版本的运行时信息为准：`yolo checks`（版本）、`yolo cfg`（有效参数）和错误消息优先于这些文件中的任何表格。Platform CLI Skill 以 `ul version`、`ul cloud <resource> <operation> --help` 和实时的 `/openapi.json` 为准。
 
+## 🔒 数据与网络访问
+
+本插件仅包含说明文字，加载时不会运行任何内容。它建议的命令可能会下载软件包、权重、数据集和公开的 Platform API 架构；`ul cloud` 命令会使用你的 API 密钥将你提供的文件上传到 [Ultralytics Platform](https://platform.ultralytics.com)。`ultralytics` 软件包还会发送匿名使用统计，可运行 `yolo settings sync=False` 关闭。
+
 ## 💡 贡献
 
 Ultralytics 因社区协作而不断发展，我们非常重视你的贡献！请参阅[贡献指南](https://docs.ultralytics.com/help/contributing)，了解如何参与。也欢迎你通过[问卷调查](https://www.ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey)分享反馈。衷心感谢所有贡献者！🙏

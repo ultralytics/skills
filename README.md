@@ -122,6 +122,10 @@ Or simply copy (or symlink) the folders under `skills/` into your agent's skills
 - Each lifecycle skill covers both the Platform UI and local Python/CLI path where applicable.
 - Every skill defers to the installed version at runtime: `yolo checks` (version), `yolo cfg` (valid arguments), and error messages beat any table in these files. The Platform CLI skill defers to `ul version`, `ul cloud <resource> <operation> --help`, and the live `/openapi.json`.
 
+## 🔒 Data and network access
+
+The plugin contains only instructions; nothing runs when it loads. The commands it suggests can download packages, weights, datasets, and the public Platform API schema, and `ul cloud` commands upload the files you pass them to [Ultralytics Platform](https://platform.ultralytics.com) with your API key. The `ultralytics` package also sends anonymous usage analytics; turn them off with `yolo settings sync=False`.
+
 ## 💡 Contribute
 
 Ultralytics thrives on community collaboration, and we deeply value your contributions! Please see our [Contributing Guide](https://docs.ultralytics.com/help/contributing) for details on how to get involved. We also invite you to share your feedback through our [Survey](https://www.ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey). A huge 🙏 thank you to all our contributors!
