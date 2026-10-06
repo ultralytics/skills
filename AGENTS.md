@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Repository guidance for coding agents. `CLAUDE.md` is a symlink to this file.
+Repository guidance for coding agents.
 
 ## Core Principles (CRITICAL)
 
