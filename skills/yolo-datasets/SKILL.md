@@ -69,13 +69,11 @@ masks_dir: masks # per-pixel PNG mask images
 ```python
 from ultralytics.data.converter import convert_coco
 
-convert_coco(
-    labels_dir="coco/annotations/", use_segments=True, cls91to80=False
-)  # → segment; omit use_segments for detect
+convert_coco(labels_dir="coco/annotations/", use_segments=True, cls91to80=False)  # → segment
 convert_coco(labels_dir="coco/annotations/", use_keypoints=True, cls91to80=False)  # → pose
 ```
 
-`cls91to80=False` keeps custom category IDs (as `category_id - 1`); leave the default `True` only for the official COCO 91-class IDs.
+Omit `use_segments` for detect labels. `cls91to80=False` keeps custom category IDs (as `category_id - 1`); leave the default `True` only for the official COCO 91-class IDs.
 
 Also in `ultralytics.data.converter`: `convert_dota_to_yolo_obb(root)` (DOTA → OBB), `convert_segment_masks_to_yolo_seg(masks_dir, output_dir, classes)` (index PNGs → polygons), `yolo_bbox2segment(im_dir)` (upgrade detect labels to segment via SAM), `convert_to_multispectral(path, n_channels)`.
 
