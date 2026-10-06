@@ -117,9 +117,9 @@ Or simply copy (or symlink) the folders under `skills/` into your agent's skills
 
 ## 🛠️ Design notes
 
-- Skills are divided by lifecycle stage / user intent, not by model family.
+- Skills are divided by lifecycle stage and user intent, not by model family.
 - Frontmatter is portable: `name` + `description` only.
-- Each lifecycle skill covers both the Platform UI and local Python/CLI path where applicable.
+- Each lifecycle skill covers both the Platform UI and the local Python/CLI path where applicable.
 - Every skill defers to the installed version at runtime: `yolo checks` (version), `yolo cfg` (valid arguments), and error messages beat any table in these files. The Platform CLI skill defers to `ul version`, `ul cloud <resource> <operation> --help`, and the live `/openapi.json`.
 
 ## 🔒 Data and network access

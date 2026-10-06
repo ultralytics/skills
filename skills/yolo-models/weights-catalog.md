@@ -1,9 +1,9 @@
 # Model asset names (v8.4.138)
 
 `ultralytics.utils.downloads.GITHUB_ASSETS_NAMES` is the package-known fast-path set, not
-an exhaustive release catalog. The downloader also queries configured live release assets
-for other names. Use the exact names and patterns below and official model/task docs; do not
-guess or interpolate them. SAM 3 is gated and needs a manual download (see below).
+an exhaustive release catalog. For other names, the downloader queries the `ultralytics/assets`
+GitHub release (the pinned tag, then latest). Use the exact names and patterns below and
+official model/task docs; do not guess or interpolate them.
 
 ## YOLO detectors and task variants
 
@@ -17,7 +17,7 @@ Sizes: `n s m l x` unless noted. Pattern: `{family}{size}{suffix}.pt`.
 | `yolo12`                                 | _(detect only)_                                                        |
 | `yolov8`                                 | _(detect)_, `-cls`, `-seg`, `-pose`, `-obb`, `-oiv7`                   |
 | `yolov5{size}u`, `yolov5{size}6u`        | detect (u = updated head)                                              |
-| `yolov3u`, `yolov3-sppu`, `yolov3-tinyu` | detect                                                                 |
+| `yolov3u`, `yolov3-sppu`, `yolov3-tinyu` | detect only; no size letter                                            |
 | `yolov9`                                 | sizes `t s m c e`, detect                                              |
 | `yolov10`                                | sizes `n s m b l x`, detect                                            |
 
@@ -25,10 +25,10 @@ Examples: `yolo26s-seg.pt`, `yolo26n-depth.pt`, `yolo11m-pose.pt`, `yolov8x-oiv7
 
 ## Specialized official assets outside the fast-path set
 
-| Use                    | Names                              | Acquisition                       |
-| ---------------------- | ---------------------------------- | --------------------------------- |
-| ADE20K semantic models | `yolo26{n,s,m,l,x}-sem-ade20k.pt`  | auto-download from release assets |
-| Tracking ReID encoders | `yolo26{n,s,m,l,x}-reid.{pt,onnx}` | auto-download when tracker loads  |
+| Use                    | Names                              | Acquisition                                                             |
+| ---------------------- | ---------------------------------- | ----------------------------------------------------------------------- |
+| ADE20K semantic models | `yolo26{n,s,m,l,x}-sem-ade20k.pt`  | auto-download from release assets                                       |
+| Tracking ReID encoders | `yolo26{n,s,m,l,x}-reid.{pt,onnx}` | auto-download when a tracker sets `with_reid: True` and `model:` to one |
 
 ## Open-vocabulary and promptable
 
@@ -51,7 +51,7 @@ local path to `SAM()`.
 
 ## Other detectors
 
-| Model    | Names                                                                  |
-| -------- | ---------------------------------------------------------------------- |
-| RT-DETR  | `rtdetr-l.pt`, `rtdetr-x.pt`                                           |
-| YOLO-NAS | `yolo_nas_s.pt`, `yolo_nas_m.pt`, `yolo_nas_l.pt` (inference/val only) |
+| Model    | Names                                                           |
+| -------- | --------------------------------------------------------------- |
+| RT-DETR  | `rtdetr-l.pt`, `rtdetr-x.pt`                                    |
+| YOLO-NAS | `yolo_nas_s.pt`, `yolo_nas_m.pt`, `yolo_nas_l.pt` (no training) |

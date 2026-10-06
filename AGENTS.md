@@ -33,7 +33,7 @@ python3 .github/scripts/lint_skills.py
 claude --plugin-dir .
 ```
 
-The validator checks skill format, metadata, and manifest agreement; it does not execute examples or establish factual correctness. Ground package facts in `yolo checks`, `yolo cfg`, `export_formats()`, and the package source at the pinned version, and Platform instructions in live docs and installed `ul cloud <resource> <operation> --help`. Installed plugins are cached; `claude --plugin-dir .` exercises this checkout directly.
+The validator checks skill format, metadata, manifest agreement, and the Codex listing limits on starter prompts and short description; it does not execute examples or establish factual correctness. Ground package facts in `yolo checks`, `yolo cfg`, `export_formats()`, and the package source at the pinned version, and Platform instructions in live docs and installed `ul cloud <resource> <operation> --help`. Installed plugins are cached; `claude --plugin-dir .` exercises this checkout directly.
 
 ## Where to look
 

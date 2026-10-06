@@ -28,10 +28,10 @@ without canceling training. All four shortcuts need `ultralytics` installed; the
 `ul cloud <resource> <operation>` commands do not.
 
 ```bash
-ul cloud train model=yolo26n.pt data=ul://WS/datasets/helmets epochs=100 # → run URI and download command
-ul cloud download model=ul://WS/helmets/exp1                             # → weights/best.pt and results
-ul cloud predict model=ul://WS/helmets/exp1 source=video.mp4             # → annotated output
-ul cloud export model=ul://WS/helmets/exp1 format=onnx                   # → downloaded artifact
+ul cloud train model=yolo26n.pt data=ul://username/datasets/helmets epochs=100 project=helmets name=exp1 # → run URI and download command
+ul cloud download model=ul://username/helmets/exp1                                                       # → weights/best.pt and results
+ul cloud predict model=ul://username/helmets/exp1 source=video.mp4                                       # → annotated output
+ul cloud export model=ul://username/helmets/exp1 format=onnx                                             # → downloaded artifact
 ```
 
 Mix them freely. Set `ULTRALYTICS_API_KEY`, use a Platform dataset as
@@ -89,15 +89,15 @@ Read the skill for the stage you're working on BEFORE writing code — each cont
 formats, argument tables with defaults, recipes, and symptom→fix tables. A request
 spanning stages ("train and deploy") → read each relevant skill.
 
-| Working on                                                                                                                             | Skill            |
-| -------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| choosing a model family/size/task, YOLO26 vs YOLO11, YOLO-World/YOLOE, SAM, RT-DETR                                                    | `yolo-models`    |
-| data.yaml, labels, annotation conversion, auto-labeling, dataset analysis/errors, splits                                               | `yolo-datasets`  |
-| training, fine-tuning, hyperparameters, augmentation, OOM / NaN / low mAP, reading runs                                                | `yolo-training`  |
-| hyperparameter tuning, Ray Tune, systematic model improvement, "autotraining"                                                          | `yolo-tuning`    |
-| predict on images/video/streams, Results API, tracking IDs, counting/heatmaps/Solutions                                                | `yolo-inference` |
-| ONNX / TensorRT / CoreML / Core AI / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking                                       | `yolo-export`    |
-| Platform API from a terminal: `ul cloud` commands, `ultralytics-platform`, scripted resource, trash, deployment, and cloud-run changes | `platform-cli`   |
+| Working on                                                                                                                                                          | Skill            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| choosing a model family/size/task, YOLO26 vs YOLO11, YOLO-World/YOLOE, SAM, RT-DETR                                                                                 | `yolo-models`    |
+| data.yaml, labels, annotation conversion, auto-labeling, dataset analysis/errors, splits                                                                            | `yolo-datasets`  |
+| training, fine-tuning, hyperparameters, augmentation, OOM / NaN / low mAP, reading runs                                                                             | `yolo-training`  |
+| hyperparameter tuning, Ray Tune, systematic model improvement, "autotraining"                                                                                       | `yolo-tuning`    |
+| predict on images/video/streams, Results API, tracking IDs, counting/heatmaps/Solutions                                                                             | `yolo-inference` |
+| ONNX / TensorRT / CoreML / Core AI / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking                                                                    | `yolo-export`    |
+| Platform API from a terminal: `ul cloud <resource> <operation>` commands, `ultralytics-platform`, scripted changes to resources, trash, deployments, and cloud runs | `platform-cli`   |
 
 ## CLI specifics
 
