@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   release:
-    if: github.repository == 'ultralytics/skills' && github.actor == 'glenn-jocher' && github.ref == 'refs/heads/main'
+    if: github.repository == 'ultralytics/skills' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
