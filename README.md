@@ -23,7 +23,7 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU export, quantization, benchmarking                               |
 | [`platform-cli`](skills/platform-cli/SKILL.md)     | Scripting Platform with `ul cloud`: resources, dataset inspection, cloud training, model analysis, exports, deployments, billing |
 
-Each skill is a `SKILL.md` of procedures, decision tables, and gotchas, with Codex and ChatGPT presentation metadata in `agents/openai.yaml`. Version-volatile catalogs (weight names, argument tables, export formats) live in companion files beside it. Package facts are grounded against `ultralytics` v8.4.138; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
+Each skill is a `SKILL.md` of procedures, decision tables, and gotchas, with Codex and ChatGPT presentation metadata in `agents/openai.yaml`. Version-volatile catalogs (weight names, argument tables, export formats) live in companion files beside it. Package facts are grounded against `ultralytics` v8.4.174; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
 
 ## 📦 Install
 

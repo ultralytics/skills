@@ -93,9 +93,9 @@ Parsing rules that matter:
 
 - Args are `key=value`, no `--` flags. A leading `--` and trailing commas are stripped with a warning; spaces around `=` are merged.
 - A bare boolean arg sets it True: `yolo predict ... show` ≡ `show=True`.
-- `cfg=custom.yaml` resets CLI overrides to the file: arguments before it are discarded, later arguments win, and missing keys still use built-in defaults (start with `yolo copy-cfg`).
+- `cfg=custom.yaml` loads the file's values: CLI arguments before or after it win, and missing keys still use built-in defaults (start with `yolo copy-cfg`).
 - Missing args are auto-filled with warnings (sample source, task-default data/model, `format=torchscript`).
-- Model stem selects the architecture: `rtdetr-*` → RT-DETR, `sam_*`/`sam2*` → SAM, `FastSAM-*` → FastSAM, `yoloe-*`/`*-world*` → promptable YOLO (accepts `classes="person, bus"`), everything else → YOLO.
+- Model stem selects the architecture: `rtdetr-*` → RT-DETR, `sam_*`/`sam2*`/`sam3*`/`mobile_sam` → SAM, `FastSAM-*` → FastSAM, `yolo_nas_*` → NAS, `yoloe-*`/`*-world*` → promptable YOLO (accepts `classes="person, bus"`), everything else → YOLO.
 
 ## Global directives
 

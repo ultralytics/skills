@@ -55,21 +55,21 @@ Accepted directly: image/video path, directory, glob, URL, webcam index (`0`), R
 
 ## Arguments that matter
 
-| Arg            | Default | Notes                                                                                                                                |
-| -------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `conf`         | 0.25    | lower → more recall + more false positives                                                                                           |
-| `iou`          | 0.7     | NMS threshold; ignored by default YOLO26/YOLOv10 end-to-end inference                                                                |
-| `end2end`      | None    | native `.pt`: set `False` before first prediction to enable NMS/`iou`; reload if already fused. Set during export for artifacts      |
-| `imgsz`        | model   | inherited from the checkpoint; set explicitly for a different shape (static exports always run at their export size)                 |
-| `classes`      | None    | keep only these ids, e.g. `classes=[0]`                                                                                              |
-| `max_det`      | 300     | raise for dense scenes                                                                                                               |
-| `quantize`     | None    | `16` selects FP16 compute for PyTorch/TorchScript; artifact/runtime precision otherwise applies; see caveat below                    |
-| `batch`        | 1       | >1 speeds up folders/videos with `stream=True`                                                                                       |
-| `retina_masks` | False   | full-resolution masks (slower, crisper)                                                                                              |
-| `augment`      | False   | detect-only test-time augmentation (+accuracy, ~3× slower); end-to-end YOLO26 warns and runs normal inference unless `end2end=False` |
-| `verbose`      | True    | False in loops to silence per-frame logs                                                                                             |
+| Arg            | Default | Notes                                                                                                                        |
+| -------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `conf`         | 0.25    | lower → more recall + more false positives                                                                                   |
+| `iou`          | 0.7     | NMS threshold; ignored by the NMS-free head (`nms=False`)                                                                    |
+| `nms`          | None    | default: one-to-many head + NMS; `False`: faster NMS-free YOLO26 head; `True`: embed NMS on export. Exports keep that choice |
+| `imgsz`        | model   | inherited from the checkpoint; set explicitly for a different shape (static exports always run at their export size)         |
+| `classes`      | None    | keep only these ids, e.g. `classes=[0]`                                                                                      |
+| `max_det`      | 300     | raise for dense scenes                                                                                                       |
+| `quantize`     | None    | `16` selects FP16 compute for PyTorch/TorchScript; artifact/runtime precision otherwise applies; see caveat below            |
+| `batch`        | 1       | >1 speeds up folders/videos with `stream=True`                                                                               |
+| `retina_masks` | False   | full-resolution masks (slower, crisper)                                                                                      |
+| `augment`      | False   | detect-only test-time augmentation (+accuracy, ~3× slower); `nms=False` and exports warn and run normal inference            |
+| `verbose`      | True    | False in loops to silence per-frame logs                                                                                     |
 
-`quantize=16` also rounds OpenVINO and Triton inputs to FP16 and returns Triton outputs as FP16. It replaces the deprecated `half` argument.
+`quantize=16` also rounds OpenVINO inputs to FP16. It replaces the deprecated `half` argument.
 
 Saving/drawing: `save`, `save_txt`, `save_conf`, `save_crop`, `show`, `line_width` → `runs/<task>/predict*/`.
 
@@ -124,23 +124,23 @@ out.release()
 
 1. For PyTorch/TorchScript on a supported GPU, benchmark `quantize=16` against FP32.
 2. Export to the target-native backend (TensorRT/OpenVINO/CoreML) and benchmark it (see yolo-export; exports load straight back into `YOLO()`).
-3. Use a smaller model or `imgsz`.
+3. Use a smaller model or `imgsz`, or the NMS-free YOLO26 head (`nms=False`).
 4. Set `batch>1` for offline folders; use `vid_stride` when every frame isn't needed.
 5. Set `verbose=False`; skip `.plot()` when only coordinates are needed.
 6. Use one `YOLO()` instance per thread — never share across threads.
 
 ## Troubleshooting
 
-| Symptom                            | Cause / fix                                                                                                                                                 |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| No detections on visible objects   | `conf` too high; wrong weights; `imgsz` far from training size                                                                                              |
-| Boxes offset                       | you pre-resized manually — pass the raw image, preprocessing is internal                                                                                    |
-| Red/blue swapped in PIL/matplotlib | Results arrays (`orig_img`, `.plot()`) are BGR; convert with `cv2.cvtColor(..., cv2.COLOR_BGR2RGB)`                                                         |
-| RAM climbs on video                | missing `stream=True`                                                                                                                                       |
-| `boxes.id is None` crash           | guard for None; `persist=True` in manual loops                                                                                                              |
-| Duplicate boxes                    | native `.pt`: reload, then use `end2end=False` and lower `iou`; exports: re-export with `end2end=False`; add `agnostic_nms=True` for cross-class duplicates |
-| Caps at 300 objects                | raise `max_det`                                                                                                                                             |
-| Slow first inference               | warmup — benchmark from the second call                                                                                                                     |
+| Symptom                            | Cause / fix                                                                                                                                   |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| No detections on visible objects   | `conf` too high; wrong weights; `imgsz` far from training size                                                                                |
+| Boxes offset                       | you pre-resized manually — pass the raw image, preprocessing is internal                                                                      |
+| Red/blue swapped in PIL/matplotlib | Results arrays (`orig_img`, `.plot()`) are BGR; convert with `cv2.cvtColor(..., cv2.COLOR_BGR2RGB)`                                           |
+| RAM climbs on video                | missing `stream=True`                                                                                                                         |
+| `boxes.id is None` crash           | guard for None; `persist=True` in manual loops                                                                                                |
+| Duplicate boxes                    | lower `iou`; drop `nms=False` (its NMS-free head ignores `iou`; re-export such artifacts); add `agnostic_nms=True` for cross-class duplicates |
+| Caps at 300 objects                | raise `max_det`                                                                                                                               |
+| Slow first inference               | warmup — benchmark from the second call                                                                                                       |
 
 ## Related pages
 

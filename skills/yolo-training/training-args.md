@@ -1,4 +1,4 @@
-# Base training argument reference (default.yaml, v8.4.138)
+# Base training argument reference (default.yaml, v8.4.174)
 
 `yolo cfg` prints the installed base schema and defaults. Effective values can also come from a task trainer, loaded checkpoint, or explicit argument; inspect the run's `args.yaml`. Names are identical in CLI and Python.
 
@@ -28,15 +28,17 @@
 | `close_mosaic`                  | 10              | disable mosaic for final N epochs                                                                    |
 | `resume`                        | False           | resume from last.pt                                                                                  |
 | `amp`                           | True            | True/`"fp16"`, `"bf16"` on supported CUDA devices, or False/`"fp32"`                                 |
+| `quantize`                      | None            | `8`/`"int8"` = INT8 quantization-aware training (QAT) for onnx/engine export; keep `compile=False`   |
 | `fraction`                      | 1.0             | train ratio/count, or `[train,val]`/`[train,val,test]`; two items keep test full, only test may be 0 |
 | `profile`                       | False           | profile ONNX/TensorRT speeds during training                                                         |
 | `freeze`                        | None            | int N, or list of layer indices/module names such as `"23.cv2"`                                      |
 | `multi_scale`                   | 0.0             | imgsz jitter fraction during training                                                                |
 | `compile`                       | False           | torch.compile: True/`"default"`/`"reduce-overhead"`/`"max-autotune-no-cudagraphs"`                   |
-| `channels_last`                 | None            | auto on CUDA training and x86_64 Linux/Windows CPU inference with MKLDNN; bool overrides             |
+| `channels_last`                 | None            | auto on non-Windows CUDA training and x86_64 Linux/Windows CPU inference with MKLDNN; bool overrides |
 | `overlap_mask` / `mask_ratio`   | True / 4        | segment: merge overlapping masks; mask downsample                                                    |
 | `dropout`                       | 0.0             | classify only                                                                                        |
 | `val` / `plots`                 | True / True     | validate + plot during training                                                                      |
+| `nms`                           | None            | epoch-val head (picks `best.pt`): None/True = one-to-many + NMS; False = NMS-free head if available  |
 
 ## Hyperparameters (LR, loss weights)
 
@@ -45,7 +47,7 @@
 | `lr0` / `lrf`                                          | 0.01 / 0.01      | initial LR (ignored by `optimizer=auto`) / final LR = lr0×lrf             |
 | `momentum`                                             | 0.937            | SGD momentum / Adam beta1 (ignored by `optimizer=auto`)                   |
 | `weight_decay`                                         | 0.0005           |                                                                           |
-| `warmup_epochs` / `warmup_momentum` / `warmup_bias_lr` | 3.0 / 0.8 / 0.1  |                                                                           |
+| `warmup_epochs` / `warmup_momentum` / `warmup_bias_lr` | 3.0 / 0.8 / 0.1  | `warmup_bias_lr` becomes 0 under `optimizer=auto`                         |
 | `box` / `cls` / `dfl`                                  | 7.5 / 0.5 / 1.5  | box/class/distance loss; `dfl` is L1 on DFL-free YOLO26                   |
 | `cls_pw`                                               | 0.0              | class-weights power for class imbalance (0=off, 1=full inverse-frequency) |
 | `pose` / `kobj` / `rle`                                | 12.0 / 1.0 / 1.0 | pose loss weights                                                         |
@@ -65,7 +67,7 @@
 | `bgr`                                           | 0.0                   | channel-swap probability                                  |
 | `mosaic`                                        | 1.0                   | 4-image mosaic (off for last `close_mosaic` epochs)       |
 | `mixup` / `cutmix`                              | 0.0 / 0.0             | try 0.1 for crowded scenes                                |
-| `copy_paste` / `copy_paste_mode`                | 0.0 / flip            | segment/OBB eligible-object fraction; try 0.3 for overlap |
+| `copy_paste` / `copy_paste_mode`                | 0.0 / flip            | segment/semantic/OBB object fraction; try 0.3 for overlap |
 | `auto_augment`                                  | randaugment           | classify: randaugment/autoaugment/augmix                  |
 | `erasing`                                       | 0.4                   | classify random erasing                                   |
 

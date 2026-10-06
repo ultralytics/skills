@@ -25,7 +25,7 @@ while cap.isOpened():
     # results.plot_im, counter.in_count, counter.out_count, counter.classwise_count
 ```
 
-Common constructor args (`SolutionConfig`): `model`, `region` (pixel coords in the frame), `classes`, `conf`, `iou`, `tracker` (default `botsort.yaml` here), `device`, `show`, `line_width`, `imgsz`, `quantize` (same semantics as predict; `half` is deprecated). Invalid keys raise `ValueError` with a link to the argument docs; `SolutionConfig`'s fields are the valid keys.
+Common constructor args (`SolutionConfig`): `model`, `region` (pixel coords in the frame), `classes`, `conf`, `iou`, `tracker` (default `tracktrack.yaml`), `device`, `show`, `line_width`, `imgsz`, `quantize` (same semantics as predict; `half` is deprecated). Invalid keys raise `ValueError` with a link to the argument docs; `SolutionConfig`'s fields are the valid keys.
 
 ## Catalog (CLI name → class)
 
