@@ -84,7 +84,7 @@ Produces the task metric + latency per exportable format **on this machine**. Re
 ## Consuming exports outside Python
 
 - In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize, BGR→RGB, /255) and output decoding.
-- Detect output layout follows `nms`: the default `nms=None` emits raw `[4+nc, anchors]` heads (xywh boxes + class scores) for every model, YOLO26 included, so you run NMS. `nms=False` on YOLO26/YOLOv10 emits NMS-free `[max_det, 6]` rows `[x1,y1,x2,y2,conf,cls]`, and `nms=True` embeds NMS with the same row layout where supported; some formats fall back to raw heads (`format-matrix.md`). Segment, pose, and OBB add task-specific outputs. Check export warnings and shapes.
+- Detect output layout follows `nms`: the default `nms=None` emits raw `[4+nc, anchors]` heads (xywh boxes + class scores) for every model, YOLO26 included, so you run NMS (`imx` instead always embeds NMS). `nms=False` on YOLO26/YOLOv10 emits NMS-free `[max_det, 6]` rows `[x1,y1,x2,y2,conf,cls]`, and `nms=True` embeds NMS with the same row layout where supported; some formats fall back to raw heads (`format-matrix.md`). Segment, pose, and OBB add task-specific outputs. Check export warnings and shapes.
 - Class names travel in export metadata where supported; otherwise ship the `names` map alongside the model.
 - Serving: `ultralytics.utils.triton.TritonRemoteModel` for Triton; `examples/` in the ultralytics repo has ONNXRuntime C++/Rust/Python references.
 
