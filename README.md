@@ -6,12 +6,9 @@
 
 Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [`ultralytics`](https://github.com/ultralytics/ultralytics) Python package, and the `yolo` CLI. They teach AI coding agents (Claude Code, Codex, Cursor, and any agent that reads the [Agent Skills format](https://agentskills.io)) the full computer-vision lifecycle: data/annotation → training → tuning → inference/tracking → export/deployment.
 
-[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml)
-[![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
+[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml) [![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
 
-[![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics)
-[![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com)
-[![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
+[![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics) [![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com) [![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
 
 ## 🧩 Skills
 
@@ -26,7 +23,7 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 | [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU export, quantization, benchmarking                               |
 | [`platform-cli`](skills/platform-cli/SKILL.md)     | Scripting Platform with `ul cloud`: resources, dataset inspection, cloud training, model analysis, exports, deployments, billing |
 
-Each skill is a `SKILL.md` (procedures, decision tables, gotchas) with Codex/ChatGPT presentation metadata, plus, where needed, a companion reference file holding version-volatile catalogs (weight names, argument tables, format matrix). Package facts are grounded against `ultralytics` v8.4.138; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
+Each skill is a `SKILL.md` of procedures, decision tables, and gotchas, with Codex and ChatGPT presentation metadata in `agents/openai.yaml`. Version-volatile catalogs (weight names, argument tables, export formats) live in companion files beside it. Package facts are grounded against `ultralytics` v8.4.138; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
 
 ## 📦 Install
 
@@ -92,8 +89,7 @@ codex plugin marketplace add .
 codex plugin add yolo@ultralytics
 ```
 
-Restart Codex after edits. To pull new versions of the GitHub source, run
-`codex plugin marketplace upgrade ultralytics`, then `codex plugin add yolo@ultralytics`.
+Restart Codex after edits. To pull new versions of the GitHub source, run `codex plugin marketplace upgrade ultralytics`, then `codex plugin add yolo@ultralytics`.
 
 </details>
 
@@ -117,9 +113,9 @@ Or simply copy (or symlink) the folders under `skills/` into your agent's skills
 
 ## 🛠️ Design notes
 
-- Skills are divided by lifecycle stage / user intent, not by model family.
+- Skills are divided by lifecycle stage and user intent, not by model family.
 - Frontmatter is portable: `name` + `description` only.
-- Each lifecycle skill covers both the Platform UI and local Python/CLI path where applicable.
+- Each lifecycle skill covers both the Platform UI and the local Python/CLI path where applicable.
 - Every skill defers to the installed version at runtime: `yolo checks` (version), `yolo cfg` (valid arguments), and error messages beat any table in these files. The Platform CLI skill defers to `ul version`, `ul cloud <resource> <operation> --help`, and the live `/openapi.json`.
 
 ## 🔒 Data and network access
