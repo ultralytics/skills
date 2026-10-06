@@ -90,7 +90,9 @@ masks_dir: masks # per-pixel PNG mask images
 ```python
 from ultralytics.data.converter import convert_coco
 
-convert_coco(labels_dir="coco/annotations/", use_segments=True, cls91to80=False)  # → segment; omit use_segments for detect
+convert_coco(
+    labels_dir="coco/annotations/", use_segments=True, cls91to80=False
+)  # → segment; omit use_segments for detect
 convert_coco(labels_dir="coco/annotations/", use_keypoints=True, cls91to80=False)  # → pose
 ```
 
@@ -107,7 +109,9 @@ Auto-label a raw image folder (detector proposes boxes, SAM refines masks):
 ```python
 from ultralytics.data.annotator import auto_annotate
 
-auto_annotate(data="dataset/images/train", det_model="yolo26x.pt", sam_model="sam_b.pt", output_dir="dataset/labels/train")
+auto_annotate(
+    data="dataset/images/train", det_model="yolo26x.pt", sam_model="sam_b.pt", output_dir="dataset/labels/train"
+)
 ```
 
 For VOC XML/CSV there is no converter — write a small script emitting the per-task line
