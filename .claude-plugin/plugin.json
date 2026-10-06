@@ -27,7 +27,7 @@
   ],
   "icon": "./assets/logo.svg",
   "documentationUrl": "https://docs.ultralytics.com/integrations/agent-skills",
-  "supportUrl": "https://github.com/ultralytics/skills/issues",
+  "supportUrl": "https://www.ultralytics.com/support",
   "privacyPolicyUrl": "https://www.ultralytics.com/legal/privacy",
   "termsOfServiceUrl": "https://www.ultralytics.com/legal/terms-of-service",
   "skills": "./skills/"

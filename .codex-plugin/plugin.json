@@ -33,7 +33,7 @@
     "category": "Developer Tools",
     "capabilities": ["Interactive", "Write"],
     "websiteURL": "https://www.ultralytics.com",
-    "supportURL": "https://github.com/ultralytics/skills/issues",
+    "supportURL": "https://www.ultralytics.com/support",
     "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
     "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",
     "logo": "./assets/logo.svg",
