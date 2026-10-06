@@ -124,15 +124,7 @@ Or simply copy (or symlink) the folders under `skills/` into your agent's skills
 
 ## 🔒 Data and network access
 
-The plugin contains only Markdown instructions, metadata, and icons. It has no hooks, MCP servers, or scripts, and nothing runs when it loads. Network access happens only when your agent runs a command from a skill, under the agent's usual permission prompts:
-
-- **Install:** `pip install ultralytics` downloads packages from PyPI.
-- **Local `yolo` and Python runs:** the `ultralytics` package downloads pretrained weights, fonts, and any dataset or URL source you point it to. It also sends anonymous usage analytics (run settings, model and dataset file names, and metrics; never images, labels, or file contents) unless you run `yolo settings sync=False`.
-- **Ultralytics Platform:** with `ULTRALYTICS_API_KEY` set or after `ul login`, `ul cloud` commands call the Platform API at `platform.ultralytics.com`. `ul cloud train`, `predict`, and `export` upload the local datasets, images, videos, or weights you give them, and `ul cloud download` and `data=ul://...` download from your workspace. Local training with `project=username/project-slug` sends metrics, console output, environment details, and checkpoints to that Platform project.
-- **Dedicated endpoints:** inference requests send your images and API key to your own deployment URL.
-- **Reference lookups:** the `platform-cli` skill fetches the public `https://platform.ultralytics.com/openapi.json` schema, which sends no workspace data. Skills also link to `docs.ultralytics.com`, which your agent may open.
-
-Data sent to Platform is covered by the [Ultralytics Privacy Policy](https://www.ultralytics.com/legal/privacy).
+The plugin contains only instructions; nothing runs when it loads. The commands it suggests can download packages, weights, datasets, and the public Platform API schema, and `ul cloud` commands upload the files you pass them to [Ultralytics Platform](https://platform.ultralytics.com) with your API key. The `ultralytics` package also sends anonymous usage analytics; turn them off with `yolo settings sync=False`.
 
 ## 💡 Contribute
 
