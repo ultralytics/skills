@@ -39,6 +39,7 @@ The validator checks skill format, metadata, manifest agreement, and the Codex l
 
 - Skills → `skills/<name>/` (`SKILL.md`, `agents/openai.yaml`, companion catalogs).
 - Plugin packaging → `.claude-plugin/`, `.codex-plugin/`, `.agents/plugins/`; the two `plugin.json` files must agree on `name`, `version`, and `skills`.
+- Releasing → bump `version` in both `plugin.json` files; on merge, `.github/workflows/publish.yml` tags `vX.Y.Z`, creates the GitHub release, and attaches the Codex upload ZIP.
 - Adding or renaming a skill → also update the skill tables in `README.md` and `README.zh-CN.md`, the routing table in `skills/yolo/SKILL.md`, and the Skill dropdowns in `.github/ISSUE_TEMPLATE/`.
 
 ## Conventions

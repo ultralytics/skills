@@ -1,0 +1,61 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
+# Tag and release the plugin when its version changes, attaching the Codex upload ZIP
+
+name: Publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  queue: max
+
+jobs:
+  release:
+    if: github.repository == 'ultralytics/skills' && github.actor == 'glenn-jocher' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # release notes compare against the previous tag
+
+      - name: Check for an unreleased version
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="v$(jq -r .version .claude-plugin/plugin.json)"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+            echo "$TAG has no release yet, ready to tag and release ✅."
+          fi
+
+      - uses: ultralytics/actions/setup-uv@main
+        if: steps.version.outputs.release == 'true'
+
+      - name: Tag and Release
+        if: steps.version.outputs.release == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_TAG: ${{ steps.version.outputs.tag }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$(git tag -l "$CURRENT_TAG")" ]; then
+            git config --global user.name "UltralyticsAssistant"
+            git config --global user.email "web@ultralytics.com"
+            git tag -a "$CURRENT_TAG" -m "$(git log -1 --pretty=%B)"
+            git push origin "$CURRENT_TAG"
+          fi
+          uvx --from ultralytics-actions ultralytics-actions-summarize-release
+          ZIP="yolo-$CURRENT_TAG-codex.zip" # skills-only package for the OpenAI plugin upload
+          git archive --format=zip -o "$ZIP" "$CURRENT_TAG" .codex-plugin skills assets README.md README.zh-CN.md LICENSE
+          gh release upload "$CURRENT_TAG" "$ZIP" --clobber
