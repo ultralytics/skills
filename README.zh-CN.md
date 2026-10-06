@@ -122,6 +122,18 @@ npx skills add ultralytics/skills -g                    # 全局安装到 ~/.cla
 - 每个生命周期 Skill 都会在适用时同时介绍 Platform UI 与本地 Python/CLI 路径。
 - 每个 Skill 都以安装版本的运行时信息为准：`yolo checks`（版本）、`yolo cfg`（有效参数）和错误消息优先于这些文件中的任何表格。Platform CLI Skill 以 `ul version`、`ul cloud <resource> <operation> --help` 和实时的 `/openapi.json` 为准。
 
+## 🔒 数据与网络访问
+
+本插件仅包含 Markdown 说明、元数据和图标，不含 hooks、MCP 服务器或脚本，加载时不会运行任何内容。只有当智能体执行 Skill 中描述的命令时才会访问网络，并照常经过智能体的权限确认：
+
+- **安装：**`pip install ultralytics` 从 PyPI 下载软件包。
+- **本地 `yolo` 和 Python 运行：**`ultralytics` 软件包会下载预训练权重、字体以及你指定的任何数据集或 URL 来源。它还会发送匿名使用统计（运行设置、模型和数据集文件名以及指标；绝不包含图片、标签或文件内容），运行 `yolo settings sync=False` 即可关闭。
+- **Ultralytics Platform：**设置 `ULTRALYTICS_API_KEY` 或运行 `ul login` 后，`ul cloud` 命令会调用 `platform.ultralytics.com` 上的 Platform API。`ul cloud train`、`predict` 和 `export` 会上传你提供的本地数据集、图片、视频或权重；`ul cloud download` 和 `data=ul://...` 会从你的工作区下载。使用 `project=username/project-slug` 进行本地训练时，会将指标、控制台输出、环境信息和检查点发送到该 Platform 项目。
+- **专用端点：**推理请求会将你的图片和 API 密钥发送到你自己的部署 URL。
+- **参考查询：**`platform-cli` Skill 会获取公开的 `https://platform.ultralytics.com/openapi.json` 架构，不发送任何工作区数据。Skills 还会链接到 `docs.ultralytics.com`，智能体可能会打开这些页面。
+
+发送到 Platform 的数据受 [Ultralytics 隐私政策](https://www.ultralytics.com/legal/privacy)约束。
+
 ## 💡 贡献
 
 Ultralytics 因社区协作而不断发展，我们非常重视你的贡献！请参阅[贡献指南](https://docs.ultralytics.com/help/contributing)，了解如何参与。也欢迎你通过[问卷调查](https://www.ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey)分享反馈。衷心感谢所有贡献者！🙏
