@@ -80,6 +80,8 @@ if codex.get("skills") != "./skills/":
 prompts = codex.get("interface", {}).get("defaultPrompt", [])
 if not 1 <= len(prompts) <= 3 or len(set(prompts)) < len(prompts) or any(len(p) > 128 or "@" in p for p in prompts):
     errors.append("Codex defaultPrompt must list 1-3 unique prompts of at most 128 characters without @mentions")
+if len(codex.get("interface", {}).get("shortDescription", "")) > 30:
+    errors.append("Codex shortDescription must be at most 30 characters")
 
 claude_plugins = manifests.get(".claude-plugin/marketplace.json", {}).get("plugins", [])
 codex_plugins = manifests.get(".agents/plugins/marketplace.json", {}).get("plugins", [])
