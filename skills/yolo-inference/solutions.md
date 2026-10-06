@@ -1,13 +1,10 @@
 # Solutions — prebuilt vision apps
 
-Solutions wrap model + tracker + geometry + drawing into one callable. If the request
-matches a module below, use it — don't hand-roll track-ID bookkeeping and line-crossing
-math.
+Solutions wrap model + tracker + geometry + drawing into one callable. If the request matches a module below, use it — don't hand-roll track-ID bookkeeping and line-crossing math.
 
 ## Universal pattern
 
-Construct once → call per frame → returns `SolutionResults` with `.plot_im` (annotated
-frame) plus solution-specific fields.
+Construct once → call per frame → returns `SolutionResults` with `.plot_im` (annotated frame) plus solution-specific fields.
 
 ```python
 import cv2
@@ -28,10 +25,7 @@ while cap.isOpened():
     # results.plot_im, counter.in_count, counter.out_count, counter.classwise_count
 ```
 
-Common constructor args (`SolutionConfig`): `model`, `region` (pixel coords in the
-frame), `classes`, `conf`, `iou`, `tracker` (default `botsort.yaml` here), `device`,
-`show`, `line_width`, `imgsz`, `quantize` (same semantics as predict; `half` is deprecated). Invalid keys raise
-`ValueError` with a link to the argument docs; `SolutionConfig`'s fields are the valid keys.
+Common constructor args (`SolutionConfig`): `model`, `region` (pixel coords in the frame), `classes`, `conf`, `iou`, `tracker` (default `botsort.yaml` here), `device`, `show`, `line_width`, `imgsz`, `quantize` (same semantics as predict; `half` is deprecated). Invalid keys raise `ValueError` with a link to the argument docs; `SolutionConfig`'s fields are the valid keys.
 
 ## Catalog (CLI name → class)
 
@@ -64,19 +58,12 @@ yolo solutions inference # Streamlit app (note: `yolo streamlit-predict` does NO
 yolo solutions help
 ```
 
-Output video lands in `runs/solutions/exp*/`. An invalid solution name falls back to
-`count` (with a logged warning) — spell exactly.
+Output video lands in `runs/solutions/exp*/`. An invalid solution name falls back to `count` (with a logged warning) — spell exactly.
 
 ## Notes
 
-- Region coordinates are **pixels in the frame** — grab one frame, note the resolution,
-  then define regions. Each track ID counts once, so double counts on a line come from ID
-  switches; place the line where objects are unoccluded, perpendicular to travel direction.
+- Region coordinates are **pixels in the frame** — grab one frame, note the resolution, then define regions. Each track ID counts once, so double counts on a line come from ID switches; place the line where objects are unoccluded, perpendicular to travel direction.
 - Solutions accept any custom-trained `best.pt` matching their task type.
-- Read state from attributes (`in_count`, `classwise_count`, …), not by parsing the
-  drawn frame; `dir(obj)` lists what a module exposes.
-- Enumerate what the installed version ships:
-  `python -c "from ultralytics import solutions; print([s for s in dir(solutions) if s[0].isupper()])"`
-- **When NOT to use**: bespoke multi-stage pipelines (detect → classify crop → OCR),
-  3D/homography geometry, event logic no module models — build on `model.track()` +
-  Results API instead (see SKILL.md).
+- Read state from attributes (`in_count`, `classwise_count`, …), not by parsing the drawn frame; `dir(obj)` lists what a module exposes.
+- Enumerate what the installed version ships: `python -c "from ultralytics import solutions; print([s for s in dir(solutions) if s[0].isupper()])"`
+- **When NOT to use**: bespoke multi-stage pipelines (detect → classify crop → OCR), 3D/homography geometry, event logic no module models — build on `model.track()` + Results API instead (see SKILL.md).

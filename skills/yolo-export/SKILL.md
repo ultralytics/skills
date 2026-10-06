@@ -1,28 +1,16 @@
 ---
 name: yolo-export
 description: >
-  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the
-  Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI,
-  OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera,
-  DeepX), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference
-  with .pt weights or Platform endpoints, see yolo-inference.
+  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI, OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera, DeepX), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference with .pt weights or Platform endpoints, see yolo-inference.
 ---
 
 # Export, quantization & deployment
 
 ## Fastest route: export in Platform
 
-Open a completed model's **Export** tab, select a format, configure its
-arguments, and click **Start Export**. Platform runs CPU exports directly and asks for a
-target GPU where the format requires one (notably TensorRT); download the artifact when
-the job completes. For TensorRT, select the deployment device's GPU family or Jetson
-target; if its TensorRT/CUDA versions differ from the device's, export locally on that
-device instead.
+Open a completed model's **Export** tab, select a format, configure its arguments, and click **Start Export**. Platform runs CPU exports directly and asks for a target GPU where the format requires one (notably TensorRT); download the artifact when the job completes. For TensorRT, select the deployment device's GPU family or Jetson target; if its TensorRT/CUDA versions differ from the device's, export locally on that device instead.
 
-Use Platform when you do not want to install each exporter toolchain locally. Use the
-Python/CLI path below for custom calibration, repeatable automation, local hardware
-builds, or immediate parity validation. See
-[Platform model export](https://docs.ultralytics.com/platform/train/models#export-model).
+Use Platform when you do not want to install each exporter toolchain locally. Use the Python/CLI path below for custom calibration, repeatable automation, local hardware builds, or immediate parity validation. See [Platform model export](https://docs.ultralytics.com/platform/train/models#export-model).
 
 ## Quickstart
 
@@ -57,8 +45,7 @@ model = YOLO("best.onnx")  # or best.engine, best_openvino_model/, ...
 | Cross-platform / unsure                                  | `onnx`                                                            | runs everywhere; start here, specialize when latency demands                                              |
 | NPUs (Rockchip/Qualcomm/Hailo/Huawei/Sony/Axelera/DeepX) | `rknn` / `qnn` / `hailo` / `ascend` / `imx` / `axelera` / `deepx` | `name=` selects the exact chip for rknn/qnn/hailo/ascend                                                  |
 
-Full 21-target local export matrix with per-format supported args: `format-matrix.md`
-(this folder).
+Full 21-target local export matrix with per-format supported args: `format-matrix.md` (this folder).
 
 ## Key arguments
 
@@ -84,9 +71,7 @@ yolo val model=best.pt data=data.yaml   # baseline
 yolo val model=best.onnx data=data.yaml # compare the same task metric with the baseline
 ```
 
-Acceptable differences depend on the task, model, backend, precision, and calibration
-data. Investigate unexpected gaps by matching `imgsz` and pre/post-processing and, where
-required, using representative calibration data. Also compare one prediction with `.pt`.
+Acceptable differences depend on the task, model, backend, precision, and calibration data. Investigate unexpected gaps by matching `imgsz` and pre/post-processing and, where required, using representative calibration data. Also compare one prediction with `.pt`.
 
 ## Benchmark all formats empirically
 
@@ -95,22 +80,14 @@ yolo benchmark model=best.pt data=data.yaml imgsz=640                           
 yolo benchmark model=best.pt data=data.yaml format=engine quantize=16 device=0 imgsz=640 # targeted FP16
 ```
 
-Produces the task metric + latency per exportable format **on this machine**. Repeat for
-each supported precision and benchmark on deployment hardware, not your dev box.
+Produces the task metric + latency per exportable format **on this machine**. Repeat for each supported precision and benchmark on deployment hardware, not your dev box.
 
 ## Consuming exports outside Python
 
-- In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize,
-  BGR→RGB, /255) and output decoding.
-- Detect output layout differs: end-to-end YOLO26 emits final
-  `[x1,y1,x2,y2,conf,cls]` rows. If export disables end-to-end, YOLO26 emits raw
-  `[4+nc, anchors]` heads like YOLO11/YOLOv8; where supported, `nms=True` wraps them.
-  Set `end2end=False nms=True` to request that path explicitly. Segment, pose, and OBB
-  add task-specific outputs. Check export warnings and shapes.
-- Class names travel in export metadata where supported; otherwise ship the `names`
-  map alongside the model.
-- Serving: `ultralytics.utils.triton.TritonRemoteModel` for Triton;
-  `examples/` in the ultralytics repo has ONNXRuntime C++/Rust/Python references.
+- In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize, BGR→RGB, /255) and output decoding.
+- Detect output layout differs: end-to-end YOLO26 emits final `[x1,y1,x2,y2,conf,cls]` rows. If export disables end-to-end, YOLO26 emits raw `[4+nc, anchors]` heads like YOLO11/YOLOv8; where supported, `nms=True` wraps them. Set `end2end=False nms=True` to request that path explicitly. Segment, pose, and OBB add task-specific outputs. Check export warnings and shapes.
+- Class names travel in export metadata where supported; otherwise ship the `names` map alongside the model.
+- Serving: `ultralytics.utils.triton.TritonRemoteModel` for Triton; `examples/` in the ultralytics repo has ONNXRuntime C++/Rust/Python references.
 
 ## Troubleshooting
 
@@ -127,8 +104,6 @@ each supported precision and benchmark on deployment hardware, not your dev box.
 
 ## Related pages
 
-- `format-matrix.md` — all 21 local export targets, artifacts produced, and supported
-  args. Read when using any format beyond onnx/engine/openvino/coreml.
+- `format-matrix.md` — all 21 local export targets, artifacts produced, and supported args. Read when using any format beyond onnx/engine/openvino/coreml.
 
-If the installed version rejects an argument, trust the error text (format and quantize
-errors list valid values) and `yolo cfg` over this file.
+If the installed version rejects an argument, trust the error text (format and quantize errors list valid values) and `yolo cfg` over this file.

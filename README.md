@@ -6,12 +6,9 @@
 
 Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [`ultralytics`](https://github.com/ultralytics/ultralytics) Python package, and the `yolo` CLI. They teach AI coding agents (Claude Code, Codex, Cursor, and any agent that reads the [Agent Skills format](https://agentskills.io)) the full computer-vision lifecycle: data/annotation → training → tuning → inference/tracking → export/deployment.
 
-[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml)
-[![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
+[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml) [![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
 
-[![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics)
-[![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com)
-[![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
+[![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics) [![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com) [![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
 
 ## 🧩 Skills
 
@@ -92,8 +89,7 @@ codex plugin marketplace add .
 codex plugin add yolo@ultralytics
 ```
 
-Restart Codex after edits. To pull new versions of the GitHub source, run
-`codex plugin marketplace upgrade ultralytics`, then `codex plugin add yolo@ultralytics`.
+Restart Codex after edits. To pull new versions of the GitHub source, run `codex plugin marketplace upgrade ultralytics`, then `codex plugin add yolo@ultralytics`.
 
 </details>
 

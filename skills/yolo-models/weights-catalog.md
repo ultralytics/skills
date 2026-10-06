@@ -1,9 +1,6 @@
 # Model asset names (v8.4.138)
 
-`ultralytics.utils.downloads.GITHUB_ASSETS_NAMES` is the package-known fast-path set, not
-an exhaustive release catalog. For other names, the downloader queries the `ultralytics/assets`
-GitHub release (the pinned tag, then latest). Use the exact names and patterns below and
-official model/task docs; do not guess or interpolate them.
+`ultralytics.utils.downloads.GITHUB_ASSETS_NAMES` is the package-known fast-path set, not an exhaustive release catalog. For other names, the downloader queries the `ultralytics/assets` GitHub release (the pinned tag, then latest). Use the exact names and patterns below and official model/task docs; do not guess or interpolate them.
 
 ## YOLO detectors and task variants
 
@@ -45,9 +42,7 @@ Examples: `yolo26s-seg.pt`, `yolo26n-depth.pt`, `yolo11m-pose.pt`, `yolov8x-oiv7
 
 `-pf` = prompt-free YOLOE (built-in large vocabulary, no prompts needed).
 
-SAM 3 does not auto-download. Request access at
-`https://huggingface.co/facebook/sam3`, download `sam3.pt` after approval, and pass its
-local path to `SAM()`.
+SAM 3 does not auto-download. Request access at `https://huggingface.co/facebook/sam3`, download `sam3.pt` after approval, and pass its local path to `SAM()`.
 
 ## Other detectors
 

@@ -1,32 +1,18 @@
 ---
 name: yolo-models
 description: >
-  Use when choosing or comparing Ultralytics models in Platform or code — picking a
-  model family (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM/SAM2/FastSAM, RT-DETR,
-  YOLO-NAS), size (n/s/m/l/x), task variant (-seg, -sem, -cls, -pose, -obb, -depth),
-  pretrained checkpoint, open-vocabulary or promptable detection/segmentation, or custom
-  architecture, Platform Explore, or exact weight names and availability.
+  Use when choosing or comparing Ultralytics models in Platform or code — picking a model family (YOLO26/YOLO11/YOLOv8, YOLO-World, YOLOE, SAM/SAM2/FastSAM, RT-DETR, YOLO-NAS), size (n/s/m/l/x), task variant (-seg, -sem, -cls, -pose, -obb, -depth), pretrained checkpoint, open-vocabulary or promptable detection/segmentation, or custom architecture, Platform Explore, or exact weight names and availability.
 ---
 
 # Choosing an Ultralytics model
 
-**Default recommendation: YOLO26, pretrained.** Latest generation, NMS-free end-to-end
-(fastest CPU inference, simplest deployment). Use YOLO11/YOLOv8 only to match an existing
-codebase or a deployment target that doesn't support YOLO26 yet. Most official weights
-auto-download on first use; `sam3.pt` requires manual access and download.
+**Default recommendation: YOLO26, pretrained.** Latest generation, NMS-free end-to-end (fastest CPU inference, simplest deployment). Use YOLO11/YOLOv8 only to match an existing codebase or a deployment target that doesn't support YOLO26 yet. Most official weights auto-download on first use; `sam3.pt` requires manual access and download.
 
 ## Choose in Platform
 
-For the quickest no-code start, click **New Model** in a project. Its **Official** tab lists
-YOLO26 (recommended), YOLO11, YOLOv8, and YOLOv5 models whose task can train the selected
-dataset; **My Models** lists your completed or uploaded checkpoints for further
-fine-tuning. To browse the official models first, open the `@ultralytics` projects under
-**Projects** in [Platform Explore](https://platform.ultralytics.com/explore).
+For the quickest no-code start, click **New Model** in a project. Its **Official** tab lists YOLO26 (recommended), YOLO11, YOLOv8, and YOLOv5 models whose task can train the selected dataset; **My Models** lists your completed or uploaded checkpoints for further fine-tuning. To browse the official models first, open the `@ultralytics` projects under **Projects** in [Platform Explore](https://platform.ultralytics.com/explore).
 
-Use a Platform model page to inspect metrics, test it in **Predict**, export it, deploy it,
-clone a public model into your workspace, or download its `.pt` weights for the Python/CLI workflows
-below. See [Platform Models](https://docs.ultralytics.com/platform/train/models) and
-[Explore](https://docs.ultralytics.com/platform/explore).
+Use a Platform model page to inspect metrics, test it in **Predict**, export it, deploy it, clone a public model into your workspace, or download its `.pt` weights for the Python/CLI workflows below. See [Platform Models](https://docs.ultralytics.com/platform/train/models) and [Explore](https://docs.ultralytics.com/platform/explore).
 
 ## Model = family + size + task suffix
 
@@ -40,8 +26,7 @@ below. See [Platform Models](https://docs.ultralytics.com/platform/train/models)
 | l    | 55.0          | 24.8M  | ~6.2 ms     | accuracy-critical, ample GPU               |
 | x    | 57.5          | 55.7M  | ~11.8 ms    | max accuracy, offline/batch                |
 
-Strategy: prototype on `n` to validate the pipeline cheaply, then scale up until accuracy
-stops paying for the latency. A bigger model never fixes bad labels.
+Strategy: prototype on `n` to validate the pipeline cheaply, then scale up until accuracy stops paying for the latency. A bigger model never fixes bad labels.
 
 | Suffix   | Task                            | Output               |
 | -------- | ------------------------------- | -------------------- |
@@ -55,12 +40,8 @@ stops paying for the latency. A bigger model never fixes bad labels.
 
 Notes on the newer tasks:
 
-- **semantic** (`-sem`): dataset uses PNG masks via `masks_dir` (default `masks/`) or
-  polygon labels; metric is mIoU.
-- **depth** (`-depth`): targets are scaled uint16 PNG maps (preferred) or floating-point
-  `.npy` maps in meters; metric is delta1. Depth models also expose
-  `model.calibrate(data=...)`, which fits a metric-scale correction; persist it with
-  `model.save(...)`.
+- **semantic** (`-sem`): dataset uses PNG masks via `masks_dir` (default `masks/`) or polygon labels; metric is mIoU.
+- **depth** (`-depth`): targets are scaled uint16 PNG maps (preferred) or floating-point `.npy` maps in meters; metric is delta1. Depth models also expose `model.calibrate(data=...)`, which fits a metric-scale correction; persist it with `model.save(...)`.
 
 ## Family cheat sheet
 
@@ -74,21 +55,13 @@ Notes on the newer tasks:
 | RT-DETR                               | `RTDETR("rtdetr-l.pt")`           | transformer detector, strong accuracy on GPU                                                                                                                                                                                                                                            |
 | YOLO-NAS                              | `NAS("yolo_nas_s.pt")`            | no training (val/predict/export only)                                                                                                                                                                                                                                                   |
 
-All classes share the same `Model` API (`train/val/predict/track/export/...`) —
-everything in the other yolo-\* skills applies to them, with the exceptions noted above.
+All classes share the same `Model` API (`train/val/predict/track/export/...`) — everything in the other yolo-\* skills applies to them, with the exceptions noted above.
 
-Open-vocabulary decision: need arbitrary classes at inference with no training →
-YOLO-World (detect) or YOLOE (detect+segment, also visual prompts). Need pixel-precise
-masks from clicks/boxes → SAM family. Need a trained model for a fixed class list →
-plain YOLO26 fine-tune (faster and more accurate on that closed set).
+Open-vocabulary decision: need arbitrary classes at inference with no training → YOLO-World (detect) or YOLOE (detect+segment, also visual prompts). Need pixel-precise masks from clicks/boxes → SAM family. Need a trained model for a fixed class list → plain YOLO26 fine-tune (faster and more accurate on that closed set).
 
 ## Architecture YAMLs (custom models)
 
-`ultralytics/cfg/models/` ships editable architecture definitions (`yolo26.yaml`,
-`yolo11.yaml`, `yolov8.yaml`, and variants such as `-p2` (small objects), `-p6` (large
-imgsz), and `-ghost`). Loading `YOLO("yolo26n.yaml")` builds from scratch — scale is
-picked from the letter in the stem. To customize the architecture but keep pretrained
-weights where layers match:
+`ultralytics/cfg/models/` ships editable architecture definitions (`yolo26.yaml`, `yolo11.yaml`, `yolov8.yaml`, and variants such as `-p2` (small objects), `-p6` (large imgsz), and `-ghost`). Loading `YOLO("yolo26n.yaml")` builds from scratch — scale is picked from the letter in the stem. To customize the architecture but keep pretrained weights where layers match:
 
 ```python
 model = YOLO("yolo26n.yaml").load("yolo26n.pt")  # transfer matching weights
@@ -98,17 +71,14 @@ Only go here for research/unusual constraints; for normal work fine-tune the sto
 
 ## Related pages
 
-- `weights-catalog.md` (this folder) — read for package-known weight patterns and
-  specialized official assets. Do not guess weight names.
+- `weights-catalog.md` (this folder) — read for package-known weight patterns and specialized official assets. Do not guess weight names.
 
 ## Verify against the installed version
 
-Model availability moves fast. This prints the installed package's known fast-path set;
-read `weights-catalog.md` before treating an unlisted official asset as invalid:
+Model availability moves fast. This prints the installed package's known fast-path set; read `weights-catalog.md` before treating an unlisted official asset as invalid:
 
 ```bash
 python -c "from ultralytics.utils.downloads import GITHUB_ASSETS_NAMES; print(*sorted(GITHUB_ASSETS_NAMES), sep='\\n')"
 ```
 
-If a weight 404s or a class import fails, check `yolo checks` and trust the
-installed-version error.
+If a weight 404s or a class import fails, check `yolo checks` and trust the installed-version error.

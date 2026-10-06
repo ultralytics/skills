@@ -1,7 +1,6 @@
 # YOLO label formats per task
 
-All coordinates **normalized to [0,1]** relative to image width/height, space-separated,
-one object per line, 0-based integer class indices.
+All coordinates **normalized to [0,1]** relative to image width/height, space-separated, one object per line, 0-based integer class indices.
 
 | Task     | Line format                                                                      | Tokens/line |
 | -------- | -------------------------------------------------------------------------------- | ----------- |
@@ -15,22 +14,11 @@ one object per line, 0-based integer class indices.
 
 ## Details that trip people up
 
-- **Detect**: `cx cy` is the box **center**, not top-left. Converting from COCO
-  (`x_min y_min w h` in pixels) needs both the center shift and normalization.
-- **Segment**: one polygon per line; multi-part instances must be merged into a single
-  polygon (`convert_coco` does this). Never mix box lines and polygon lines in one file —
-  a `-seg` model needs polygons.
-- **Pose**: keypoint count and dims must match `kpt_shape` exactly. With dims=3,
-  visibility is `0` not labeled, `1` occluded, `2` visible; unlabeled keypoints get
-  `0 0 0`. Without `flip_idx` in data.yaml, fliplr/flipud augmentations are disabled
-  with a warning — supply it to keep them; its length must equal `kpt_shape[0]` or
-  training errors.
-- **OBB**: 4 corners in order around the box, normalized. DOTA-converted data can have
-  values slightly outside [0,1]; clamp them.
-- **Depth**: prefer 2D uint16 PNG maps storing meters × `depth_scale` (data.yaml,
-  default 1000 = millimeters). Floating-point 2D `.npy` meter arrays remain
-  supported. The map may differ in size from its image if the aspect ratio matches;
-  non-positive values are invalid.
+- **Detect**: `cx cy` is the box **center**, not top-left. Converting from COCO (`x_min y_min w h` in pixels) needs both the center shift and normalization.
+- **Segment**: one polygon per line; multi-part instances must be merged into a single polygon (`convert_coco` does this). Never mix box lines and polygon lines in one file — a `-seg` model needs polygons.
+- **Pose**: keypoint count and dims must match `kpt_shape` exactly. With dims=3, visibility is `0` not labeled, `1` occluded, `2` visible; unlabeled keypoints get `0 0 0`. Without `flip_idx` in data.yaml, fliplr/flipud augmentations are disabled with a warning — supply it to keep them; its length must equal `kpt_shape[0]` or training errors.
+- **OBB**: 4 corners in order around the box, normalized. DOTA-converted data can have values slightly outside [0,1]; clamp them.
+- **Depth**: prefer 2D uint16 PNG maps storing meters × `depth_scale` (data.yaml, default 1000 = millimeters). Floating-point 2D `.npy` meter arrays remain supported. The map may differ in size from its image if the aspect ratio matches; non-positive values are invalid.
 
 ## Symptom → cause
 

@@ -1,8 +1,6 @@
 # Base training argument reference (default.yaml, v8.4.138)
 
-`yolo cfg` prints the installed base schema and defaults. Effective values can also come
-from a task trainer, loaded checkpoint, or explicit argument; inspect the run's
-`args.yaml`. Names are identical in CLI and Python.
+`yolo cfg` prints the installed base schema and defaults. Effective values can also come from a task trainer, loaded checkpoint, or explicit argument; inspect the run's `args.yaml`. Names are identical in CLI and Python.
 
 ## Train settings
 
@@ -71,9 +69,6 @@ from a task trainer, loaded checkpoint, or explicit argument; inspect the run's
 | `auto_augment`                                  | randaugment           | classify: randaugment/autoaugment/augmix                  |
 | `erasing`                                       | 0.4                   | classify random erasing                                   |
 
-When to deviate: aerial/top-down (incl. OBB) → `degrees=180 flipud=0.5`;
-orientation-meaningful content → keep `degrees=0`; never disable augmentation to make
-training loss look better — that's overfitting on purpose.
+When to deviate: aerial/top-down (incl. OBB) → `degrees=180 flipud=0.5`; orientation-meaningful content → keep `degrees=0`; never disable augmentation to make training loss look better — that's overfitting on purpose.
 
-Depth training automatically disables `mosaic`, `mixup`, `cutmix`, and `copy_paste`;
-passing them has no effect because multi-image composition would invalidate depth maps.
+Depth training automatically disables `mosaic`, `mixup`, `cutmix`, and `copy_paste`; passing them has no effect because multi-image composition would invalidate depth maps.

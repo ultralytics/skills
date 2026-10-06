@@ -6,12 +6,9 @@
 
 面向 [Ultralytics Platform](https://platform.ultralytics.com)、[`ultralytics`](https://github.com/ultralytics/ultralytics) Python 包和 `yolo` CLI 的 Agent Skills。它们帮助 AI 编程智能体（Claude Code、Codex、Cursor，以及任何支持 [Agent Skills 格式](https://agentskills.io)的智能体）掌握完整的计算机视觉生命周期：数据/标注 → 训练 → 调优 → 推理/跟踪 → 导出/部署。
 
-[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml)
-[![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
+[![CI](https://github.com/ultralytics/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/ci.yml) [![Ultralytics Actions](https://github.com/ultralytics/skills/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/skills/actions/workflows/format.yml)
 
-[![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics)
-[![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com)
-[![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
+[![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics) [![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com) [![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
 
 ## 🧩 Skills
 
@@ -92,8 +89,7 @@ codex plugin marketplace add .
 codex plugin add yolo@ultralytics
 ```
 
-编辑后请重启 Codex。要拉取 GitHub 源的新版本，请运行
-`codex plugin marketplace upgrade ultralytics`，然后运行 `codex plugin add yolo@ultralytics`。
+编辑后请重启 Codex。要拉取 GitHub 源的新版本，请运行 `codex plugin marketplace upgrade ultralytics`，然后运行 `codex plugin add yolo@ultralytics`。
 
 </details>
 
