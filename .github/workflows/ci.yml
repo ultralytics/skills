@@ -21,7 +21,7 @@ jobs:
 
       - uses: ultralytics/actions/setup-uv@main
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           activate-environment: true
 
       - name: Validate skills and manifests
