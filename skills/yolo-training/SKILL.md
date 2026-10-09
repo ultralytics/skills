@@ -23,7 +23,7 @@ yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug \
   epochs=100 project=username/project-slug name=experiment-1
 ```
 
-With `ultralytics>=8.4.120`, the `ul://` URI downloads the Platform dataset and the `username/project-slug` target streams metrics back to that Platform project.
+With `ultralytics>=8.4.120`, the `ul://` URI downloads the Platform dataset. While an API key is available (`ULTRALYTICS_API_KEY` or the `api_key` setting), any `project=` value — even a local folder — streams metrics and uploads weights to Platform; omit `project` to keep a run local.
 
 ## Quickstart (detection)
 
@@ -56,7 +56,7 @@ Class-count changes are automatic — a 3-class data.yaml on an 80-class pretrai
 | `lr0` / `lrf`    | 0.01 / 0.01 | `lr0` ignored by `optimizer=auto`; set an explicit optimizer to use it (see depth recipe)    |
 | `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                             |
 | `resume`         | False       | continue an interrupted run (see recipes)                                                    |
-| `project`/`name` | None        | local output naming; authenticated `username/project-slug` also streams to Platform          |
+| `project`/`name` | None        | output folder: relative `project` → `runs/<task>/<project>/<name>`, absolute → `<project>/<name>`. With an API key available, any `project` uploads to Platform |
 | `seed`           | 0           | reproducible with `deterministic=True` (default)                                             |
 | `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                                      |
 | `time`           | None        | max training hours — overrides epochs                                                        |

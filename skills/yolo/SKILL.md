@@ -74,6 +74,8 @@ Read the skill for the stage you're working on BEFORE writing code — each cont
 | ONNX / TensorRT / CoreML / Core AI / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking                                                                    | `yolo-export`    |
 | Platform API from a terminal: `ul cloud <resource> <operation>` commands, `ultralytics-platform`, scripted changes to resources, trash, deployments, and cloud runs | `platform-cli`   |
 
+Each stage skill is a sibling folder of this one: `../<skill>/SKILL.md`.
+
 ## CLI specifics
 
 Special commands (no TASK/MODE):

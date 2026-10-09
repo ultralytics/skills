@@ -43,7 +43,7 @@ dataset/
 ## data.yaml anatomy
 
 ```yaml
-path: /abs/dataset/root # prefer absolute; a relative path missing from the CWD resolves under datasets_dir
+path: /abs/dataset/root # absolute, or omit to use this yaml's folder; a relative value (even `.`) resolves from the CWD (datasets_dir if missing there)
 train: images/train # dir, .txt file of image paths, or list of dirs
 val: images/val
 test: images/test # optional
