@@ -42,24 +42,24 @@ Class-count changes are automatic — a 3-class data.yaml on an 80-class pretrai
 
 ## Base arguments worth setting (task trainers can override them)
 
-| Arg              | Default     | Notes                                                                                        |
-| ---------------- | ----------- | -------------------------------------------------------------------------------------------- |
-| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                                 |
-| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations                |
-| `imgsz`          | task/model  | global fallback 640; classify uses 224 when unset; explicit values win                       |
-| `batch`          | 16          | `-1` auto-fits ~60% VRAM (single GPU); float like `0.8` = VRAM fraction; else integer        |
-| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                                     |
-| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                                              |
-| `workers`        | 8           | lower if RAM/shared-memory errors                                                            |
-| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                            |
-| `optimizer`      | auto        | leave on auto (MuSGD above 10k iterations, else AdamW); depth fine-tuning overrides it below |
-| `lr0` / `lrf`    | 0.01 / 0.01 | `lr0` ignored by `optimizer=auto`; set an explicit optimizer to use it (see depth recipe)    |
-| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                             |
-| `resume`         | False       | continue an interrupted run (see recipes)                                                    |
+| Arg              | Default     | Notes                                                                                                                                                           |
+| ---------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                                                                                                    |
+| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations                                                                                   |
+| `imgsz`          | task/model  | global fallback 640; classify uses 224 when unset; explicit values win                                                                                          |
+| `batch`          | 16          | `-1` auto-fits ~60% VRAM (single GPU); float like `0.8` = VRAM fraction; else integer                                                                           |
+| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                                                                                                        |
+| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                                                                                                                 |
+| `workers`        | 8           | lower if RAM/shared-memory errors                                                                                                                               |
+| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                                                                                               |
+| `optimizer`      | auto        | leave on auto (MuSGD above 10k iterations, else AdamW); depth fine-tuning overrides it below                                                                    |
+| `lr0` / `lrf`    | 0.01 / 0.01 | `lr0` ignored by `optimizer=auto`; set an explicit optimizer to use it (see depth recipe)                                                                       |
+| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                                                                                                |
+| `resume`         | False       | continue an interrupted run (see recipes)                                                                                                                       |
 | `project`/`name` | None        | output folder: relative `project` → `runs/<task>/<project>/<name>`, absolute → `<project>/<name>`. With an API key available, any `project` uploads to Platform |
-| `seed`           | 0           | reproducible with `deterministic=True` (default)                                             |
-| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                                      |
-| `time`           | None        | max training hours — overrides epochs                                                        |
+| `seed`           | 0           | reproducible with `deterministic=True` (default)                                                                                                                |
+| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                                                                                                         |
+| `time`           | None        | max training hours — overrides epochs                                                                                                                           |
 
 Full argument, augmentation, and loss-weight tables: `training-args.md` (this folder) — read before changing anything not listed above. `yolo cfg` shows the base schema and defaults; task trainers, checkpoints, and explicit arguments determine effective values.
 
