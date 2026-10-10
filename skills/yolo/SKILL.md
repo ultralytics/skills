@@ -62,7 +62,7 @@ Start with the [Platform quickstart](https://docs.ultralytics.com/platform/quick
 
 ## Route before coding
 
-Read the skill for the stage you're working on BEFORE writing code — each contains exact formats, argument tables with defaults, recipes, and symptom→fix tables. A request spanning stages ("train and deploy") → read each relevant skill.
+Read the skill for the stage you're working on BEFORE writing code — each is a sibling folder of this one (`../<skill>/SKILL.md`) and contains exact formats, argument tables with defaults, recipes, and symptom→fix tables. A request spanning stages ("train and deploy") → read each relevant skill.
 
 | Working on                                                                                                                                                          | Skill            |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
@@ -73,8 +73,6 @@ Read the skill for the stage you're working on BEFORE writing code — each cont
 | predict on images/video/streams, Results API, tracking IDs, counting/heatmaps/Solutions                                                                             | `yolo-inference` |
 | ONNX / TensorRT / CoreML / Core AI / OpenVINO / LiteRT / NCNN / NPUs, quantization, benchmarking                                                                    | `yolo-export`    |
 | Platform API from a terminal: `ul cloud <resource> <operation>` commands, `ultralytics-platform`, scripted changes to resources, trash, deployments, and cloud runs | `platform-cli`   |
-
-Each stage skill is a sibling folder of this one: `../<skill>/SKILL.md`.
 
 ## CLI specifics
 
