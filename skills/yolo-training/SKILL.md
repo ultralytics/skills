@@ -23,7 +23,7 @@ yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug \
   epochs=100 project=username/project-slug name=experiment-1
 ```
 
-With `ultralytics>=8.4.120` on Python 3.11+, the `ul://` URI downloads the Platform dataset, and while an API key is available (`ULTRALYTICS_API_KEY` or the `api_key` setting), any `project=` value — even a local folder — streams metrics and uploads weights to Platform. Omit `project` to keep a run local; the genetic `model.tune()` and list `data=` set it internally, so unset the key for those.
+With `ultralytics>=8.4.120` on Python 3.11+, the `ul://` URI downloads the Platform dataset, and while an API key is available (`ULTRALYTICS_API_KEY` or the `api_key` setting), any `project=` value — even a local folder — streams metrics and uploads weights to Platform. Omit `project` to keep a run local; a list `data=` sets it internally, so unset the key for those runs.
 
 ## Quickstart (detection)
 
