@@ -22,13 +22,13 @@ All coordinates **normalized to [0,1]** relative to image width/height, space-se
 
 ## Symptom → cause
 
-| Symptom                                                        | Likely cause                                                                                  |
-| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `No labels found in ...` (error on train, warning on val)      | labels dir not named `labels`, wrong mirror path, or stem mismatch                            |
-| `Label class N exceeds dataset class count`                    | indices not 0-based, or `names` missing entries                                               |
-| `non-normalized or out of bounds coordinates`                  | pixel coords written; divide by width/height                                                  |
-| Boxes offset in `train_batch*.jpg`                             | top-left corner used instead of center, or x/y swapped                                        |
-| `Segment dataset requires equal numbers of boxes and segments` | detect box labels used to train a `-seg` model — supply polygons                              |
-| `Dataset '...' images not found, missing path '...'`           | relative `path` resolving against `datasets_dir` — use absolute `path` or fix `yolo settings` |
-| Val mAP suspiciously high                                      | train/val leakage (same-scene frames in both splits)                                          |
-| Corrupt image warnings                                         | truncated or unsupported files — re-encode to RGB JPEG/PNG                                    |
+| Symptom                                                        | Likely cause                                                                                                            |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `No labels found in ...` (error on train, warning on val)      | labels dir not named `labels`, wrong mirror path, or stem mismatch                                                      |
+| `Label class N exceeds dataset class count`                    | indices not 0-based, or `names` missing entries                                                                         |
+| `non-normalized or out of bounds coordinates`                  | pixel coords written; divide by width/height                                                                            |
+| Boxes offset in `train_batch*.jpg`                             | top-left corner used instead of center, or x/y swapped                                                                  |
+| `Segment dataset requires equal numbers of boxes and segments` | detect box labels used to train a `-seg` model — supply polygons                                                        |
+| `Dataset '...' images not found, missing path '...'`           | relative `path` resolves from the CWD, then `datasets_dir` — use an absolute `path` or omit it to use the yaml's folder |
+| Val mAP suspiciously high                                      | train/val leakage (same-scene frames in both splits)                                                                    |
+| Corrupt image warnings                                         | truncated or unsupported files — re-encode to RGB JPEG/PNG                                                              |
