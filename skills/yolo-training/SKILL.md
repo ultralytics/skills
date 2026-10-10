@@ -23,7 +23,7 @@ yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug \
   epochs=100 project=username/project-slug name=experiment-1
 ```
 
-With `ultralytics>=8.4.120`, the `ul://` URI downloads the Platform dataset and the `username/project-slug` target streams metrics back to that Platform project.
+With `ultralytics>=8.4.120` on Python 3.11+, the `ul://` URI downloads the Platform dataset, and while an API key is available (`ULTRALYTICS_API_KEY` or the `api_key` setting), any `project=` value — even a local folder — streams metrics and uploads weights to Platform. Omit `project` to keep a run local; a list `data=` sets it internally, so unset the key for those runs.
 
 ## Quickstart (detection)
 
@@ -42,24 +42,24 @@ Class-count changes are automatic — a 3-class data.yaml on an 80-class pretrai
 
 ## Base arguments worth setting (task trainers can override them)
 
-| Arg              | Default     | Notes                                                                                        |
-| ---------------- | ----------- | -------------------------------------------------------------------------------------------- |
-| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                                 |
-| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations                |
-| `imgsz`          | task/model  | global fallback 640; classify uses 224 when unset; explicit values win                       |
-| `batch`          | 16          | `-1` auto-fits ~60% VRAM (single GPU); float like `0.8` = VRAM fraction; else integer        |
-| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                                     |
-| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                                              |
-| `workers`        | 8           | lower if RAM/shared-memory errors                                                            |
-| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                            |
-| `optimizer`      | auto        | leave on auto (MuSGD above 10k iterations, else AdamW); depth fine-tuning overrides it below |
-| `lr0` / `lrf`    | 0.01 / 0.01 | `lr0` ignored by `optimizer=auto`; set an explicit optimizer to use it (see depth recipe)    |
-| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                             |
-| `resume`         | False       | continue an interrupted run (see recipes)                                                    |
-| `project`/`name` | None        | local output naming; authenticated `username/project-slug` also streams to Platform          |
-| `seed`           | 0           | reproducible with `deterministic=True` (default)                                             |
-| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                                      |
-| `time`           | None        | max training hours — overrides epochs                                                        |
+| Arg              | Default     | Notes                                                                                                                                                                           |
+| ---------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `epochs`         | 100         | 100–300 for fine-tuning; rely on early stopping, not guesses                                                                                                                    |
+| `patience`       | 100         | epochs without val improvement before early stop; ~20–50 for quick iterations                                                                                                   |
+| `imgsz`          | task/model  | global fallback 640; classify uses 224 when unset; explicit values win                                                                                                          |
+| `batch`          | 16          | `-1` auto-fits ~60% VRAM (single GPU); float like `0.8` = VRAM fraction; else integer                                                                                           |
+| `device`         | None        | `0`, `[0,1]` (DDP), `cpu`, `mps`, `-1` picks an idle GPU                                                                                                                        |
+| `cache`          | False       | `True` (RAM) or `"disk"` for I/O-bound training                                                                                                                                 |
+| `workers`        | 8           | lower if RAM/shared-memory errors                                                                                                                                               |
+| `freeze`         | None        | freeze first N layers (`freeze=10` ≈ backbone) for small datasets                                                                                                               |
+| `optimizer`      | auto        | leave on auto (MuSGD above 10k iterations, else AdamW); depth fine-tuning overrides it below                                                                                    |
+| `lr0` / `lrf`    | 0.01 / 0.01 | `lr0` ignored by `optimizer=auto`; set an explicit optimizer to use it (see depth recipe)                                                                                       |
+| `fraction`       | 1.0         | subset training — `fraction=0.1` for smoke tests                                                                                                                                |
+| `resume`         | False       | continue an interrupted run (see recipes)                                                                                                                                       |
+| `project`/`name` | None        | output folder: relative `project` → `runs/<task>/<project>/<name>`, absolute → `<project>/<name>`. With an API key available on Python 3.11+, any `project` uploads to Platform |
+| `seed`           | 0           | reproducible with `deterministic=True` (default)                                                                                                                                |
+| `compile`        | False       | torch.compile; also `"max-autotune-no-cudagraphs"` etc.                                                                                                                         |
+| `time`           | None        | max training hours — overrides epochs                                                                                                                                           |
 
 Full argument, augmentation, and loss-weight tables: `training-args.md` (this folder) — read before changing anything not listed above. `yolo cfg` shows the base schema and defaults; task trainers, checkpoints, and explicit arguments determine effective values.
 

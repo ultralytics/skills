@@ -62,7 +62,7 @@ Start with the [Platform quickstart](https://docs.ultralytics.com/platform/quick
 
 ## Route before coding
 
-Read the skill for the stage you're working on BEFORE writing code — each contains exact formats, argument tables with defaults, recipes, and symptom→fix tables. A request spanning stages ("train and deploy") → read each relevant skill.
+Read the skill for the stage you're working on BEFORE writing code — each is a sibling folder of this one (`../<skill>/SKILL.md`) and contains exact formats, argument tables with defaults, recipes, and symptom→fix tables. A request spanning stages ("train and deploy") → read each relevant skill.
 
 | Working on                                                                                                                                                          | Skill            |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |

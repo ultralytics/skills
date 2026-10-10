@@ -36,7 +36,7 @@ model.tune(data="data.yaml", epochs=30, iterations=300, plots=False, save=False,
 
 Tuning is Python-only — there is no `yolo tune` CLI mode (MODES are train/val/predict/export/track/benchmark).
 
-- Each iteration = one full (short) training with mutated hyperparameters; fitness is read from the run's val metrics.
+- Each iteration = one full (short) training with mutated hyperparameters; fitness is read from the run's val metrics. Iterations set `project` internally, so with an API key available on Python 3.11+ each one uploads to Platform; unset the key to tune locally.
 - Default search space: 26 keys — `lr0`, `lrf`, `momentum`, `weight_decay`, `warmup_epochs`, `warmup_momentum`, loss weights (`box`, `cls`, `cls_pw`, `dfl`), augmentation knobs (`hsv_*`, `degrees`, `translate`, `scale`, `shear`, `perspective`, `flipud`, `fliplr`, `bgr`, `mosaic`, `mixup`, `cutmix`, `copy_paste`), `close_mosaic`.
 - Custom space (subset + ranges as `(min, max)`):
   ```python
