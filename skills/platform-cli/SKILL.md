@@ -132,7 +132,7 @@ Operation help already says what each command does. These are the side effects a
 
 - `class_names` replaces names by index; keep the order for a rename. Merging or deleting classes remaps or removes labels and shifts IDs.
 - `datasets redistribute-splits` reshuffles the whole dataset. `images update-bulk` moves selected IDs, and conflict policy `replace` may remove target images.
-- `datasets adopt-images` adds image references as unlabeled train images, skipping existing images; only `release=false` (copy), `release=true` (move), or `class_mapping` carries labels, metadata, and splits from a dataset you can edit.
+- `datasets adopt-images` (in the app: Copy or Cut images, then Paste them into the other dataset) adds image references as unlabeled train images, skipping existing images; only `release=false` (copy), `release=true` (move), or `class_mapping` carries labels, metadata, and splits from a dataset you can edit.
 - Changing `task` converts no annotations. Switching to or from depth needs an empty dataset. A segment dataset trains detect, OBB, semantic, or segment models as is; do not convert its polygons or change its task for that.
 
 ### Dataset inspection and analysis
