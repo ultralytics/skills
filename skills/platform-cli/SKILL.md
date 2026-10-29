@@ -75,6 +75,8 @@ Commands below omit the `ul cloud` prefix and the default `owner`.
 | Import data        | `datasets create dataset=D name="Display"`, then `upload signed-url body=` (`assetType`, `assetId`, `filename`, `contentType`, `totalBytes`) for one `.zip`, `.tar`, `.tar.gz`, `.tgz`, or `.ndjson` file, PUT the bytes with the returned headers, `datasets ingest dataset=D body='{"sessionId":"S"}'` (completes the upload; or `{"sourceUrl":...}`), then retrieve until ready. Queued is not imported. |
 | Trash              | `projects delete project=P`, `datasets delete dataset=D`, and `models delete project=P model=M` move them to 30-day trash. `lifecycle trash` lists it, `lifecycle restore id=ID type=model` undeletes, `lifecycle delete-trash body='{"id":"ID","type":"model"}'` purges one item, and `body='{"all":true}'` permanently empties all workspace trash.                                                       |
 
+Platform exports a dataset only as NDJSON that links its images; there is no YOLO-format or ZIP export. For local training, pass the file, or `ul://OWNER/datasets/DATASET` with `ULTRALYTICS_API_KEY` set, straight to `model.train(data=...)`, which downloads the images and builds the YOLO folders; for the folders alone, run `asyncio.run(convert_ndjson_to_yolo("dataset.ndjson", output_path="datasets"))` after `import asyncio` and `from ultralytics.data.converter import convert_ndjson_to_yolo`.
+
 ## Cloud training
 
 1. Resolve the workspace, project, a ready dataset, starting weights, and requested settings. Check `training gpu-availability` before choosing `gpu_type`; cloud training spends credits. `data` must use the dataset's actual owner, which may differ from the model's.
