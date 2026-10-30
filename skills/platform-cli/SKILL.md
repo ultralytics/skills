@@ -18,7 +18,7 @@ ul cloud training start --help            # one operation's arguments, types, an
 ## Canonical command shapes
 
 ```bash
-ul cloud account summary # plan, credits, counts; `username` is your workspace
+ul cloud account summary              # plan, credits, counts; `username` is your workspace
 ul cloud datasets list owner=USERNAME # owner=TEAM for a team
 ul cloud projects create project=helmets name="Helmet Detection" visibility=private
 ul cloud models create body='{"owner":"WS","project":"helmets","model":"exp1","name":"Experiment 1"}'
