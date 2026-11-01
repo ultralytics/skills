@@ -85,7 +85,7 @@ Per-task headline metrics: detect/obb `mAP50-95(B)`, segment `(M)`, pose `(P)`, 
 ## Reading a finished run (`runs/<task>/<name>/`)
 
 - `weights/best.pt` — highest val fitness; **use this one**. `last.pt` — for resuming.
-- `results.csv` / `results.png` — per-epoch losses and val metrics. Interpretation: train loss ↓ while val mAP plateaus-then-drops = **overfitting** (more data/aug, smaller model — `best.pt` already kept the good checkpoint). Both flat and low = **underfitting** (bigger model, more epochs, higher imgsz, check labels). mAP50 good but mAP50-95 poor = sloppy localization (higher imgsz, better boxes).
+- `results.csv` / `results.png` — per-epoch losses and val metrics. Interpretation: train loss ↓ while val mAP plateaus-then-drops = **overfitting** (more data/aug, smaller model — `best.pt` already kept the good checkpoint). Both flat and low = **underfitting** (bigger model, more epochs, higher imgsz, check labels). mAP<sub>50</sub> good but mAP<sub>50-95</sub> poor = sloppy localization (higher imgsz, better boxes).
 - `train_batch*.jpg` — augmented images with labels drawn. **Look once per project**: wrong labels are instantly visible here.
 - `confusion_matrix.png` — off-diagonal cluster between two classes = inconsistent labels or genuinely similar classes. Axes are predicted (y) × true (x): heavy background **row** = missed detections (that class needs more/better examples); heavy background **column** = false positives (add background images or raise `conf` at inference).
 

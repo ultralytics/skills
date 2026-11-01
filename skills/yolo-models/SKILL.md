@@ -18,13 +18,13 @@ Use a Platform model page to inspect metrics, test it in **Predict**, export it,
 
 `yolo26` + `n/s/m/l/x` + task suffix → `yolo26s-seg.pt`
 
-| Size | COCO mAP50-95 | Params | T4 TensorRT | Pick for                                   |
-| ---- | ------------- | ------ | ----------- | ------------------------------------------ |
-| n    | 40.9          | 2.4M   | ~1.7 ms     | edge/mobile, CPU realtime, first prototype |
-| s    | 48.6          | 9.5M   | ~2.5 ms     | balanced default for most projects         |
-| m    | 53.1          | 20.4M  | ~4.7 ms     | GPU server, accuracy matters               |
-| l    | 55.0          | 24.8M  | ~6.2 ms     | accuracy-critical, ample GPU               |
-| x    | 57.5          | 55.7M  | ~11.8 ms    | max accuracy, offline/batch                |
+| Size | COCO mAP<sub>50-95</sub> | Params | T4 TensorRT | Pick for                                   |
+| ---- | ------------------------ | ------ | ----------- | ------------------------------------------ |
+| n    | 40.9                     | 2.4M   | ~1.7 ms     | edge/mobile, CPU realtime, first prototype |
+| s    | 48.6                     | 9.5M   | ~2.5 ms     | balanced default for most projects         |
+| m    | 53.1                     | 20.4M  | ~4.7 ms     | GPU server, accuracy matters               |
+| l    | 55.0                     | 24.8M  | ~6.2 ms     | accuracy-critical, ample GPU               |
+| x    | 57.5                     | 55.7M  | ~11.8 ms    | max accuracy, offline/batch                |
 
 Strategy: prototype on `n` to validate the pipeline cheaply, then scale up until accuracy stops paying for the latency. A bigger model never fixes bad labels.
 
@@ -41,7 +41,7 @@ Strategy: prototype on `n` to validate the pipeline cheaply, then scale up until
 Notes on the newer tasks:
 
 - **semantic** (`-sem`): dataset uses PNG masks via `masks_dir` (default `masks/`) or polygon labels; metric is mIoU.
-- **depth** (`-depth`): targets are scaled uint16 PNG maps (preferred) or floating-point `.npy` maps in meters; metric is delta1. Depth models also expose `model.calibrate(data=...)`, which fits a metric-scale correction; persist it with `model.save(...)`.
+- **depth** (`-depth`): targets are scaled uint16 PNG maps (preferred) or floating-point `.npy` maps in meters; metric is δ<sub>1</sub>. Depth models also expose `model.calibrate(data=...)`, which fits a metric-scale correction; persist it with `model.save(...)`.
 
 ## Family cheat sheet
 
