@@ -12,7 +12,7 @@ Hyperparameter tuning is expensive and usually not the bottleneck. Escalate in t
 
 1. **Fix the data** — check `confusion_matrix.png` and `train_batch*.jpg` for label noise; review the top false-negative/false-positive val images; add examples of failing classes and true-background images. Data quality beats every other lever.
 2. **Train longer** — if val mAP was still rising at the end: more `epochs`, higher `patience`.
-3. **Bigger input** — small objects or mAP50 ≫ mAP50-95: raise `imgsz` (640 → 960/1280).
+3. **Bigger input** — small objects or mAP<sub>50</sub> ≫ mAP<sub>50-95</sub>: raise `imgsz` (640 → 960/1280).
 4. **Bigger model** — underfitting (train and val both mediocre): n → s → m → l.
 5. **Domain-matched augmentation** — aerial `degrees=180 flipud=0.5`, crowded scenes `mixup=0.1` (plus `copy_paste=0.3` for segment/OBB), color-critical classes lower `hsv_h` (see yolo-training's `training-args.md`).
 6. **Only now: hyperparameter tuning** — worth ~0.5–2 mAP when everything above is exhausted.
@@ -61,7 +61,7 @@ result_grid = model.tune(use_ray=True, data="data.yaml", iterations=20, epochs=3
 - **Search cheap, retrain expensive**: tune with a small model (`n`/`s`), reduced `epochs` (~30), `plots=False save=False val=False`; then retrain the best config at full size/epochs.
 - Budget: iterations × epochs × time-per-epoch. 100–300 iterations is a realistic minimum for the genetic tuner to beat defaults.
 - Keep `data` fixed during the search — changing data invalidates all prior fitness.
-- One fitness target: the tuner maximizes validation `fitness` (mAP50-95(B) for detect; segment and pose combine box and mask/pose mAP50-95); confirm that matches what you actually care about before burning GPU days.
+- One fitness target: the tuner maximizes validation `fitness` (mAP<sub>50-95</sub>(B) for detect; segment and pose combine box and mask/pose mAP<sub>50-95</sub>); confirm that matches what you actually care about before burning GPU days.
 - Sanity-check the winner on the val AND test split — tuned configs can overfit the val split when iterations are high.
 
 If the installed version rejects an argument (`yolo checks` shows the version), trust the error text and `yolo cfg` over this file.
