@@ -61,7 +61,7 @@ result_grid = model.tune(use_ray=True, data="data.yaml", iterations=20, epochs=3
 - **Search cheap, retrain expensive**: tune with a small model (`n`/`s`), reduced `epochs` (~30), `plots=False save=False val=False`; then retrain the best config at full size/epochs.
 - Budget: iterations × epochs × time-per-epoch. 100–300 iterations is a realistic minimum for the genetic tuner to beat defaults.
 - Keep `data` fixed during the search — changing data invalidates all prior fitness.
-- One fitness target: the tuner maximizes validation `fitness` (mAP<sub>50-95</sub>(B) for detect; segment and pose combine box and mask/pose mAP<sub>50-95</sub>); confirm that matches what you actually care about before burning GPU days.
+- One fitness target: the tuner maximizes validation `fitness` (box mAP<sub>50-95</sub> for detect; segment and pose combine box and mask/pose mAP<sub>50-95</sub>); confirm that matches what you actually care about before burning GPU days.
 - Sanity-check the winner on the val AND test split — tuned configs can overfit the val split when iterations are high.
 
 If the installed version rejects an argument (`yolo checks` shows the version), trust the error text and `yolo cfg` over this file.
