@@ -132,7 +132,7 @@ Point `train:`/`val:` at the generated `.txt` files. Keep frames from the same v
 
 4. **Distribution sanity** — check task-appropriate class/target balance and split leakage. For box tasks, also inspect very small boxes at train `imgsz` and the background-image share.
 
-Known-good tiny datasets for pipeline smoke tests (auto-download): `coco8.yaml`, `coco8-seg.yaml`, `coco8-pose.yaml`, `dota8.yaml`, `cityscapes8.yaml`, `depth8.yaml`, `imagenet10`.
+Known-good tiny datasets for pipeline smoke tests: `coco8.yaml`, `coco8-seg.yaml`, `coco8-pose.yaml`, `dota8.yaml`, `cityscapes8.yaml`, `depth8.yaml`, `imagenet10`. Pass them by name (`data=coco8.yaml`); the first `yolo train`/`yolo val` or `check_det_dataset("coco8.yaml")` downloads them into `datasets_dir`, so never fetch the archive or write their `data.yaml` by hand.
 
 ## Related pages
 

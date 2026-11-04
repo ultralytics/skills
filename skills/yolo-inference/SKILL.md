@@ -34,12 +34,12 @@ Default-size endpoints scale to zero, so expect a cold start after idle periods;
 from ultralytics import YOLO
 
 model = YOLO("yolo26n.pt")  # or your runs/detect/train/weights/best.pt
-results = model("image.jpg")  # list[Results], one per image
+results = model("https://ultralytics.com/images/bus.jpg")  # list[Results], one per image
 results[0].show()
 ```
 
 ```bash
-yolo predict model=yolo26n.pt source="image.jpg" save=True
+yolo predict model=yolo26n.pt # source= omitted → the bundled bus.jpg and zidane.jpg, saved to runs/detect/predict
 ```
 
 **The one rule for video/streams: `stream=True`.** The default builds a list of ALL results in RAM — OOM on long videos. `stream=True` returns a generator:
@@ -90,7 +90,7 @@ from collections import Counter
 counts = Counter(r.names[int(c)] for c in r.boxes.cls)   # count per class
 ```
 
-`model.embed("image.jpg")` returns feature vectors (similarity search, clustering).
+`model.embed("https://ultralytics.com/images/bus.jpg")` returns feature vectors (similarity search, clustering).
 
 ## Tracking (persistent IDs across frames)
 

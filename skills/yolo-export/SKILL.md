@@ -66,11 +66,11 @@ Full 22-target local export matrix with per-format supported args: `format-matri
 ## Verify parity after export (always)
 
 ```bash
-yolo val model=best.pt data=data.yaml   # baseline
-yolo val model=best.onnx data=data.yaml # compare the same task metric with the baseline
+yolo val model=best.pt data=data.yaml batch=1 rect=False   # baseline at the exported artifact's settings
+yolo val model=best.onnx data=data.yaml batch=1 rect=False # compare the same task metric with the baseline
 ```
 
-Acceptable differences depend on the task, model, backend, precision, and calibration data. Investigate unexpected gaps by matching `imgsz` and pre/post-processing and, where required, using representative calibration data. Also compare one prediction with `.pt`.
+A fixed-shape export validates with `rect=False` and, except TorchScript, at its export `batch` (1 by default), so give the `.pt` baseline the same two arguments or its rectangular batching changes the numbers. Acceptable differences depend on the task, model, backend, precision, and calibration data. Investigate unexpected gaps by matching `imgsz` and pre/post-processing and, where required, using representative calibration data. Also compare one prediction with `.pt`.
 
 ## Benchmark all formats empirically
 
