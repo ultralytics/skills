@@ -3,4 +3,4 @@
 interface:
   display_name: "Ultralytics YOLO"
   short_description: "Use YOLO locally or through Ultralytics Platform"
-  default_prompt: "Use $yolo to plan and run the simplest Ultralytics workflow for my vision task."
+  default_prompt: "Use $yolo to run yolo26n.pt on bus.jpg."

@@ -3,4 +3,4 @@
 interface:
   display_name: "YOLO Models"
   short_description: "Choose and compare Ultralytics YOLO models"
-  default_prompt: "Use $yolo-models to pick the right YOLO model and size for my task and hardware."
+  default_prompt: "Use $yolo-models to compare yolo26n.pt and yolo26s.pt on bus.jpg."

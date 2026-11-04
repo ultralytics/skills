@@ -3,4 +3,4 @@
 interface:
   display_name: "YOLO Training"
   short_description: "Train YOLO models locally or on cloud GPUs"
-  default_prompt: "Use $yolo-training to train and validate my model with Platform or local compute."
+  default_prompt: "Use $yolo-training to train yolo26n.pt on coco8 for 10 epochs."
