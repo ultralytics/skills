@@ -41,9 +41,9 @@
     "composerIcon": "./assets/logo.svg",
     "composerIconDark": "./assets/logo-dark.svg",
     "defaultPrompt": [
-      "Run YOLO on a sample image and show me what it detects",
-      "Turn my images into a custom YOLO model, labeled and trained in Ultralytics Platform",
-      "Deploy my YOLO model as an API endpoint or export it to ONNX, TensorRT, or CoreML"
+      "Run yolo26n.pt on bus.jpg and show me what it detects",
+      "Train yolo26n.pt on coco8 for 10 epochs and report mAP",
+      "Export yolo26n.pt to ONNX and test it on bus.jpg"
     ],
     "brandColor": "#042AFF"
   }

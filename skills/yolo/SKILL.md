@@ -39,6 +39,7 @@ model.train(data="data.yaml", epochs=100, imgsz=640)
 - TASK ∈ `detect` `segment` `semantic` `depth` `classify` `pose` `obb` — usually inferred from the weights, so it can be omitted.
 - MODE ∈ `train` `val` `predict` `track` `export` `benchmark`.
 - Install/upgrade: `pip install -U ultralytics`. Environment check: `yolo checks`.
+- macOS ships its own `/usr/bin/ul` (a text-underlining tool), so `ul: cloud: No such file or directory` means that binary won: put the environment's `bin/` first on `PATH` or run `python -m ultralytics_platform.cli cloud ...`.
 
 ## Whole lifecycle in five commands
 
@@ -94,7 +95,8 @@ Parsing rules that matter:
 - Args are `key=value`, no `--` flags. A leading `--` and trailing commas are stripped with a warning; spaces around `=` are merged.
 - A bare boolean arg sets it True: `yolo predict ... show` ≡ `show=True`.
 - `cfg=custom.yaml` loads the file's values: CLI arguments before or after it win, and missing keys still use built-in defaults (start with `yolo copy-cfg`).
-- Missing args are auto-filled with warnings (sample source, task-default data/model, `format=torchscript`).
+- Missing args are auto-filled with warnings (`source=` defaults to the package's `assets/` folder with `bus.jpg` and `zidane.jpg`, or a boats.jpg URL for `task=obb`; task-default data/model; `format=torchscript`).
+- Outputs go to `runs/<task>/<name>/`, and a relative `project=` nests under `runs/<task>/` as well, so read the printed `Results saved to` path or pass an absolute `project=`.
 - Model stem selects the architecture: `rtdetr-*` → RT-DETR, `sam_*`/`sam2*`/`sam3*`/`mobile_sam` → SAM, `FastSAM-*` → FastSAM, `yolo_nas_*` → NAS, `yoloe-*`/`*-world*` → promptable YOLO (accepts `classes="person, bus"`), everything else → YOLO.
 
 ## Global directives
