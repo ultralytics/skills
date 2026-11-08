@@ -1,7 +1,7 @@
 ---
 name: yolo-export
 description: >
-  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI, OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera, DeepX, Xilinx), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference with .pt weights or Platform endpoints, see yolo-inference.
+  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI, OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera, DeepX, Xilinx, NXP), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference with .pt weights or Platform endpoints, see yolo-inference.
 ---
 
 # Export, quantization & deployment
@@ -33,19 +33,19 @@ model = YOLO("best.onnx")  # or best.engine, best_openvino_model/, ...
 
 ## Choose format by target hardware
 
-| Target                                                       | `format=`                                                                    | Why                                                                                                        |
-| ------------------------------------------------------------ | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| NVIDIA GPU / Jetson                                          | `engine` (TensorRT)                                                          | fastest on NVIDIA; **build on the deployment device** — engines are not portable across GPUs/TRT versions  |
-| Intel CPU/iGPU/NPU                                           | `openvino`                                                                   | up to 3× CPU speedup on Intel                                                                              |
-| Apple iOS/macOS                                              | `coreml`                                                                     | broad OS coverage, Vision/iOS/Flutter support                                                              |
-| Apple iOS 27+/macOS 27+                                      | `coreai`                                                                     | native `.aimodel`; iOS/Flutter SDKs default to `coreml`; export on Apple silicon macOS 26+ or x86_64 Linux |
-| Android                                                      | `litert` (renamed from `tflite`) or `ncnn`                                   | NCNN strong on ARM                                                                                         |
-| Raspberry Pi                                                 | `ncnn`                                                                       | best ARM CPU latency                                                                                       |
-| PyTorch Edge                                                 | `executorch`                                                                 |                                                                                                            |
-| Cross-platform / unsure                                      | `onnx`                                                                       | runs everywhere; start here, specialize when latency demands                                               |
-| NPUs (Rockchip/Qualcomm/Hailo/Huawei/Sony/Axelera/DeepX/AMD) | `rknn` / `qnn` / `hailo` / `ascend` / `imx` / `axelera` / `deepx` / `xilinx` | `name=` selects the exact chip for rknn/qnn/hailo/ascend/xilinx                                            |
+| Target                                                           | `format=`                                                                            | Why                                                                                                        |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| NVIDIA GPU / Jetson                                              | `engine` (TensorRT)                                                                  | fastest on NVIDIA; **build on the deployment device** — engines are not portable across GPUs/TRT versions  |
+| Intel CPU/iGPU/NPU                                               | `openvino`                                                                           | up to 3× CPU speedup on Intel                                                                              |
+| Apple iOS/macOS                                                  | `coreml`                                                                             | broad OS coverage, Vision/iOS/Flutter support                                                              |
+| Apple iOS 27+/macOS 27+                                          | `coreai`                                                                             | native `.aimodel`; iOS/Flutter SDKs default to `coreml`; export on Apple silicon macOS 26+ or x86_64 Linux |
+| Android                                                          | `litert` (renamed from `tflite`) or `ncnn`                                           | NCNN strong on ARM                                                                                         |
+| Raspberry Pi                                                     | `ncnn`                                                                               | best ARM CPU latency                                                                                       |
+| PyTorch Edge                                                     | `executorch`                                                                         |                                                                                                            |
+| Cross-platform / unsure                                          | `onnx`                                                                               | runs everywhere; start here, specialize when latency demands                                               |
+| NPUs (Rockchip/Qualcomm/Hailo/Huawei/Sony/Axelera/DeepX/AMD/NXP) | `rknn` / `qnn` / `hailo` / `ascend` / `imx` / `axelera` / `deepx` / `xilinx` / `nxp` | `name=` selects the exact chip for rknn/qnn/hailo/ascend/xilinx                                            |
 
-Full 22-target local export matrix with per-format supported args: `format-matrix.md` (this folder).
+Full 23-target local export matrix with per-format supported args: `format-matrix.md` (this folder).
 
 ## Key arguments
 
@@ -58,7 +58,7 @@ Full 22-target local export matrix with per-format supported args: `format-matri
 | `batch`     | 1       | max batch baked into the export                                                                                                                                                                 |
 | `simplify`  | True    | simplify ONNX graph                                                                                                                                                                             |
 | `opset`     | None    | compatible ONNX opset selected automatically when unset; pin lower if the consumer runtime complains                                                                                            |
-| `nms`       | None    | `None` exports raw outputs for external NMS (YOLO26 too); `True` embeds NMS where `format-matrix.md` lists `nms`; `False` selects the YOLO26/YOLOv10 NMS-free head, else raw outputs            |
+| `nms`       | None    | `None`: raw outputs for external NMS (YOLO26 too, except `axelera`); `True` embeds NMS where `format-matrix.md` lists `nms`; `False` selects the YOLO26/YOLOv10 NMS-free head, else raw outputs |
 | `workspace` | None    | TensorRT builder GiB — lower if the build OOMs                                                                                                                                                  |
 | `device`    | None    | TensorRT needs a GPU (auto-set to `device=0` when unset); a GPU also speeds INT8 calibration                                                                                                    |
 | `fraction`  | 1.0     | fraction of calibration data used                                                                                                                                                               |
@@ -84,7 +84,7 @@ Produces the task metric + latency per exportable format **on this machine**. Re
 ## Consuming exports outside Python
 
 - In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize, BGR→RGB, /255) and output decoding.
-- Detect output layout follows `nms`: the default `nms=None` emits raw `[4+nc, anchors]` heads (xywh boxes + class scores) for every model, YOLO26 included, so you run NMS (`imx` instead always embeds NMS). `nms=False` on YOLO26/YOLOv10 emits NMS-free `[max_det, 6]` rows `[x1,y1,x2,y2,conf,cls]`, and `nms=True` embeds NMS with the same row layout where supported; some formats fall back to raw heads (`format-matrix.md`). Segment, pose, and OBB add task-specific outputs. Check export warnings and shapes.
+- Detect output layout follows `nms`: the default `nms=None` emits raw `[4+nc, anchors]` heads (xywh boxes + class scores) for every model, YOLO26 included, so you run NMS (`imx` instead always embeds NMS, and `axelera` keeps the NMS-free head). `nms=False` on YOLO26/YOLOv10 emits NMS-free `[max_det, 6]` rows `[x1,y1,x2,y2,conf,cls]`, and `nms=True` embeds NMS with the same row layout where supported; some formats fall back to raw heads (`format-matrix.md`). Segment, pose, and OBB add task-specific outputs. Check export warnings and shapes.
 - Class names travel in export metadata where supported; otherwise ship the `names` map alongside the model.
 - Serving: `ultralytics.utils.triton.TritonRemoteModel` for Triton; `examples/` in the ultralytics repo has ONNXRuntime C++/Rust/Python references.
 
@@ -103,6 +103,6 @@ Produces the task metric + latency per exportable format **on this machine**. Re
 
 ## Related pages
 
-- `format-matrix.md` — all 22 local export targets, artifacts produced, and supported args. Read when using any format beyond onnx/engine/openvino/coreml.
+- `format-matrix.md` — all 23 local export targets, artifacts produced, and supported args. Read when using any format beyond onnx/engine/openvino/coreml.
 
 If the installed version rejects an argument, trust the error text (format and quantize errors list valid values) and `yolo cfg` over this file.

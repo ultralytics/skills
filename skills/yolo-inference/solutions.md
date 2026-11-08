@@ -42,6 +42,7 @@ Common constructor args (`SolutionConfig`): `model`, `region` (pixel coords in t
 | Alert on detections                   | `security`  | `SecurityAlarm`        | `authenticate(from_email, password, to_email)` then emails                                   |
 | Privacy blur                          | `blur`      | `ObjectBlurrer`        | `blur_ratio`                                                                                 |
 | Crop detections to files              | `crop`      | `ObjectCropper`        | `crop_dir`                                                                                   |
+| Read scene text (OCR)                 | `ocr`       | `OCR`                  | YOLO26-Text `ul://ultralytics-yolo/yolo26-text/yolo26n-text` + PaddleOCR; `results.texts`    |
 | Segmentation overlay + tracking       | `isegment`  | `InstanceSegmentation` | needs `-seg` model                                                                           |
 | Point-to-object mapping               | `visioneye` | `VisionEye`            | `vision_point`                                                                               |
 | Live charts of counts                 | `analytics` | `Analytics`            | line/bar/pie/area via `analytics_type`; call takes `(im0, frame_number)`                     |

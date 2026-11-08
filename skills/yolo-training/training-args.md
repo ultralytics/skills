@@ -1,4 +1,4 @@
-# Base training argument reference (default.yaml, v8.4.174)
+# Base training argument reference (default.yaml, v8.4.208)
 
 `yolo cfg` prints the installed base schema and defaults. Effective values can also come from a task trainer, loaded checkpoint, or explicit argument; inspect the run's `args.yaml`. Names are identical in CLI and Python.
 
@@ -39,6 +39,7 @@
 | `dropout`                       | 0.0             | classify only                                                                                        |
 | `val` / `plots`                 | True / True     | validate + plot during training                                                                      |
 | `nms`                           | None            | epoch-val head (picks `best.pt`): None/True = one-to-many + NMS; False = NMS-free head if available  |
+| `tile`                          | False           | True tiles at imgsz; int = tile size in source pixels; train/val/predict on overlapping windows      |
 
 ## Hyperparameters (LR, loss weights)
 
@@ -54,7 +55,7 @@
 | `angle`                                                | 1.0              | OBB angle loss                                                            |
 | `dlog` / `dgrad` / `dlam`                              | 1.0 / 0.5 / 1.0  | depth loss weights                                                        |
 | `distill_model` / `dis`                                | None / 6.0       | knowledge-distillation teacher + weight                                   |
-| `nbs`                                                  | 64               | nominal batch size for loss normalization                                 |
+| `nbs`                                                  | 64               | nominal batch size; accumulates max(round(nbs / batch), 1) batches        |
 
 ## Augmentation
 
