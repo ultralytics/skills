@@ -39,6 +39,7 @@
 | `dropout`                       | 0.0             | classify only                                                                                        |
 | `val` / `plots`                 | True / True     | validate + plot during training                                                                      |
 | `nms`                           | None            | epoch-val head (picks `best.pt`): None/True = one-to-many + NMS; False = NMS-free head if available  |
+| `tile`                          | False           | True tiles at imgsz; int = tile size in source pixels; train/val/predict on overlapping windows      |
 
 ## Hyperparameters (LR, loss weights)
 

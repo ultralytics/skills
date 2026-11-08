@@ -1,7 +1,7 @@
 ---
 name: yolo-export
 description: >
-  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI, OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera, DeepX, Xilinx), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference with .pt weights or Platform endpoints, see yolo-inference.
+  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI, OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera, DeepX, Xilinx, NXP), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference with .pt weights or Platform endpoints, see yolo-inference.
 ---
 
 # Export, quantization & deployment
