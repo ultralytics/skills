@@ -58,7 +58,7 @@ Accepted directly: image/video path, directory, glob, URL, webcam index (`0`), R
 | Arg            | Default | Notes                                                                                                                        |
 | -------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `conf`         | 0.25    | lower → more recall + more false positives                                                                                   |
-| `iou`          | 0.5     | NMS threshold; ignored by the NMS-free head (`nms=False`)                                                                    |
+| `iou`          | 0.7     | NMS threshold; ignored by the NMS-free head (`nms=False`)                                                                    |
 | `nms`          | None    | default: one-to-many head + NMS; `False`: faster NMS-free YOLO26 head; `True`: embed NMS on export. Exports keep that choice |
 | `imgsz`        | model   | inherited from the checkpoint; set explicitly for a different shape (static exports always run at their export size)         |
 | `classes`      | None    | keep only these ids, e.g. `classes=[0]`                                                                                      |
