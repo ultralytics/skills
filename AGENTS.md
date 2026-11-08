@@ -57,4 +57,4 @@ The validator (the inline `Lint` step in `.github/workflows/ci.yml`; the command
 ## Pitfalls
 
 - Every directory under `skills/` is treated as a skill. Do not park drafts, shared assets, or `__pycache__` there.
-- The whole repo is the plugin, and Anthropic's directory refuses it if any file is not Markdown, text, JSON, YAML, or a PNG, JPEG, GIF, WebP, or ICO image (only the `icon` SVG is exempt), starts with `#!`, or is a package manager config. Keep scripts inline in workflow YAML and add images as PNG.
+- The whole repo is the plugin, and Anthropic's directory refuses it if any file is not Markdown, text, JSON, YAML, or a PNG, JPEG, GIF, WebP, or ICO image (only the `icon` SVG is exempt), starts with `#!`, or is a package manager config. Keep scripts inline in workflow YAML and `assets/logo.svg` as the only image.

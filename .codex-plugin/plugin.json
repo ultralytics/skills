@@ -37,9 +37,7 @@
     "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
     "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",
     "logo": "./assets/logo.svg",
-    "logoDark": "./assets/logo-dark.png",
     "composerIcon": "./assets/logo.svg",
-    "composerIconDark": "./assets/logo-dark.png",
     "defaultPrompt": [
       "Run yolo26n.pt on bus.jpg and show me what it detects",
       "Train yolo26n.pt on coco8 for 10 epochs and report mAP",
