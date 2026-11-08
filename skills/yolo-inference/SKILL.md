@@ -20,7 +20,7 @@ with open("image.jpg", "rb") as image_file:
         "https://YOUR_DEPLOYMENT_URL.run.app/predict",
         headers={"Authorization": "Bearer YOUR_API_KEY"},
         files={"file": image_file},
-        data={"conf": 0.25, "iou": 0.7, "imgsz": 640},
+        data={"conf": 0.25, "iou": 0.5, "imgsz": 640},
     )
 response.raise_for_status()
 print(response.json())
