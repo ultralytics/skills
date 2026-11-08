@@ -55,7 +55,7 @@
 | `angle`                                                | 1.0              | OBB angle loss                                                            |
 | `dlog` / `dgrad` / `dlam`                              | 1.0 / 0.5 / 1.0  | depth loss weights                                                        |
 | `distill_model` / `dis`                                | None / 6.0       | knowledge-distillation teacher + weight                                   |
-| `nbs`                                                  | 64               | nominal batch size; gradients accumulate over round(nbs / batch) batches  |
+| `nbs`                                                  | 64               | nominal batch size; accumulates max(round(nbs / batch), 1) batches        |
 
 ## Augmentation
 
