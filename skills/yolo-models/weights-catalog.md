@@ -1,4 +1,4 @@
-# Model asset names (v8.4.174)
+# Model asset names (v8.4.208)
 
 `ultralytics.utils.downloads.GITHUB_ASSETS_NAMES` is the package-known fast-path set, not an exhaustive release catalog. For other names, the downloader queries the `ultralytics/assets` GitHub release (the pinned tag, then latest). Use the exact names and patterns below and official model/task docs; do not guess or interpolate them.
 

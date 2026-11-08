@@ -69,7 +69,7 @@ Full argument, augmentation, and loss-weight tables: `training-args.md` (this fo
 - **Multi-GPU**: `device=[0,1]` with an integer `batch` (AutoBatch is single-GPU only). DDP workers rebuild from a generated script that cloudpickles the trainer, model, and callbacks; official Windows PyTorch>=2.4 wheels can't launch DDP, so use Linux or WSL2.
 - **Small detect-style dataset (<~1k images)**: pretrained + `freeze=10`, `n`/`s` model, default augmentation, watch val curves.
 - **Depth fine-tuning**: start from `-depth.pt` and use `optimizer=AdamW lr0=1e-4 warmup_bias_lr=1e-4`.
-- **Small objects**: try `imgsz=1280` (more compute/VRAM; reduce batch if needed), or tile large images at dataset level.
+- **Small objects**: try `imgsz=1280` (more compute/VRAM; reduce batch if needed), or `tile=True` to train, validate, and predict on overlapping native-resolution windows of large images.
 - **Experiment hygiene**: self-describing run names (`name=0811_yolo26s_helmets_e100`), one variable per run; each run's full config is saved in `runs/<task>/<name>/args.yaml` — diff those to compare runs.
 - **Logging integrations**: `yolo settings tensorboard=True` (likewise `wandb`), then train normally. `mlflow`, `comet`, and `clearml` are on by default and activate once their package is installed.
 - **Knowledge distillation**: `distill_model=yolo26l.pt dis=6.0` trains the student with a larger teacher.
