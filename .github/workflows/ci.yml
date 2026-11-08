@@ -23,7 +23,7 @@ jobs:
 
       # Keep this validator inline; never move it into a .py or other script file. The whole repo is the Claude plugin, and
       # Anthropic's plugin directory refuses any script file in it from organizations that aren't Verified. It refused v0.5.0
-      # for the old .github/scripts/lint_skills.py. See AGENTS.md Pitfalls.
+      # for the old .github/scripts/lint_skills.py. See AGENTS.md Pitfalls and the file-type check below.
       - name: Validate skills and manifests
         shell: python
         run: |
@@ -113,3 +113,10 @@ jobs:
               print("\n".join(f"ERROR: {e}" for e in errors))
               sys.exit(1)
           print(f"OK: {len(skill_dirs)} skills, {metadata_count} OpenAI metadata files, and {len(MANIFESTS)} manifests validated")
+
+      # Anthropic's directory classifies files by content, as Magika does, and refuses unverified organizations anything
+      # but these types; .gitignore and the plugin icon are exempt. Python 3.14 until onnxruntime ships 3.15 wheels
+      - name: Check plugin directory file types
+        run: |
+          labels=$(git ls-files -z | xargs -0 uvx -p 3.14 magika --label)
+          ! grep -vE ': (markdown|txt|json|yaml|png|jpeg|gif|webp|ico)( |$)|^\.gitignore: ignorefile$|^assets/logo\.svg: svg$' <<< "$labels"
