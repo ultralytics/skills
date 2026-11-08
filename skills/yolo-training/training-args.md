@@ -1,4 +1,4 @@
-# Base training argument reference (default.yaml, v8.4.174)
+# Base training argument reference (default.yaml, v8.4.208)
 
 `yolo cfg` prints the installed base schema and defaults. Effective values can also come from a task trainer, loaded checkpoint, or explicit argument; inspect the run's `args.yaml`. Names are identical in CLI and Python.
 
@@ -54,7 +54,7 @@
 | `angle`                                                | 1.0              | OBB angle loss                                                            |
 | `dlog` / `dgrad` / `dlam`                              | 1.0 / 0.5 / 1.0  | depth loss weights                                                        |
 | `distill_model` / `dis`                                | None / 6.0       | knowledge-distillation teacher + weight                                   |
-| `nbs`                                                  | 64               | nominal batch size for loss normalization                                 |
+| `nbs`                                                  | 64               | nominal batch size; gradients accumulate over round(nbs / batch) batches  |
 
 ## Augmentation
 

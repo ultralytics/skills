@@ -97,7 +97,7 @@ Parsing rules that matter:
 - `cfg=custom.yaml` loads the file's values: CLI arguments before or after it win, and missing keys still use built-in defaults (start with `yolo copy-cfg`).
 - Missing args are auto-filled with warnings (`source=` defaults to the package's `assets/` folder with `bus.jpg` and `zidane.jpg`, or a boats.jpg URL for `task=obb`; task-default data/model; `format=torchscript`).
 - Outputs go to `runs/<task>/<name>/`, and a relative `project=` nests under `runs/<task>/` as well, so read the printed `Results saved to` path or pass an absolute `project=`.
-- Model stem selects the architecture: `rtdetr-*` → RT-DETR, `sam_*`/`sam2*`/`sam3*`/`mobile_sam` → SAM, `FastSAM-*` → FastSAM, `yolo_nas_*` → NAS, `yoloe-*`/`*-world*` → promptable YOLO (accepts `classes="person, bus"`), everything else → YOLO.
+- Model stem selects the architecture: `rtdetr-*` → RT-DETR, `sam_*`/`sam2*`/`sam3*`/`mobile_sam` → SAM, `FastSAM-*` → FastSAM, `yolo_nas_*` → NAS, everything else → YOLO, which is promptable for YOLOE/YOLO-World checkpoints of any filename (accepts `classes="person, bus"`).
 
 ## Global directives
 

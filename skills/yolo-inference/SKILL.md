@@ -58,12 +58,12 @@ Accepted directly: image/video path, directory, glob, URL, webcam index (`0`), R
 | Arg            | Default | Notes                                                                                                                        |
 | -------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `conf`         | 0.25    | lower → more recall + more false positives                                                                                   |
-| `iou`          | 0.7     | NMS threshold; ignored by the NMS-free head (`nms=False`)                                                                    |
+| `iou`          | 0.5     | NMS threshold; ignored by the NMS-free head (`nms=False`)                                                                    |
 | `nms`          | None    | default: one-to-many head + NMS; `False`: faster NMS-free YOLO26 head; `True`: embed NMS on export. Exports keep that choice |
 | `imgsz`        | model   | inherited from the checkpoint; set explicitly for a different shape (static exports always run at their export size)         |
 | `classes`      | None    | keep only these ids, e.g. `classes=[0]`                                                                                      |
 | `max_det`      | 300     | raise for dense scenes                                                                                                       |
-| `quantize`     | None    | `16` selects FP16 compute for PyTorch/TorchScript; artifact/runtime precision otherwise applies; see caveat below            |
+| `quantize`     | None    | `16` selects FP16 compute for PyTorch/TorchScript off CPU; artifact/runtime precision otherwise applies; see caveat below    |
 | `batch`        | 1       | >1 speeds up folders/videos with `stream=True`                                                                               |
 | `retina_masks` | False   | full-resolution masks (slower, crisper)                                                                                      |
 | `augment`      | False   | detect-only test-time augmentation (+accuracy, ~3× slower); `nms=False` and exports warn and run normal inference            |
