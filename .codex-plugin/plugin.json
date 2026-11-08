@@ -1,6 +1,6 @@
 {
   "name": "yolo",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Agent skills for Ultralytics YOLO and Platform: model selection, dataset annotation, training, tuning, inference, export, and deployment through the Platform web UI, the Python package, and the yolo and ul CLIs.",
   "author": {
     "name": "Ultralytics",
@@ -37,9 +37,9 @@
     "privacyPolicyURL": "https://www.ultralytics.com/legal/privacy",
     "termsOfServiceURL": "https://www.ultralytics.com/legal/terms-of-service",
     "logo": "./assets/logo.svg",
-    "logoDark": "./assets/logo-dark.svg",
+    "logoDark": "./assets/logo-dark.png",
     "composerIcon": "./assets/logo.svg",
-    "composerIconDark": "./assets/logo-dark.svg",
+    "composerIconDark": "./assets/logo-dark.png",
     "defaultPrompt": [
       "Run yolo26n.pt on bus.jpg and show me what it detects",
       "Train yolo26n.pt on coco8 for 10 epochs and report mAP",

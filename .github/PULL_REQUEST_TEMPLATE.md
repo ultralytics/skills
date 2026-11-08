@@ -14,7 +14,6 @@ Skill content checklist:
 - Descriptions say when to use the skill (trigger keywords), not what it does.
 - Package facts (arguments, defaults, weight names, export formats) are checked against the pinned `ultralytics` version in the README, and version-volatile facts live in the companion catalog files, not SKILL.md.
 - Skills defer to the installed version (`yolo checks`, `yolo cfg`, error messages) over their own tables.
-- `python .github/scripts/lint_skills.py` passes.
 
 See the ✅ [Contributing Guide](https://docs.ultralytics.com/help/contributing) for more details.
 -->

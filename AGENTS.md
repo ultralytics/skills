@@ -29,11 +29,11 @@ After opening a PR:
 ## Commands and validation
 
 ```bash
-python3 .github/scripts/lint_skills.py
+python3 -c "import yaml; exec(yaml.safe_load(open('.github/workflows/ci.yml'))['jobs']['Lint']['steps'][-1]['run'])"
 claude --plugin-dir .
 ```
 
-The validator checks skill format, metadata, manifest agreement, and the Codex listing limits on starter prompts and short description; it does not execute examples or establish factual correctness. Ground package facts in `yolo checks`, `yolo cfg`, `export_formats()`, and the package source at the pinned version, and Platform instructions in live docs and installed `ul cloud <resource> <operation> --help`. Installed plugins are cached; `claude --plugin-dir .` exercises this checkout directly.
+The validator (the inline `Lint` step in `.github/workflows/ci.yml`; the command above runs it locally) checks skill format, metadata, manifest agreement, and the Codex listing limits on starter prompts and short description; it does not execute examples or establish factual correctness. Ground package facts in `yolo checks`, `yolo cfg`, `export_formats()`, and the package source at the pinned version, and Platform instructions in live docs and installed `ul cloud <resource> <operation> --help`. Installed plugins are cached; `claude --plugin-dir .` exercises this checkout directly.
 
 ## Where to look
 
@@ -57,3 +57,4 @@ The validator checks skill format, metadata, manifest agreement, and the Codex l
 ## Pitfalls
 
 - Every directory under `skills/` is treated as a skill. Do not park drafts, shared assets, or `__pycache__` there.
+- The whole repo is the plugin, and Anthropic's directory refuses it if any file is not Markdown, text, JSON, YAML, or a PNG, JPEG, GIF, WebP, or ICO image (only the `icon` SVG is exempt), starts with `#!`, or is a package manager config. Keep scripts inline in workflow YAML and add images as PNG.
