@@ -10,7 +10,7 @@ description: >
 
 ## Choose in Platform
 
-For the quickest no-code start, click **New Model** in a project. Its **Official** tab lists YOLO26 (recommended), YOLO11, YOLOv8, and YOLOv5 models whose task can train the selected dataset; **My Models** lists your completed or uploaded checkpoints for further fine-tuning. To browse the official models first, open the `@ultralytics` projects under **Projects** in [Platform Explore](https://platform.ultralytics.com/explore).
+For the quickest no-code start, click **New Model** in a project. Its **Official** tab lists YOLO26 (recommended), YOLO11, YOLOv8, and YOLOv5 models whose task can train the selected dataset; **My Models** lists your completed or uploaded checkpoints for further fine-tuning. To find an already-trained model first, describe what it should detect on the **Models** tab of [Platform Explore](https://platform.ultralytics.com/explore); official `@ultralytics` models lead matching results and their projects are pinned on the **Projects** tab.
 
 Use a Platform model page to inspect metrics, test it in **Predict**, export it, deploy it, clone a public model into your workspace, or download its `.pt` weights for the Python/CLI workflows below. See [Platform Models](https://docs.ultralytics.com/platform/train/models) and [Explore](https://docs.ultralytics.com/platform/explore).
 

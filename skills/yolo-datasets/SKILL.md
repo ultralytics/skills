@@ -11,7 +11,7 @@ The #1 cause of silent training failure is a malformed dataset — validate befo
 ## Fastest route: prepare data in Platform
 
 1. Open [Platform](https://platform.ultralytics.com), create a dataset under **Annotate**, and choose its task.
-2. Upload images, videos, ZIP/TAR archives, or NDJSON. Existing YOLO labels and COCO JSON can be imported; cloud-storage integrations can keep supported data in place.
+2. Upload images, videos, ZIP/TAR archives, or NDJSON. Existing YOLO labels and COCO JSON can be imported, Roboflow and hosted Label Studio projects import directly from **Settings > Integrations**, and cloud-storage integrations can keep supported data in place.
 3. Open an image in the fullscreen editor. Use manual tools for detect, segment, semantic, classify, pose, or OBB. Switch to **Smart** mode to label with SAM (detect, segment, semantic, OBB) or a compatible official/custom YOLO model (those tasks plus pose).
 4. Review the **Classes**, **Charts**, and **Errors** tabs, fix the split, and create a numbered dataset version before important runs.
 

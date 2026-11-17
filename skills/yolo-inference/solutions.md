@@ -42,7 +42,7 @@ Common constructor args (`SolutionConfig`): `model`, `region` (pixel coords in t
 | Alert on detections                   | `security`  | `SecurityAlarm`        | `authenticate(from_email, password, to_email)` then emails                                   |
 | Privacy blur                          | `blur`      | `ObjectBlurrer`        | `blur_ratio`                                                                                 |
 | Crop detections to files              | `crop`      | `ObjectCropper`        | `crop_dir`                                                                                   |
-| Read scene text (OCR)                 | `ocr`       | `OCR`                  | YOLO26-Text `ul://ultralytics-yolo/yolo26-text/yolo26n-text` + PaddleOCR; `results.texts`    |
+| Read scene text (OCR)                 | `ocr`       | `OCR`                  | `yolo26x-text.pt` + PP-OCRv6 on ONNX Runtime (Python 3.11+); `results.texts`                 |
 | Segmentation overlay + tracking       | `isegment`  | `InstanceSegmentation` | needs `-seg` model                                                                           |
 | Point-to-object mapping               | `visioneye` | `VisionEye`            | `vision_point`                                                                               |
 | Live charts of counts                 | `analytics` | `Analytics`            | line/bar/pie/area via `analytics_type`; call takes `(im0, frame_number)`                     |
@@ -65,6 +65,7 @@ Output video lands in `runs/solutions/exp*/`. An invalid solution name falls bac
 
 - Region coordinates are **pixels in the frame** — grab one frame, note the resolution, then define regions. Each track ID counts once, so double counts on a line come from ID switches; place the line where objects are unoccluded, perpendicular to travel direction.
 - Solutions accept any custom-trained `best.pt` matching their task type.
+- `OCR` reads Chinese, Japanese, and Latin-script text by default (Vietnamese only partially). For Korean, Cyrillic, Arabic, Devanagari, Thai, Greek, Tamil, or Telugu pass a PP-OCRv5 model such as `recognizer="cyrillic_PP-OCRv5_mobile_rec"` (no language auto-detection, no Hebrew).
 - Read state from attributes (`in_count`, `classwise_count`, …), not by parsing the drawn frame; `dir(obj)` lists what a module exposes.
 - Enumerate what the installed version ships: `python -c "from ultralytics import solutions; print([s for s in dir(solutions) if s[0].isupper()])"`
 - **When NOT to use**: bespoke multi-stage pipelines (detect → classify crop → OCR), 3D/homography geometry, event logic no module models — build on `model.track()` + Results API instead (see SKILL.md).

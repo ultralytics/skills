@@ -1,4 +1,4 @@
-# Base training argument reference (default.yaml, v8.4.208)
+# Base training argument reference (default.yaml, v8.4.215)
 
 `yolo cfg` prints the installed base schema and defaults. Effective values can also come from a task trainer, loaded checkpoint, or explicit argument; inspect the run's `args.yaml`. Names are identical in CLI and Python.
 
