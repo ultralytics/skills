@@ -1,4 +1,4 @@
-# Model asset names (v8.4.208)
+# Model asset names (v8.4.215)
 
 `ultralytics.utils.downloads.GITHUB_ASSETS_NAMES` is the package-known fast-path set, not an exhaustive release catalog. For other names, the downloader queries the `ultralytics/assets` GitHub release (the pinned tag, then latest). Use the exact names and patterns below and official model/task docs; do not guess or interpolate them.
 
@@ -27,6 +27,7 @@ Examples: `yolo26s-seg.pt`, `yolo26n-depth.pt`, `yolo11m-pose.pt`, `yolov8x-oiv7
 | ADE20K semantic models   | `yolo26{n,s,m,l,x}-sem-ade20k.pt` | auto-download from release assets                                       |
 | Distilled COCO detectors | `yolo26{n,s,m,l,x}-distill.pt`    | auto-download from release assets                                       |
 | Tracking ReID encoders   | `yolo26{n,s,m,l,x}-reid.onnx`     | auto-download when a tracker sets `with_reid: True` and `model:` to one |
+| OCR text detectors (OBB) | `yolo26{n,s,m,l,x}-text.pt`       | auto-download; the `OCR` Solution defaults to `yolo26x-text.pt`         |
 
 ## Open-vocabulary and promptable
 
