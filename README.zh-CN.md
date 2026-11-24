@@ -95,7 +95,7 @@ codex plugin add yolo@ultralytics
 
 ### 其他智能体（Cursor、Gemini CLI 等）
 
-使用 [skills CLI](https://github.com/vercel-labs/skills) 添加 `ultralytics/skills`（也可只安装单个 Skill 或全局安装），或将 `skills/` 下的文件夹复制（或创建符号链接）到智能体的 Skills 目录中。
+将 `skills/` 下的文件夹复制（或创建符号链接）到智能体的 Skills 目录中。
 
 ## 🛠️ 设计说明
 

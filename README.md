@@ -95,7 +95,7 @@ Restart Codex after edits. To pull new versions of the GitHub source, run `codex
 
 ### Other agents (Cursor, Gemini CLI, ...)
 
-Add `ultralytics/skills` with the [skills CLI](https://github.com/vercel-labs/skills), which can also install a single skill or install globally, or copy (or symlink) the folders under `skills/` into your agent's skills directory.
+Copy (or symlink) the folders under `skills/` into your agent's skills directory.
 
 ## 🛠️ Design notes
 
