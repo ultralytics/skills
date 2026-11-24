@@ -25,7 +25,6 @@
     "tensorrt"
   ],
   "skills": "./skills/",
-  "requires_local_executor": true,
   "interface": {
     "displayName": "Ultralytics YOLO",
     "shortDescription": "Train and deploy vision AI",
