@@ -21,9 +21,6 @@ jobs:
 
       - uses: ultralytics/actions/setup-uv@main
 
-      # Keep this validator inline; never move it into a .py or other script file. The whole repo is the Claude plugin, and
-      # Anthropic's plugin directory refuses any script file in it from organizations that aren't Verified. It refused v0.5.0
-      # for the old .github/scripts/lint_skills.py. See CONTRIBUTING.md Pitfalls and the file-type check below.
       - name: Validate skills and manifests
         shell: python
         run: |
@@ -32,18 +29,19 @@ jobs:
           import sys
           from pathlib import Path
 
+          PLUGIN = "plugins/yolo"  # the shipped plugin folder; marketplaces stay at the repo root
           MANIFESTS = [
-              ".claude-plugin/plugin.json",
+              f"{PLUGIN}/.claude-plugin/plugin.json",
               ".claude-plugin/marketplace.json",
-              ".codex-plugin/plugin.json",
+              f"{PLUGIN}/.codex-plugin/plugin.json",
               ".agents/plugins/marketplace.json",
           ]
           errors = []
           manifests = {rel: json.loads(Path(rel).read_text(encoding="utf-8")) for rel in MANIFESTS}
           metadata_count = 0
-          skill_dirs = sorted(d for d in Path("skills").iterdir() if d.is_dir())
+          skill_dirs = sorted(d for d in Path(PLUGIN, "skills").iterdir() if d.is_dir())
           if not skill_dirs:
-              errors.append("no skill directories found under skills/")
+              errors.append(f"no skill directories found under {PLUGIN}/skills/")
 
           for d in skill_dirs:
               sk = d / "SKILL.md"
@@ -89,8 +87,8 @@ jobs:
               if values["default_prompt"] and f"${d.name}" not in values["default_prompt"]:
                   errors.append(f"{d.name}: openai.yaml default_prompt must mention ${d.name}")
 
-          claude = manifests[".claude-plugin/plugin.json"]
-          codex = manifests[".codex-plugin/plugin.json"]
+          claude = manifests[f"{PLUGIN}/.claude-plugin/plugin.json"]
+          codex = manifests[f"{PLUGIN}/.codex-plugin/plugin.json"]
           for key in ("name", "version", "skills"):
               if claude.get(key) != codex.get(key):
                   errors.append(f"plugin manifests disagree on {key}: {claude.get(key)!r} != {codex.get(key)!r}")
@@ -108,17 +106,21 @@ jobs:
               errors.append("Claude marketplace must expose the packaged plugin")
           if len(codex_plugins) != 1 or codex_plugins[0].get("name") != codex.get("name"):
               errors.append("Codex marketplace must expose the packaged plugin")
+          sources = [p.get("source") for p in claude_plugins] + [p.get("source", {}).get("path") for p in codex_plugins]
+          if any(source != f"./{PLUGIN}" for source in sources):
+              errors.append(f"marketplace sources must point to ./{PLUGIN}")
 
           if errors:
               print("\n".join(f"ERROR: {e}" for e in errors))
               sys.exit(1)
           print(f"OK: {len(skill_dirs)} skills, {metadata_count} OpenAI metadata files, and {len(MANIFESTS)} manifests validated")
 
-      # Anthropic's directory refuses unverified organizations any agent instruction file by name, and classifies the rest
-      # by content, as Magika does, refusing anything but these types; .gitignore and the plugin icon are exempt.
-      # Python 3.14 until onnxruntime ships 3.15 wheels
+      # Anthropic's directory scans only the submitted plugin folder. For unverified organizations it refuses any agent
+      # instruction file by name and classifies the rest by content, as Magika does, refusing anything but these types;
+      # the plugin icon is exempt. Python 3.14 until onnxruntime ships 3.15 wheels
       - name: Check plugin directory file types
+        working-directory: plugins/yolo
         run: |
           git ls-files | grep -iE '(^|/)(agents|claude|claude\.local)\.md$|(^|/)\.claude/rules/' && exit 1
           labels=$(git ls-files -z | xargs -0 uvx -p 3.14 magika --label)
-          ! grep -vE ': (markdown|txt|json|yaml|png|jpeg|gif|webp|ico)( |$)|^\.gitignore: ignorefile$|^assets/logo\.svg: svg$' <<< "$labels"
+          ! grep -vE ': (markdown|txt|json|yaml|png|jpeg|gif|webp|ico)( |$)|^assets/logo\.svg: svg$' <<< "$labels"

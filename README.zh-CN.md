@@ -14,14 +14,14 @@
 
 | Skill                                              | 用途                                                                                        |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [`yolo`](skills/yolo/SKILL.md)                     | Platform 和本地工作流概览、核心 CLI/Python 语法，以及其他 Skills 的路由                     |
-| [`yolo-models`](skills/yolo-models/SKILL.md)       | 选择模型系列、尺寸和任务变体：YOLO26/11/v8、YOLO-World、YOLOE、SAM、RT-DETR；准确的权重名称 |
-| [`yolo-datasets`](skills/yolo-datasets/SKILL.md)   | Platform 上传/标注、data.yaml、格式、转换器、数据集拆分和验证                               |
-| [`yolo-training`](skills/yolo-training/SKILL.md)   | Platform 云端/远程训练、本地训练/验证、参数、结果和故障排除                                 |
-| [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Platform 实验对比、系统化改进方法、`model.tune()` 和 Ray Tune                               |
-| [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/端点、本地推理、Results API、跟踪和 Solutions                              |
-| [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/本地 ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU 导出、量化和基准测试         |
-| [`platform-cli`](skills/platform-cli/SKILL.md)     | 通过 `ul cloud` 脚本化操作 Platform：资源、数据集检查、云端训练、模型分析、导出、部署、用量 |
+| [`yolo`](plugins/yolo/skills/yolo/SKILL.md)                     | Platform 和本地工作流概览、核心 CLI/Python 语法，以及其他 Skills 的路由                     |
+| [`yolo-models`](plugins/yolo/skills/yolo-models/SKILL.md)       | 选择模型系列、尺寸和任务变体：YOLO26/11/v8、YOLO-World、YOLOE、SAM、RT-DETR；准确的权重名称 |
+| [`yolo-datasets`](plugins/yolo/skills/yolo-datasets/SKILL.md)   | Platform 上传/标注、data.yaml、格式、转换器、数据集拆分和验证                               |
+| [`yolo-training`](plugins/yolo/skills/yolo-training/SKILL.md)   | Platform 云端/远程训练、本地训练/验证、参数、结果和故障排除                                 |
+| [`yolo-tuning`](plugins/yolo/skills/yolo-tuning/SKILL.md)       | Platform 实验对比、系统化改进方法、`model.tune()` 和 Ray Tune                               |
+| [`yolo-inference`](plugins/yolo/skills/yolo-inference/SKILL.md) | Platform Predict/端点、本地推理、Results API、跟踪和 Solutions                              |
+| [`yolo-export`](plugins/yolo/skills/yolo-export/SKILL.md)       | Platform/本地 ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU 导出、量化和基准测试         |
+| [`platform-cli`](plugins/yolo/skills/platform-cli/SKILL.md)     | 通过 `ul cloud` 脚本化操作 Platform：资源、数据集检查、云端训练、模型分析、导出、部署、用量 |
 
 每个 Skill 都由一个 `SKILL.md`（操作步骤、决策表和注意事项）和 `agents/openai.yaml` 中的 Codex 与 ChatGPT 展示元数据组成。随版本变化的目录信息（权重名称、参数表、导出格式）保存在同一目录的配套文件中。软件包信息基于 `ultralytics` v8.4.215；Platform 流程基于当前的 [Platform 文档](https://docs.ultralytics.com/platform)。
 
@@ -66,7 +66,7 @@ claude plugin install yolo@ultralytics
 
 ```bash
 git clone https://github.com/ultralytics/skills && cd skills
-claude --plugin-dir .
+claude --plugin-dir plugins/yolo
 ```
 
 </details>
@@ -95,7 +95,7 @@ codex plugin add yolo@ultralytics
 
 ### 其他智能体（Cursor、Gemini CLI 等）
 
-将 `skills/` 下的文件夹复制（或创建符号链接）到智能体的 Skills 目录中。
+将 `plugins/yolo/skills/` 下的文件夹复制（或创建符号链接）到智能体的 Skills 目录中。
 
 ## 🛠️ 设计说明
 

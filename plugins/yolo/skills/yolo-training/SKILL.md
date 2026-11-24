@@ -17,13 +17,14 @@ Use [Platform cloud training](https://docs.ultralytics.com/platform/train/cloud-
 
 Cloud jobs require at least one train image, one val/test image, and one labeled image. Use local/Colab training when you already have compute or need more control, while keeping Platform datasets and experiment tracking:
 
+Sign in with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys) first, then:
+
 ```bash
-export ULTRALYTICS_API_KEY="YOUR_API_KEY"
 yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug \
   epochs=100 project=username/project-slug name=experiment-1
 ```
 
-With `ultralytics>=8.4.120` on Python 3.11+, the `ul://` URI downloads the Platform dataset, and while an API key is available (`ULTRALYTICS_API_KEY` or the `api_key` setting), any `project=` value — even a local folder — streams metrics and uploads weights to Platform. Omit `project` to keep a run local; a list `data=` sets it internally, so unset the key for those runs.
+With `ultralytics>=8.4.120` on Python 3.11+, the `ul://` URI downloads the Platform dataset, and while signed in, any `project=` value — even a local folder — streams metrics and uploads weights to Platform. Omit `project` to keep a run local; a list `data=` sets it internally, so unset the key for those runs.
 
 ## Quickstart (detection)
 

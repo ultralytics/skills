@@ -10,10 +10,12 @@ description: >
 
 ```bash
 pip install ultralytics                   # or `pip install ultralytics-platform`
-export ULTRALYTICS_API_KEY="YOUR_API_KEY" # or `ul login YOUR_API_KEY`
+ul cloud account summary                  # confirms the CLI is signed in
 ul cloud --help                           # every resource and operation
 ul cloud training start --help            # one operation's arguments, types, and choices
 ```
+
+Signing in is a prerequisite the user completes with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys). Never ask for, print, or pass a key yourself.
 
 ## Canonical command shapes
 
@@ -75,7 +77,7 @@ Commands below omit the `ul cloud` prefix and `owner=`; add `owner=` as describe
 | Import data        | `datasets create dataset=D name="Display"`, then `upload signed-url body=` (`assetType`, `assetId`, `filename`, `contentType`, `totalBytes`) for one `.zip`, `.tar`, `.tar.gz`, `.tgz`, or `.ndjson` file, PUT the bytes with the returned headers, `datasets ingest dataset=D body='{"sessionId":"S"}'` (completes the upload; or `{"sourceUrl":...}`), then retrieve until ready. Queued is not imported. Roboflow and hosted Label Studio: `datasets preview-roboflow`/`preview-label-studio` (saved key), then `import-roboflow`/`import-label-studio`.                                          |
 | Trash              | `projects delete project=P`, `datasets delete dataset=D`, and `models delete project=P model=M` move them to 30-day trash. `lifecycle trash` lists it, `lifecycle restore id=ID type=model` undeletes, `lifecycle delete-trash body='{"id":"ID","type":"model"}'` purges one item, and `body='{"all":true}'` permanently empties all workspace trash.                                                                                                                                                                                                                                                |
 
-Platform exports a dataset only as NDJSON that links its images; there is no YOLO-format or ZIP export. For local training, pass the file, or `ul://OWNER/datasets/DATASET` with `ULTRALYTICS_API_KEY` set, straight to `model.train(data=...)`, which downloads the images and builds the YOLO folders; for the folders alone, run `asyncio.run(convert_ndjson_to_yolo("dataset.ndjson", output_path="datasets"))` after `import asyncio` and `from ultralytics.data.converter import convert_ndjson_to_yolo`.
+Platform exports a dataset only as NDJSON that links its images; there is no YOLO-format or ZIP export. For local training, pass the file, or `ul://OWNER/datasets/DATASET` while signed in, straight to `model.train(data=...)`, which downloads the images and builds the YOLO folders; for the folders alone, run `asyncio.run(convert_ndjson_to_yolo("dataset.ndjson", output_path="datasets"))` after `import asyncio` and `from ultralytics.data.converter import convert_ndjson_to_yolo`.
 
 ## Cloud training
 
@@ -86,7 +88,7 @@ Platform exports a dataset only as NDJSON that links its images; there is no YOL
 
 ## Recover
 
-- **401**: check the credential source without exposing secrets. `ULTRALYTICS_API_KEY` overrides the saved login key, so logging in again does not replace a stale environment value. If the execution environment injects credentials, use its flow. Verify with a read afterwards.
+- **401**: the CLI has no valid key. Have the user sign in again as described in [API keys](https://docs.ultralytics.com/platform/account/api-keys); the CLI's 401 message names any stale override to clear. If the execution environment injects credentials, use its flow. Verify with `ul cloud account summary` afterwards.
 - **403**: read the error for workspace access, permissions, or operation constraints; do not assume an expired login.
 - Fix clear validation errors within the requested action. After a timeout or uncertain write, inspect state before retrying. Stop on unresolved inputs, permissions, or repeated failure; report partial results and remaining work instead of duplicating writes.
 
