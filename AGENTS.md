@@ -38,8 +38,8 @@ The validator (the inline Python step of the `Lint` job in `.github/workflows/ci
 ## Where to look
 
 - Skills → `plugins/yolo/skills/<name>/` (`SKILL.md`, `agents/openai.yaml`, companion catalogs).
-- Plugin packaging → `plugins/yolo/` is the plugin (its `.claude-plugin/` and `.codex-plugin/` manifests must agree on `name`, `version`, and `skills`); the Claude and Codex marketplaces in `.claude-plugin/` and `.agents/plugins/` at the root point to it.
-- Releasing → bump `version` in both `plugin.json` files; on merge, `.github/workflows/publish.yml` tags `vX.Y.Z`, creates the GitHub release, and attaches the Codex upload ZIP (`plugins/yolo/` plus `LICENSE`).
+- Plugin packaging → `plugins/yolo/` is the plugin (its `.claude-plugin/` and `.codex-plugin/` manifests must agree on `name`, `version`, `description`, and `skills`); the Claude and Codex marketplaces in `.claude-plugin/` and `.agents/plugins/` at the root point to it.
+- Releasing → bump `version` in both `plugin.json` files; on merge, `.github/workflows/publish.yml` tags `vX.Y.Z`, creates the GitHub release, and attaches the Codex upload ZIP, built from `plugins/yolo/` without its Claude manifest.
 - Adding or renaming a skill → also update the skill tables in `README.md` and `README.zh-CN.md`, the routing table in `plugins/yolo/skills/yolo/SKILL.md`, and the Skill dropdowns in `.github/ISSUE_TEMPLATE/`.
 
 ## Conventions
