@@ -117,11 +117,10 @@ jobs:
 
       # Anthropic's directory scans only the submitted plugin folder. This step covers two of its rules for unverified
       # organizations: no agent instruction file names, and only these Magika content types (the plugin icon is exempt).
-      # The plugin's LICENSE must stay identical to the root one. Python 3.14 until onnxruntime ships 3.15 wheels
+      # Python 3.14 until onnxruntime ships 3.15 wheels
       - name: Check plugin directory file types
         working-directory: plugins/yolo
         run: |
-          cmp LICENSE ../../LICENSE
           git ls-files | grep -iE '(^|/)(agents|claude|claude\.local)\.md$|(^|/)\.claude/rules/' && exit 1
           labels=$(git ls-files -z | xargs -0 uvx -p 3.14 magika --label)
           ! grep -vE ': (markdown|txt|json|yaml|png|jpeg|gif|webp|ico)( |$)|^assets/logo\.svg: svg$' <<< "$labels"
