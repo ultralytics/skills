@@ -34,7 +34,7 @@
 | `freeze`                        | None            | int N, or list of layer indices/module names such as `"23.cv2"`                                      |
 | `multi_scale`                   | 0.0             | imgsz jitter fraction during training                                                                |
 | `compile`                       | False           | torch.compile: True/`"default"`/`"reduce-overhead"`/`"max-autotune-no-cudagraphs"`                   |
-| `channels_last`                 | None            | auto: non-Windows NVIDIA CUDA training (torch≥1.11), x86_64 Linux/Windows MKLDNN CPU inference; bool |
+| `channels_last`                 | None            | auto: torch≥1.11 non-Windows NVIDIA CUDA train, ≥1.13 x86_64 Linux/Windows MKLDNN CPU infer; bool    |
 | `overlap_mask` / `mask_ratio`   | True / 4        | segment: merge overlapping masks; mask downsample                                                    |
 | `dropout`                       | 0.0             | classify only                                                                                        |
 | `val` / `plots`                 | True / True     | validate + plot during training                                                                      |
