@@ -12,8 +12,8 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 
 ## 🧩 Skills
 
-| Skill                                              | Use it for                                                                                                                       |
-| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Skill                                                           | Use it for                                                                                                                       |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | [`yolo`](plugins/yolo/skills/yolo/SKILL.md)                     | Platform and local lifecycle overview, core CLI/Python grammar, routing to the other skills                                      |
 | [`yolo-models`](plugins/yolo/skills/yolo-models/SKILL.md)       | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names                             |
 | [`yolo-datasets`](plugins/yolo/skills/yolo-datasets/SKILL.md)   | Platform upload/annotation, data.yaml, formats, converters, splitting, validation                                                |

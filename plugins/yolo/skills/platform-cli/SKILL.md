@@ -9,10 +9,10 @@ description: >
 `ul` needs Python 3.11+ and comes with `pip install ultralytics` or `pip install ultralytics-platform`. `ul cloud <resource> <operation>` calls the Platform API through the generated SDK; `ul login`, `ul train`, `ul predict`, the `ul cloud train|predict|export|download` shortcuts (see `yolo`), and the other local commands delegate to the `ultralytics` package. This skill covers Platform operations, not model selection or hyperparameter tuning.
 
 ```bash
-pip install ultralytics                   # or `pip install ultralytics-platform`
-ul cloud account summary                  # confirms the CLI is signed in
-ul cloud --help                           # every resource and operation
-ul cloud training start --help            # one operation's arguments, types, and choices
+pip install ultralytics        # or `pip install ultralytics-platform`
+ul cloud account summary       # confirms the CLI is signed in
+ul cloud --help                # every resource and operation
+ul cloud training start --help # one operation's arguments, types, and choices
 ```
 
 When the execution environment supplies credentials, use them as they are. For a standalone CLI, signing in is a prerequisite the user completes with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys). Never ask for, print, or pass a key yourself.

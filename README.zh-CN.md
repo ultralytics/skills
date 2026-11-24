@@ -12,8 +12,8 @@
 
 ## 🧩 Skills
 
-| Skill                                              | 用途                                                                                        |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Skill                                                           | 用途                                                                                        |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [`yolo`](plugins/yolo/skills/yolo/SKILL.md)                     | Platform 和本地工作流概览、核心 CLI/Python 语法，以及其他 Skills 的路由                     |
 | [`yolo-models`](plugins/yolo/skills/yolo-models/SKILL.md)       | 选择模型系列、尺寸和任务变体：YOLO26/11/v8、YOLO-World、YOLOE、SAM、RT-DETR；准确的权重名称 |
 | [`yolo-datasets`](plugins/yolo/skills/yolo-datasets/SKILL.md)   | Platform 上传/标注、data.yaml、格式、转换器、数据集拆分和验证                               |
