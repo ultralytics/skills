@@ -12,16 +12,16 @@ Agent skills for [Ultralytics Platform](https://platform.ultralytics.com), the [
 
 ## 🧩 Skills
 
-| Skill                                              | Use it for                                                                                                                       |
-| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| [`yolo`](skills/yolo/SKILL.md)                     | Platform and local lifecycle overview, core CLI/Python grammar, routing to the other skills                                      |
-| [`yolo-models`](skills/yolo-models/SKILL.md)       | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names                             |
-| [`yolo-datasets`](skills/yolo-datasets/SKILL.md)   | Platform upload/annotation, data.yaml, formats, converters, splitting, validation                                                |
-| [`yolo-training`](skills/yolo-training/SKILL.md)   | Platform cloud/remote training, local train/val, arguments, results, troubleshooting                                             |
-| [`yolo-tuning`](skills/yolo-tuning/SKILL.md)       | Platform experiment comparison, improvement playbook, `model.tune()`, Ray Tune                                                   |
-| [`yolo-inference`](skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                                                      |
-| [`yolo-export`](skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU export, quantization, benchmarking                               |
-| [`platform-cli`](skills/platform-cli/SKILL.md)     | Scripting Platform with `ul cloud`: resources, dataset inspection, cloud training, model analysis, exports, deployments, billing |
+| Skill                                                           | Use it for                                                                                                                       |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| [`yolo`](plugins/yolo/skills/yolo/SKILL.md)                     | Platform and local lifecycle overview, core CLI/Python grammar, routing to the other skills                                      |
+| [`yolo-models`](plugins/yolo/skills/yolo-models/SKILL.md)       | Choosing family/size/task variant: YOLO26/11/v8, YOLO-World, YOLOE, SAM, RT-DETR; exact weight names                             |
+| [`yolo-datasets`](plugins/yolo/skills/yolo-datasets/SKILL.md)   | Platform upload/annotation, data.yaml, formats, converters, splitting, validation                                                |
+| [`yolo-training`](plugins/yolo/skills/yolo-training/SKILL.md)   | Platform cloud/remote training, local train/val, arguments, results, troubleshooting                                             |
+| [`yolo-tuning`](plugins/yolo/skills/yolo-tuning/SKILL.md)       | Platform experiment comparison, improvement playbook, `model.tune()`, Ray Tune                                                   |
+| [`yolo-inference`](plugins/yolo/skills/yolo-inference/SKILL.md) | Platform Predict/endpoints, local predict, Results API, tracking, Solutions                                                      |
+| [`yolo-export`](plugins/yolo/skills/yolo-export/SKILL.md)       | Platform/local ONNX/TensorRT/CoreML/Core AI/OpenVINO/LiteRT/NPU export, quantization, benchmarking                               |
+| [`platform-cli`](plugins/yolo/skills/platform-cli/SKILL.md)     | Scripting Platform with `ul cloud`: resources, dataset inspection, cloud training, model analysis, exports, deployments, billing |
 
 Each skill is a `SKILL.md` of procedures, decision tables, and gotchas, with Codex and ChatGPT presentation metadata in `agents/openai.yaml`. Version-volatile catalogs (weight names, argument tables, export formats) live in companion files beside it. Package facts are grounded against `ultralytics` v8.4.215; Platform flows are grounded against the current [Platform documentation](https://docs.ultralytics.com/platform).
 
@@ -66,7 +66,7 @@ Launch a session with the plugin loaded from the repo directory, leaving your in
 
 ```bash
 git clone https://github.com/ultralytics/skills && cd skills
-claude --plugin-dir .
+claude --plugin-dir plugins/yolo
 ```
 
 </details>
@@ -95,21 +95,7 @@ Restart Codex after edits. To pull new versions of the GitHub source, run `codex
 
 ### Other agents (Cursor, Gemini CLI, ...)
 
-```bash
-npx skills add ultralytics/skills
-```
-
-<details>
-<summary>Single skills, global install, manual copy</summary>
-
-```bash
-npx skills add ultralytics/skills --skill yolo-training # one skill only
-npx skills add ultralytics/skills -g                    # global (~/.claude/skills/) instead of ./.claude/skills/
-```
-
-Or simply copy (or symlink) the folders under `skills/` into your agent's skills directory.
-
-</details>
+Copy (or symlink) the folders under `plugins/yolo/skills/` into your agent's skills directory, or follow the [installation guide](https://docs.ultralytics.com/integrations/agent-skills#installation).
 
 ## 🛠️ Design notes
 
@@ -120,7 +106,7 @@ Or simply copy (or symlink) the folders under `skills/` into your agent's skills
 
 ## 🔒 Data and network access
 
-The plugin contains only instructions; nothing runs when it loads. The commands it suggests can download packages, weights, datasets, and the public Platform API schema, and `ul cloud` commands upload the files you pass them to [Ultralytics Platform](https://platform.ultralytics.com) with your API key. The `ultralytics` package also sends anonymous usage analytics; turn them off with `yolo settings sync=False`.
+The plugin contains only instructions; nothing runs when it loads. The plugin README lists [what the commands it suggests run, send, and fetch](plugins/yolo/README.md#what-it-runs-sends-and-fetches).
 
 ## 💡 Contribute
 

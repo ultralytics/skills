@@ -21,7 +21,7 @@ ul cloud predict model=ul://username/helmets/exp1 source=video.mp4              
 ul cloud export model=ul://username/helmets/exp1 format=onnx                                             # → downloaded artifact
 ```
 
-Mix them freely. Set `ULTRALYTICS_API_KEY`, use a Platform dataset as `data=ul://username/datasets/dataset-slug`, and set `project=username/project-slug name=experiment` during local training to stream its metrics back to Platform.
+Mix them freely. Sign in with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys), use a Platform dataset as `data=ul://username/datasets/dataset-slug`, and set `project=username/project-slug name=experiment` during local training to stream its metrics back to Platform.
 
 The `yolo` CLI and Python share one API. The CLI grammar is `yolo TASK MODE arg=value ...`, and Python takes the same argument names:
 

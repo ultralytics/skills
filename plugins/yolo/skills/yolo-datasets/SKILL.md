@@ -17,7 +17,7 @@ The #1 cause of silent training failure is a malformed dataset — validate befo
 
 Platform datasets cover all seven YOLO tasks. Depth targets are imported rather than drawn in the editor. See [Platform Data](https://docs.ultralytics.com/platform/data) and the [Annotation Editor](https://docs.ultralytics.com/platform/data/annotation).
 
-To train on the same dataset from local code, create an API key under **Settings > API Keys**, set `ULTRALYTICS_API_KEY`, and pass the dataset's `ul://` URI as `data`:
+To train on the same dataset from local code, sign in with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys) and pass the dataset's `ul://` URI as `data`:
 
 ```bash
 yolo train model=yolo26n.pt data=ul://username/datasets/dataset-slug epochs=100

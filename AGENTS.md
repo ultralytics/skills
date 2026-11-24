@@ -30,17 +30,17 @@ After opening a PR:
 
 ```bash
 python3 -c "import yaml; exec(yaml.safe_load(open('.github/workflows/ci.yml'))['jobs']['Lint']['steps'][2]['run'])"
-claude --plugin-dir .
+claude --plugin-dir plugins/yolo
 ```
 
-The validator (the inline Python step of the `Lint` job in `.github/workflows/ci.yml`; the command above runs it locally) checks skill format, metadata, manifest agreement, and the Codex listing limits on starter prompts and short description; it does not execute examples or establish factual correctness. Ground package facts in `yolo checks`, `yolo cfg`, `export_formats()`, and the package source at the pinned version, and Platform instructions in live docs and installed `ul cloud <resource> <operation> --help`. Installed plugins are cached; `claude --plugin-dir .` exercises this checkout directly.
+The validator (the inline Python step of the `Lint` job in `.github/workflows/ci.yml`; the command above runs it locally) checks skill format, metadata, manifest agreement, and the Codex listing limits on starter prompts and short description; it does not execute examples or establish factual correctness. Ground package facts in `yolo checks`, `yolo cfg`, `export_formats()`, and the package source at the pinned version, and Platform instructions in live docs and installed `ul cloud <resource> <operation> --help`. Installed plugins are cached; `claude --plugin-dir plugins/yolo` exercises this checkout directly.
 
 ## Where to look
 
-- Skills → `skills/<name>/` (`SKILL.md`, `agents/openai.yaml`, companion catalogs).
-- Plugin packaging → `.claude-plugin/`, `.codex-plugin/`, `.agents/plugins/`; the two `plugin.json` files must agree on `name`, `version`, and `skills`.
-- Releasing → bump `version` in both `plugin.json` files; on merge, `.github/workflows/publish.yml` tags `vX.Y.Z`, creates the GitHub release, and attaches the Codex upload ZIP.
-- Adding or renaming a skill → also update the skill tables in `README.md` and `README.zh-CN.md`, the routing table in `skills/yolo/SKILL.md`, and the Skill dropdowns in `.github/ISSUE_TEMPLATE/`.
+- Skills → `plugins/yolo/skills/<name>/` (`SKILL.md`, `agents/openai.yaml`, companion catalogs).
+- Plugin packaging → `plugins/yolo/` is the plugin (its `.claude-plugin/` and `.codex-plugin/` manifests must agree on `name`, `version`, `description`, and `skills`); the Claude and Codex marketplaces in `.claude-plugin/` and `.agents/plugins/` at the root point to it.
+- Releasing → bump `version` in both `plugin.json` files; on merge, `.github/workflows/publish.yml` tags `vX.Y.Z`, creates the GitHub release, and attaches the Codex upload ZIP, built from `plugins/yolo/` without its Claude manifest.
+- Adding or renaming a skill → also update the skill tables in `README.md` and `README.zh-CN.md`, the routing table in `plugins/yolo/skills/yolo/SKILL.md`, and the Skill dropdowns in `.github/ISSUE_TEMPLATE/`.
 
 ## Conventions
 
@@ -56,5 +56,6 @@ The validator (the inline Python step of the `Lint` job in `.github/workflows/ci
 
 ## Pitfalls
 
-- Every directory under `skills/` is treated as a skill. Do not park drafts, shared assets, or `__pycache__` there.
-- The whole repo is the plugin, and Anthropic's directory refuses it if any file is not Markdown, text, JSON, YAML, or a PNG, JPEG, GIF, WebP, or ICO image (only the `icon` SVG is exempt), starts with `#!`, or is a package manager config. The directory classifies by content, not name, so keep scripts inline in workflow YAML that still reads as YAML and `assets/logo.svg` as the only image; the `Lint` job's Magika file-type check enforces this.
+- Every directory under `plugins/yolo/skills/` is treated as a skill. Do not park drafts, shared assets, or `__pycache__` there.
+- Only `plugins/yolo/` ships: it is the folder submitted to Anthropic's plugin directory and zipped for OpenAI's, so keep CI, scripts, and contributor docs outside it. For organizations that aren't Verified, Anthropic refuses any file there that isn't Markdown, text, JSON, YAML, or a PNG, JPEG, GIF, WebP, or ICO image (the `icon` SVG is exempt), starts with `#!`, is a package manager config, or is an `AGENTS.md`, `CLAUDE.md`, or `CLAUDE.local.md`. It classifies by content, not name. The `Lint` job's file check covers the instruction-file names and content types only.
+- Skills and the plugin README must not show commands that download and run code (link the tool's own install instructions instead) or tell users to put a credential in their environment or on a command line. Treat Platform sign-in as a prerequisite, link https://docs.ultralytics.com/platform/account/api-keys, verify with `ul cloud account summary`, and write any key placeholder as `YOUR_API_KEY`. Anthropic refused v0.5.1 for these.

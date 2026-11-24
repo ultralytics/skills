@@ -29,7 +29,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v$(jq -r .version .claude-plugin/plugin.json)"
+          TAG="v$(jq -r .version plugins/yolo/.claude-plugin/plugin.json)"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "release=false" >> "$GITHUB_OUTPUT"
@@ -57,7 +57,7 @@ jobs:
           fi
           uvx --from ultralytics-actions ultralytics-actions-summarize-release
           ZIP="yolo-$CURRENT_TAG-codex.zip" # skills-only package for the OpenAI plugin upload
-          git archive --format=zip -o "$ZIP" "$CURRENT_TAG" .codex-plugin skills assets README.md README.zh-CN.md LICENSE
+          git archive --format=zip -o "$ZIP" --add-file=LICENSE "$CURRENT_TAG:plugins/yolo" .codex-plugin skills assets README.md
           unzip -q "$ZIP" -d plugin # the shipped files, scanned for the SBOM below
           gh release upload "$CURRENT_TAG" "$ZIP" --clobber
 
