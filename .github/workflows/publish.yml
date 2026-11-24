@@ -57,8 +57,7 @@ jobs:
           fi
           uvx --from ultralytics-actions ultralytics-actions-summarize-release
           ZIP="yolo-$CURRENT_TAG-codex.zip" # skills-only package for the OpenAI plugin upload
-          git archive --format=zip -o "$ZIP" "$CURRENT_TAG:plugins/yolo" .codex-plugin skills assets README.md
-          zip -q "$ZIP" LICENSE
+          git archive --format=zip -o "$ZIP" "$CURRENT_TAG:plugins/yolo" .codex-plugin skills assets README.md LICENSE
           unzip -q "$ZIP" -d plugin # the shipped files, scanned for the SBOM below
           gh release upload "$CURRENT_TAG" "$ZIP" --clobber
 

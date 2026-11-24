@@ -15,7 +15,7 @@ ul cloud --help                           # every resource and operation
 ul cloud training start --help            # one operation's arguments, types, and choices
 ```
 
-Signing in is a prerequisite the user completes with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys). Never ask for, print, or pass a key yourself.
+When the execution environment supplies credentials, use them as they are. For a standalone CLI, signing in is a prerequisite the user completes with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys). Never ask for, print, or pass a key yourself.
 
 ## Canonical command shapes
 
@@ -88,7 +88,7 @@ Platform exports a dataset only as NDJSON that links its images; there is no YOL
 
 ## Recover
 
-- **401**: the CLI has no valid key. Have the user sign in again as described in [API keys](https://docs.ultralytics.com/platform/account/api-keys); the CLI's 401 message names any stale override to clear. If the execution environment injects credentials, use its flow. Verify with `ul cloud account summary` afterwards.
+- **401**: the credential is missing or invalid. If the execution environment injects credentials, use its flow. For a standalone CLI, have the user sign in again as described in [API keys](https://docs.ultralytics.com/platform/account/api-keys); the CLI's 401 message names any stale override to clear. Verify with `ul cloud account summary` afterwards.
 - **403**: read the error for workspace access, permissions, or operation constraints; do not assume an expired login.
 - Fix clear validation errors within the requested action. After a timeout or uncertain write, inspect state before retrying. Stop on unresolved inputs, permissions, or repeated failure; report partial results and remaining work instead of duplicating writes.
 

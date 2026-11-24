@@ -95,7 +95,7 @@ codex plugin add yolo@ultralytics
 
 ### 其他智能体（Cursor、Gemini CLI 等）
 
-将 `plugins/yolo/skills/` 下的文件夹复制（或创建符号链接）到智能体的 Skills 目录中。
+将 `plugins/yolo/skills/` 下的文件夹复制（或创建符号链接）到智能体的 Skills 目录中，或参阅[安装指南](https://docs.ultralytics.com/integrations/agent-skills#installation)。
 
 ## 🛠️ 设计说明
 
@@ -106,7 +106,7 @@ codex plugin add yolo@ultralytics
 
 ## 🔒 数据与网络访问
 
-本插件仅包含说明文字，加载时不会运行任何内容。它建议的命令可能会下载软件包、权重、数据集和公开的 Platform API 架构；`ul cloud` 命令会使用你的 API 密钥将你提供的文件上传到 [Ultralytics Platform](https://platform.ultralytics.com)。`ultralytics` 软件包还会发送匿名使用统计，可运行 `yolo settings sync=False` 关闭。
+本插件仅包含说明文字，加载时不会运行任何内容。插件 README 列出了[它建议的命令会运行、发送和获取的内容](plugins/yolo/README.md#what-it-runs-sends-and-fetches)（英文）。
 
 ## 💡 贡献
 

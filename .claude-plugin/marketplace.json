@@ -8,10 +8,6 @@
   "plugins": [
     {
       "name": "yolo",
-      "description": "Agent skills for Ultralytics YOLO and Platform: model selection, dataset annotation, training, tuning, inference, export, and deployment through the Platform web UI, the Python package, and the yolo and ul CLIs.",
-      "author": {
-        "name": "Ultralytics"
-      },
       "category": "development",
       "source": "./plugins/yolo",
       "homepage": "https://github.com/ultralytics/skills"

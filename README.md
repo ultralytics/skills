@@ -95,7 +95,7 @@ Restart Codex after edits. To pull new versions of the GitHub source, run `codex
 
 ### Other agents (Cursor, Gemini CLI, ...)
 
-Copy (or symlink) the folders under `plugins/yolo/skills/` into your agent's skills directory.
+Copy (or symlink) the folders under `plugins/yolo/skills/` into your agent's skills directory, or follow the [installation guide](https://docs.ultralytics.com/integrations/agent-skills#installation).
 
 ## 🛠️ Design notes
 
@@ -106,7 +106,7 @@ Copy (or symlink) the folders under `plugins/yolo/skills/` into your agent's ski
 
 ## 🔒 Data and network access
 
-The plugin contains only instructions; nothing runs when it loads. The commands it suggests can download packages, weights, datasets, and the public Platform API schema, and `ul cloud` commands upload the files you pass them to [Ultralytics Platform](https://platform.ultralytics.com) with your API key. The `ultralytics` package also sends anonymous usage analytics; turn them off with `yolo settings sync=False`.
+The plugin contains only instructions; nothing runs when it loads. The plugin README lists [what the commands it suggests run, send, and fetch](plugins/yolo/README.md#what-it-runs-sends-and-fetches).
 
 ## 💡 Contribute
 

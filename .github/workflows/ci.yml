@@ -89,7 +89,7 @@ jobs:
 
           claude = manifests[f"{PLUGIN}/.claude-plugin/plugin.json"]
           codex = manifests[f"{PLUGIN}/.codex-plugin/plugin.json"]
-          for key in ("name", "version", "skills"):
+          for key in ("name", "version", "description", "skills"):
               if claude.get(key) != codex.get(key):
                   errors.append(f"plugin manifests disagree on {key}: {claude.get(key)!r} != {codex.get(key)!r}")
           if codex.get("skills") != "./skills/":
@@ -115,12 +115,13 @@ jobs:
               sys.exit(1)
           print(f"OK: {len(skill_dirs)} skills, {metadata_count} OpenAI metadata files, and {len(MANIFESTS)} manifests validated")
 
-      # Anthropic's directory scans only the submitted plugin folder. For unverified organizations it refuses any agent
-      # instruction file by name and classifies the rest by content, as Magika does, refusing anything but these types;
-      # the plugin icon is exempt. Python 3.14 until onnxruntime ships 3.15 wheels
+      # Anthropic's directory scans only the submitted plugin folder. This step covers two of its rules for unverified
+      # organizations: no agent instruction file names, and only these Magika content types (the plugin icon is exempt).
+      # The plugin's LICENSE must stay identical to the root one. Python 3.14 until onnxruntime ships 3.15 wheels
       - name: Check plugin directory file types
         working-directory: plugins/yolo
         run: |
+          cmp LICENSE ../../LICENSE
           git ls-files | grep -iE '(^|/)(agents|claude|claude\.local)\.md$|(^|/)\.claude/rules/' && exit 1
           labels=$(git ls-files -z | xargs -0 uvx -p 3.14 magika --label)
           ! grep -vE ': (markdown|txt|json|yaml|png|jpeg|gif|webp|ico)( |$)|^assets/logo\.svg: svg$' <<< "$labels"
