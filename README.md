@@ -95,21 +95,7 @@ Restart Codex after edits. To pull new versions of the GitHub source, run `codex
 
 ### Other agents (Cursor, Gemini CLI, ...)
 
-```bash
-npx skills add ultralytics/skills
-```
-
-<details>
-<summary>Single skills, global install, manual copy</summary>
-
-```bash
-npx skills add ultralytics/skills --skill yolo-training # one skill only
-npx skills add ultralytics/skills -g                    # global (~/.claude/skills/) instead of ./.claude/skills/
-```
-
-Or simply copy (or symlink) the folders under `skills/` into your agent's skills directory.
-
-</details>
+Add `ultralytics/skills` with the [skills CLI](https://github.com/vercel-labs/skills), which can also install a single skill or install globally, or copy (or symlink) the folders under `skills/` into your agent's skills directory.
 
 ## 🛠️ Design notes
 

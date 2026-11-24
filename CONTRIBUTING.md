@@ -1,6 +1,6 @@
-# AGENTS.md
+# Contributing
 
-Repository guidance for coding agents.
+Repository guidance for contributors and coding agents.
 
 ## Core Principles (CRITICAL)
 
@@ -58,3 +58,4 @@ The validator (the inline Python step of the `Lint` job in `.github/workflows/ci
 
 - Every directory under `skills/` is treated as a skill. Do not park drafts, shared assets, or `__pycache__` there.
 - The whole repo is the plugin, and Anthropic's directory refuses it if any file is not Markdown, text, JSON, YAML, or a PNG, JPEG, GIF, WebP, or ICO image (only the `icon` SVG is exempt), starts with `#!`, or is a package manager config. The directory classifies by content, not name, so keep scripts inline in workflow YAML that still reads as YAML and `assets/logo.svg` as the only image; the `Lint` job's Magika file-type check enforces this.
+- The directory also refuses any `AGENTS.md`, `CLAUDE.md`, or `CLAUDE.local.md`, so this guidance lives in `CONTRIBUTING.md` (Ultralytics Actions' PR review reads it too) and the same `Lint` step rejects those names. Its automated review also blocks text that downloads and runs code, such as a package runner's install command (link to the tool's own install instructions instead), and credential placeholders that read like variables (write `YOUR_API_KEY`).

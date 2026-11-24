@@ -10,7 +10,7 @@ description: >
 
 ```bash
 pip install ultralytics                   # or `pip install ultralytics-platform`
-export ULTRALYTICS_API_KEY="YOUR_API_KEY" # or `ul login API_KEY`
+export ULTRALYTICS_API_KEY="YOUR_API_KEY" # or `ul login YOUR_API_KEY`
 ul cloud --help                           # every resource and operation
 ul cloud training start --help            # one operation's arguments, types, and choices
 ```
