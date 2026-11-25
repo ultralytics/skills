@@ -6,7 +6,7 @@ description: >
 
 # Platform CLI (`ul cloud`)
 
-`ul` needs Python 3.11+ and comes with `pip install ultralytics` or `pip install ultralytics-platform`. `ul cloud <resource> <operation>` calls the Platform API through the generated SDK; `ul login`, `ul train`, `ul predict`, the `ul cloud train|predict|export|download` shortcuts (see `yolo`), and the other local commands delegate to the `ultralytics` package. This skill covers Platform operations, not model selection or hyperparameter tuning.
+`ul` needs Python 3.11+ and comes with `pip install ultralytics` or `pip install ultralytics-platform`. `ul cloud <resource> <operation>` calls the Platform API through the generated SDK; `ul login`, `ul train`, `ul predict`, the `ul cloud` train, predict, export, and download shortcuts (see `yolo`), and the other local commands delegate to the `ultralytics` package. This skill covers Platform operations, not model selection or hyperparameter tuning.
 
 ```bash
 pip install ultralytics        # or `pip install ultralytics-platform`
