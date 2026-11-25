@@ -122,5 +122,7 @@ jobs:
         working-directory: plugins/yolo
         run: |
           git ls-files | grep -iE '(^|/)(agents|claude|claude\.local)\.md$|(^|/)\.claude/rules/' && exit 1
+          # Its credential scanner reads prose as shell: a bare env dump or a `pass` call after | or ; is refused
+          grep -rnE '[|;] *`?(printenv|env|export|set)`? *([|;]|$)|[|;] *pass +' --include='*.md' . && exit 1
           labels=$(git ls-files -z | xargs -0 uvx -p 3.14 magika --label)
           ! grep -vE ': (markdown|txt|json|yaml|png|jpeg|gif|webp|ico)( |$)|^assets/logo\.svg: svg$' <<< "$labels"

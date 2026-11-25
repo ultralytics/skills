@@ -12,7 +12,7 @@ Run the same lifecycle on three complementary surfaces:
 - **`ultralytics` package / `yolo` CLI** — use local or remote compute, scripts, notebooks, custom pipelines, and exported artifacts directly.
 - **`ul` CLI** (Python 3.11+, installed by `ultralytics` or `ultralytics-platform`) — script the Platform API itself: `ul cloud <resource> <operation> key=value` lists, creates, clones, trains, exports, and deploys Platform resources from a terminal (see `platform-cli`).
 
-`ul cloud train|predict|export` upload local inputs as needed and run on Platform. Training returns after submission; add `watch` to follow and download results. `ul cloud download` uses the printed model URI and waits if needed; Ctrl-C stops waiting without canceling training. All four shortcuts need `ultralytics` installed; the `ul cloud <resource> <operation>` commands do not.
+`ul cloud train`, `ul cloud predict`, and `ul cloud export` upload local inputs as needed and run on Platform. Training returns after submission; add `watch` to follow and download results. `ul cloud download` uses the printed model URI and waits if needed; Ctrl-C stops waiting without canceling training. All four shortcuts need `ultralytics` installed; the `ul cloud <resource> <operation>` commands do not.
 
 ```bash
 ul cloud train model=yolo26n.pt data=ul://username/datasets/helmets epochs=100 project=helmets name=exp1 # → run URI and download command
