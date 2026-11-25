@@ -1,4 +1,4 @@
-# Base training argument reference (default.yaml, v8.4.215)
+# Base training argument reference (default.yaml, v8.4.218)
 
 `yolo cfg` prints the installed base schema and defaults. Effective values can also come from a task trainer, loaded checkpoint, or explicit argument; inspect the run's `args.yaml`. Names are identical in CLI and Python.
 
@@ -34,12 +34,12 @@
 | `freeze`                        | None            | int N, or list of layer indices/module names such as `"23.cv2"`                                      |
 | `multi_scale`                   | 0.0             | imgsz jitter fraction during training                                                                |
 | `compile`                       | False           | torch.compile: True/`"default"`/`"reduce-overhead"`/`"max-autotune-no-cudagraphs"`                   |
-| `channels_last`                 | None            | auto on non-Windows CUDA training and x86_64 Linux/Windows CPU inference with MKLDNN; bool overrides |
+| `channels_last`                 | None            | auto: torch≥1.11 non-Windows NVIDIA CUDA train, ≥1.13 x86_64 Linux/Windows MKLDNN CPU infer; bool    |
 | `overlap_mask` / `mask_ratio`   | True / 4        | segment: merge overlapping masks; mask downsample                                                    |
 | `dropout`                       | 0.0             | classify only                                                                                        |
 | `val` / `plots`                 | True / True     | validate + plot during training                                                                      |
 | `nms`                           | None            | epoch-val head (picks `best.pt`): None/True = one-to-many + NMS; False = NMS-free head if available  |
-| `tile`                          | False           | True tiles at imgsz; int = tile size in source pixels; train/val/predict on overlapping windows      |
+| `tile` / `tile_overlap`         | False / 0.2     | True = imgsz tiles; int or `[h, w]` = source-pixel size; overlap fraction 0–<1; train/val/predict    |
 
 ## Hyperparameters (LR, loss weights)
 
@@ -68,7 +68,7 @@
 | `bgr`                                           | 0.0                   | channel-swap probability                                  |
 | `mosaic`                                        | 1.0                   | 4-image mosaic (off for last `close_mosaic` epochs)       |
 | `mixup` / `cutmix`                              | 0.0 / 0.0             | try 0.1 for crowded scenes                                |
-| `copy_paste` / `copy_paste_mode`                | 0.0 / flip            | segment/semantic/OBB object fraction; try 0.3 for overlap |
+| `copy_paste` / `copy_paste_mode`                | 0.0 / flip            | fraction of eligible polygon objects; try 0.3 for overlap |
 | `auto_augment`                                  | randaugment           | classify: randaugment/autoaugment/augmix                  |
 | `erasing`                                       | 0.4                   | classify random erasing                                   |
 

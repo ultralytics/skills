@@ -10,7 +10,7 @@ description: >
 
 Use [Platform cloud training](https://docs.ultralytics.com/platform/train/cloud-training) when you want to start in a few clicks without configuring a local GPU:
 
-1. Click **New Model** on a project page, or on a dataset page to preselect that dataset.
+1. Click **New Model** on a project or dataset page you can edit; a dataset page preselects that dataset (clone another workspace's public dataset first).
 2. Select a compatible pretrained model, ready dataset, GPU, epochs, image size, and batch size.
 3. Click **Start Training** and watch live charts, console logs, and system metrics.
 4. Open the completed model to inspect validation plots and use its **Predict**, **Export**, or **Deploy** tab. Platform preserves `best.pt` automatically.

@@ -61,7 +61,7 @@ body:
       description: Include your agent version and `ultralytics` version when relevant.
       placeholder: |
         Agent: Codex 1.2.3
-        ultralytics: 8.4.215
+        ultralytics: 8.4.218
 
   - type: textarea
     attributes:

@@ -1,7 +1,7 @@
 ---
 name: yolo-export
 description: >
-  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI, OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera, DeepX, Xilinx, NXP), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference with .pt weights or Platform endpoints, see yolo-inference.
+  Use when exporting or deploying Ultralytics YOLO models in Platform or code — the Platform Export tab and yolo export/model.export() for ONNX, TensorRT, CoreML, Core AI, OpenVINO, LiteRT, NCNN, ExecuTorch, and NPUs (RKNN, QNN, Hailo, Ascend, IMX, Axelera, DeepX, Xilinx, NXP), STM32 microcontrollers (ST Edge AI), FP16/INT8 quantization, benchmarking, and non-Python runtimes. For inference with .pt weights or Platform endpoints, see yolo-inference.
 ---
 
 # Export, quantization & deployment
@@ -42,10 +42,11 @@ model = YOLO("best.onnx")  # or best.engine, best_openvino_model/, ...
 | Android                                                          | `litert` (renamed from `tflite`) or `ncnn`                                           | NCNN strong on ARM                                                                                         |
 | Raspberry Pi                                                     | `ncnn`                                                                               | best ARM CPU latency                                                                                       |
 | PyTorch Edge                                                     | `executorch`                                                                         |                                                                                                            |
+| STM32 microcontrollers                                           | `stedgeai`                                                                           | ONNX for ST Edge AI Core; `quantize=8` for INT8; keep the `_stedgeai.onnx` ending                          |
 | Cross-platform / unsure                                          | `onnx`                                                                               | runs everywhere; start here, specialize when latency demands                                               |
 | NPUs (Rockchip/Qualcomm/Hailo/Huawei/Sony/Axelera/DeepX/AMD/NXP) | `rknn` / `qnn` / `hailo` / `ascend` / `imx` / `axelera` / `deepx` / `xilinx` / `nxp` | `name=` selects the exact chip for rknn/qnn/hailo/ascend/xilinx                                            |
 
-Full 23-target local export matrix with per-format supported args: `format-matrix.md` (this folder).
+Full local export matrix with per-format supported args: `format-matrix.md` (this folder).
 
 ## Key arguments
 
@@ -83,8 +84,8 @@ Produces the task metric + latency per exportable format **on this machine**. Re
 
 ## Consuming exports outside Python
 
-- In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize, BGR→RGB, /255) and output decoding.
-- Detect output layout follows `nms`: the default `nms=None` emits raw `[4+nc, anchors]` heads (xywh boxes + class scores) for every model, YOLO26 included, so you run NMS (`imx` instead always embeds NMS, and `axelera` keeps the NMS-free head). `nms=False` on YOLO26/YOLOv10 emits NMS-free `[max_det, 6]` rows `[x1,y1,x2,y2,conf,cls]`, and `nms=True` embeds NMS with the same row layout where supported; some formats fall back to raw heads (`format-matrix.md`). Segment, pose, and OBB add task-specific outputs. Check export warnings and shapes.
+- In raw runtimes (C++, mobile, JS) **you** own preprocessing (letterbox resize for YOLO detect-family and semantic tasks, plain resize for RT-DETR, depth, and rectangular classifiers, resize + center-crop for square classifiers; BGR→RGB; /255 unless the model scales internally, as RKNN, DEEPX, Hailo, and CoreML image inputs do) and output decoding.
+- Detect output layout follows `nms`: the default `nms=None` emits raw `[4+nc, anchors]` heads (xywh boxes + class scores; `litert`, `nxp`, and `edgetpu` normalize boxes to 0–1) for every YOLO model, YOLO26 included, so you run NMS (RT-DETR emits `[N, 6]` rows of normalized xywh, conf, cls and needs no NMS; INT8 `rknn` emits per-scale head tensors that its bundled `tail.onnx` decodes first; `hailo` embeds HailoRT NMS for YOLOv8/YOLO11 detect and otherwise returns head tensors to decode on the host; `imx` instead always embeds NMS, and the `axelera` runtime decodes the `.axm` feature maps on the host, with no NMS step for YOLO26/YOLOv10). `nms=False` on YOLO26/YOLOv10 emits NMS-free `[max_det, 6]` rows `[x1,y1,x2,y2,conf,cls]`, and `nms=True` embeds NMS with the same row layout where supported (CoreML detect instead returns `confidence` and `coordinates` arrays); some formats fall back to raw heads (`format-matrix.md`). Segment, pose, and OBB add task-specific outputs. Check export warnings and shapes.
 - Class names travel in export metadata where supported; otherwise ship the `names` map alongside the model.
 - Serving: `ultralytics.utils.triton.TritonRemoteModel` for Triton; `examples/` in the ultralytics repo has ONNXRuntime C++/Rust/Python references.
 
@@ -103,6 +104,6 @@ Produces the task metric + latency per exportable format **on this machine**. Re
 
 ## Related pages
 
-- `format-matrix.md` — all 23 local export targets, artifacts produced, and supported args. Read when using any format beyond onnx/engine/openvino/coreml.
+- `format-matrix.md` — all local export targets, artifacts produced, and supported args. Read when using any format beyond onnx/engine/openvino/coreml.
 
 If the installed version rejects an argument, trust the error text (format and quantize errors list valid values) and `yolo cfg` over this file.
