@@ -15,7 +15,7 @@ ul cloud --help                # every resource and operation
 ul cloud training start --help # one operation's arguments, types, and choices
 ```
 
-Signing in is a prerequisite the user completes with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys); skip it when `ul cloud account summary` already succeeds. Never ask for, print, or pass a key yourself.
+Only running `ul cloud` commands needs a signed-in CLI; explaining or planning them does not. The user signs in with a Platform [API key](https://docs.ultralytics.com/platform/account/api-keys). Never ask for, print, or pass a key yourself.
 
 ## Canonical command shapes
 
